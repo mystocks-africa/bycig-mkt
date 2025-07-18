@@ -2,16 +2,21 @@
 
 ## Image:
 
-[![](https://img.plantuml.biz/plantuml/svg/TL91KiCm3Bpx5RgH7k01pJ3JJXbeJsGAFC1rbCPJnmwMNUZlaUqIqWC-oQFLQhNIYeBq8Gv6v41qpfy4y5i-Or0zTDuD8862KoV0xu3UIWFhPbTdb7K1mUjZ7_8tlMTjxJOU7hIxewbEzT8UCTN1bpO63WYXHnYzE-iMVIv6ssQ-h07aKMfRbBnW06KYSNCmA1bFjKZeB7RPk34QoJfACuyKJI083ffjap13FGFT4ls3_Y1EeMKS9OsZ8nwwnI2reTyqnSEWmon_fU3ScTDLy_hslc1myN6zQM9YBsL4sbdmIO_Hp58BSUFakjb4U0HfGTlx0GVdBw2awlECNhAJsgPcOl9Cw0wgFIPCEoDU99ijL1UaHJ5pZwtsg4AIo_peFOiQcR8iTFda4Y4eDum6aoJyZ4Yi40qXLDOLdkbESj7EyjHXPfKCifvmirrUqShZmFQMEV_KbXdhwHfo4mvqnzVfHh7YE9tg3m00)](https://editor.plantuml.com/uml/TL91KiCm3Bpx5RgH7k01pJ3JJXbeJsGAFC1rbCPJnmwMNUZlaUqIqWC-oQFLQhNIYeBq8Gv6v41qpfy4y5i-Or0zTDuD8862KoV0xu3UIWFhPbTdb7K1mUjZ7_8tlMTjxJOU7hIxewbEzT8UCTN1bpO63WYXHnYzE-iMVIv6ssQ-h07aKMfRbBnW06KYSNCmA1bFjKZeB7RPk34QoJfACuyKJI083ffjap13FGFT4ls3_Y1EeMKS9OsZ8nwwnI2reTyqnSEWmon_fU3ScTDLy_hslc1myN6zQM9YBsL4sbdmIO_Hp58BSUFakjb4U0HfGTlx0GVdBw2awlECNhAJsgPcOl9Cw0wgFIPCEoDU99ijL1UaHJ5pZwtsg4AIo_peFOiQcR8iTFda4Y4eDum6aoJyZ4Yi40qXLDOLdkbESj7EyjHXPfKCifvmirrUqShZmFQMEV_KbXdhwHfo4mvqnzVfHh7YE9tg3m00)
+[![](https://img.plantuml.biz/plantuml/svg/TLFBKjmm4BphA-QMtIf2xciWR2L5GbLICP1yW5OUhrNeOJGIOV-U6GastaDyagMUxfuUwPgoJhbufrHTgH0pWiCnAu2jSp1YDXFI6U2BmJd361DGZkOHjlqjGJIc9FXhymGQkEIYNFqyFDpz0CBqZEdYKxa27GRPzmTwShRkzDzx699bmBb2FXLHnSoFp02mkH5D65FqJDh4y2LZ2jg9QbTHrMYo-odNN_bOvCQ6C9NTkOqVg4gzbvj9XprAERlbldO8UKAOKtosW_WGWXCleFVQXkRe6sOmhX2Ru70q5r1NdLVJcpxEnMdsqzGIKd6P8CVQAMDyjm2T4lq7_OS3P3-C8p4vH-Bc1ypQEde_fhBpDY_EtoXQzh3gVptyNZEuvRdjlvGsFYaZiZ504Z_ECakdr4cYdAKKr0mlUOHWmqUFFgO36CqtGbfDcXErGJGNSrHsXDKz2cXO27nUI-01LWUaTKlr7WURq6JnpGgO4hkRcRHDUFCr2YEOw6U7uWsV2X9RHKS8gn0Rp_7YrABRmEtdHMOww-w8Mmpr3MqIUiwvnVFFRkkoErwBAi8BE_93YREwvhKycrS0)](https://editor.plantuml.com/uml/TLFBKjmm4BphA-QMtIf2xciWR2L5GbLICP1yW5OUhrNeOJGIOV-U6GastaDyagMUxfuUwPgoJhbufrHTgH0pWiCnAu2jSp1YDXFI6U2BmJd361DGZkOHjlqjGJIc9FXhymGQkEIYNFqyFDpz0CBqZEdYKxa27GRPzmTwShRkzDzx699bmBb2FXLHnSoFp02mkH5D65FqJDh4y2LZ2jg9QbTHrMYo-odNN_bOvCQ6C9NTkOqVg4gzbvj9XprAERlbldO8UKAOKtosW_WGWXCleFVQXkRe6sOmhX2Ru70q5r1NdLVJcpxEnMdsqzGIKd6P8CVQAMDyjm2T4lq7_OS3P3-C8p4vH-Bc1ypQEde_fhBpDY_EtoXQzh3gVptyNZEuvRdjlvGsFYaZiZ504Z_ECakdr4cYdAKKr0mlUOHWmqUFFgO36CqtGbfDcXErGJGNSrHsXDKz2cXO27nUI-01LWUaTKlr7WURq6JnpGgO4hkRcRHDUFCr2YEOw6U7uWsV2X9RHKS8gn0Rp_7YrABRmEtdHMOww-w8Mmpr3MqIUiwvnVFFRkkoErwBAi8BE_93YREwvhKycrS0)
 
 ## Code:
 ```plantuml
 @startuml
+
 start
+note left
+  All fetches, except for stock APIs occur with a 
+  <u>MySQL server</u> and <u>mysqli</u> PHP driver.
+end note
 fork
     :Fetch from a stock external API;
     note right
-        FinnHub.io's stock exchange API will be the provider
+        <u>Finnhub.io's</u> stock exchange API will be the provider.
     end note
 fork again
     :Get cluster leaders;
@@ -20,13 +25,13 @@ end fork
 :Populate cluster leader results to PHP form;
 :User enters proposal details;
 :User submits proposal to PHP server (POST);
-:Fetch ACPu for submission rate limit;
+:Fetch APCu for submission rate limit;
 
 note right
-  APCu = an in-memory cache storage in PHP
+  <u>APCu</u> = an in-memory cache storage in PHP.
 end note
 
-if (Reached rate limit) then (yes)
+if (Reached rate limit?) then (yes)
     :Redirect to an error page;
     :Do not complete request;
 else (no)
