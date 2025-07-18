@@ -58,7 +58,7 @@ endif
 stop
 @enduml
 ```
-# Event-loop Diagram
+# 🔁 Event-loop Diagram
 
 The following is a simple explanation on how ReactPHP handles I/O tasks, such as APIs or db queries, that will block code execution (asynchronous task)
 
