@@ -67,3 +67,4 @@ stop
 
 The following is a simple explanation on how ReactPHP handles I/O tasks, such as APIs or db queries, that will block code execution (asynchronous task)
 
+Resource: https://blog.gougousis.net/the-inner-workings-of-an-event-loop-the-reactphp-case/
