@@ -34,8 +34,8 @@ end note
 fork
     :Fetch from a stock external API <b>(ASYNC)</b>;
     note right
-        <u>finnhub.io's</u> stock
-        exchange API will be the provider.
+        <u>finnhub.io's</u> stock exchange API 
+        will be the provider.
     end note
 fork again
     :Get cluster leaders <b>(ASYNC)</b>;
