@@ -2,7 +2,7 @@
 
 ## Image:
 
-[![](https://img.plantuml.biz/plantuml/svg/TLFBKjmm4BphA-QMtIf2xciWR2L5GbLICP1yW5OUhrNeOJGIOV-U6GastaDyagMUxfuUwPgoJhbufrHTgH0pWiCnAu2jSp1YDXFI6U2BmJd361DGZkOHjlqjGJIc9FXhymGQkEIYNFqyFDpz0CBqZEdYKxa27GRPzmTwShRkzDzx699bmBb2FXLHnSoFp02mkH5D65FqJDh4y2LZ2jg9QbTHrMYo-odNN_bOvCQ6C9NTkOqVg4gzbvj9XprAERlbldO8UKAOKtosW_WGWXCleFVQXkRe6sOmhX2Ru70q5r1NdLVJcpxEnMdsqzGIKd6P8CVQAMDyjm2T4lq7_OS3P3-C8p4vH-Bc1ypQEde_fhBpDY_EtoXQzh3gVptyNZEuvRdjlvGsFYaZiZ504Z_ECakdr4cYdAKKr0mlUOHWmqUFFgO36CqtGbfDcXErGJGNSrHsXDKz2cXO27nUI-01LWUaTKlr7WURq6JnpGgO4hkRcRHDUFCr2YEOw6U7uWsV2X9RHKS8gn0Rp_7YrABRmEtdHMOww-w8Mmpr3MqIUiwvnVFFRkkoErwBAi8BE_93YREwvhKycrS0)](https://editor.plantuml.com/uml/TLFBKjmm4BphA-QMtIf2xciWR2L5GbLICP1yW5OUhrNeOJGIOV-U6GastaDyagMUxfuUwPgoJhbufrHTgH0pWiCnAu2jSp1YDXFI6U2BmJd361DGZkOHjlqjGJIc9FXhymGQkEIYNFqyFDpz0CBqZEdYKxa27GRPzmTwShRkzDzx699bmBb2FXLHnSoFp02mkH5D65FqJDh4y2LZ2jg9QbTHrMYo-odNN_bOvCQ6C9NTkOqVg4gzbvj9XprAERlbldO8UKAOKtosW_WGWXCleFVQXkRe6sOmhX2Ru70q5r1NdLVJcpxEnMdsqzGIKd6P8CVQAMDyjm2T4lq7_OS3P3-C8p4vH-Bc1ypQEde_fhBpDY_EtoXQzh3gVptyNZEuvRdjlvGsFYaZiZ504Z_ECakdr4cYdAKKr0mlUOHWmqUFFgO36CqtGbfDcXErGJGNSrHsXDKz2cXO27nUI-01LWUaTKlr7WURq6JnpGgO4hkRcRHDUFCr2YEOw6U7uWsV2X9RHKS8gn0Rp_7YrABRmEtdHMOww-w8Mmpr3MqIUiwvnVFFRkkoErwBAi8BE_93YREwvhKycrS0)
+[![](https://img.plantuml.biz/plantuml/svg/TPJ9Zjim38RlVWhUaW2ptECqdQ15sm6wfBCyW2pJiH1PyaXK9dxxadAISGxrIR2uVFpvsm-HLA3KsQB8fy9vGh3OK06miHOQ9DrYl04yQkm96XyWajTxs6mVRy1hdGAy6sf10QUiqlhNyFpt9qGC1moh-xG6vMfvtmtnpPhyPljZ2tKm771N8DzAqwAOmMzfhYgV2AX5wRM7UM-LnXfCrs5j5A4Te4A-GZ2q67c3sRK2_79EShx6o5WyG4WEkcJ9z1Q1LDn7M5LhxHs31tHaXzLzjURa58tR2UWJAasCAAYp27ZWAB3Uzq0UbBN-dUkxsygo2fA2HzI9Z7VJOGI3Ym8iluc2q0JViKIZT7Wa34vPqR3CKLTZZ0-JDCQvDbLtnizY5kwShblbTYZfuv0LPi7wu0-c5bMbm0KcIw9sohYHw3iIQ9iYG_2g5IV4CgDdw6AvzNsohFIfNS38-aMPNXR7GLqv2Rgkz9_eL_O30t5S5ChUHvw-HbB6nlDrJ5LdQ79_AZ5Q2URRFyyl2muU1TrilwJHZP8M8-iFGNYiuIfbSUqC5bCIieYVs95Wt6s7dGy3QCK6br63OacDavxJJPe6vcA9batuqU3pGXHtC1ymBaPPdzYV0JLbcpZ049YkvwBZYfTVlLG4xJkseh3XMyB8g6WZmjpviSx5EJdfqV7uDD5CaIelSPEjdg9rm4xyckNvm1sdB2--o4tuO1h-xdrVFF1P_WB_0000)](https://editor.plantuml.com/uml/TPJ9Zjim38RlVWhUaW2ptECqdQ15sm6wfBCyW2pJiH1PyaXK9dxxadAISGxrIR2uVFpvsm-HLA3KsQB8fy9vGh3OK06miHOQ9DrYl04yQkm96XyWajTxs6mVRy1hdGAy6sf10QUiqlhNyFpt9qGC1moh-xG6vMfvtmtnpPhyPljZ2tKm771N8DzAqwAOmMzfhYgV2AX5wRM7UM-LnXfCrs5j5A4Te4A-GZ2q67c3sRK2_79EShx6o5WyG4WEkcJ9z1Q1LDn7M5LhxHs31tHaXzLzjURa58tR2UWJAasCAAYp27ZWAB3Uzq0UbBN-dUkxsygo2fA2HzI9Z7VJOGI3Ym8iluc2q0JViKIZT7Wa34vPqR3CKLTZZ0-JDCQvDbLtnizY5kwShblbTYZfuv0LPi7wu0-c5bMbm0KcIw9sohYHw3iIQ9iYG_2g5IV4CgDdw6AvzNsohFIfNS38-aMPNXR7GLqv2Rgkz9_eL_O30t5S5ChUHvw-HbB6nlDrJ5LdQ79_AZ5Q2URRFyyl2muU1TrilwJHZP8M8-iFGNYiuIfbSUqC5bCIieYVs95Wt6s7dGy3QCK6br63OacDavxJJPe6vcA9batuqU3pGXHtC1ymBaPPdzYV0JLbcpZ049YkvwBZYfTVlLG4xJkseh3XMyB8g6WZmjpviSx5EJdfqV7uDD5CaIelSPEjdg9rm4xyckNvm1sdB2--o4tuO1h-xdrVFF1P_WB_0000)
 
 ## Code:
 ```plantuml
@@ -10,17 +10,25 @@
 
 start
 note left
-  All fetches, except for stock APIs occur with a 
+  All fetches, except for stock API, occur with a 
   <u>MySQL server</u> and <u>mysqli</u> PHP driver.
 end note
+
+' Note about the fork (placed immediately before it)
+note right
+  The fork nodes will run multiple tasks <b>concurrently</b>
+  using <u>ReactPHP</u>'s event loop to allow non-blocking execution.
+end note
+
 fork
     :Fetch from a stock external API;
     note right
-        <u>Finnhub.io's</u> stock exchange API will be the provider.
+        <u>finnhub.io's</u> stock exchange API will be the provider.
     end note
 fork again
     :Get cluster leaders;
 end fork
+
 :Populate stock results to PHP form;
 :Populate cluster leader results to PHP form;
 :User enters proposal details;
