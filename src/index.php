@@ -1,5 +1,5 @@
 <?php 
-    if ($_SERVER["REQUEST_METHOD"] == "POST) {
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $first_name = $_POST["first_name"];
         $last_name = $_POST["last_name"];
         $stock_name = $_POST["stock_name"];
@@ -16,7 +16,7 @@
     <title>BYCIG Stock Proposal Submission</title>
 </head>
 <body>
-    <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post">
+    <form action="<?php echo $_SERVER["PHP_SELF"] ?>" method="post">
 
         <label>First Name:</label>
         <input type="text" name="first_name">
