@@ -1,4 +1,4 @@
-# 🌲 PlantUML Diagram
+# 🫡 UML Diagram
 
 ## Image:
 
