@@ -17,9 +17,9 @@ As part of my first technical project with the partnered fintech non-profit **BY
 
 ## Key Contributions
 
-### ✅ Custom WordPress Template in PHP
+### ✅ Custom PHP server in Hostinger
 
-- Developed a **custom page template** using native PHP within the WordPress theme.
+- Developed a custom asynchronous-friendly PHP script using ReactPHP
 - Embedded **form submission logic** tailored to BYCIG’s specific data validation and business rules.
 
 ### ✅ Efficient MySQL Communication
