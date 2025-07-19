@@ -19,7 +19,6 @@ As part of my first technical project with the partnered fintech non-profit **BY
 
 ### ✅ Custom PHP server in Hostinger
 
-- Developed a custom asynchronous-friendly PHP script using ReactPHP
 - Embedded **form submission logic** tailored to BYCIG’s specific data validation and business rules.
 
 ### ✅ Efficient MySQL Communication
