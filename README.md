@@ -1,4 +1,4 @@
-# BYCIG Infrastructure Optimization – Project Summary
+# BYCIG Infrastructure Optimization - Proposal Submission Software
 
 ## Overview
 As part of my first technical project with the partnered fintech non-profit **BYCIG**, I was tasked with improving the efficiency and scalability of their digital infrastructure, particularly focusing on their **stock exchange proposal submission workflow** within a WordPress environment.
