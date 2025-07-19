@@ -47,7 +47,7 @@ end fork
 :Fetch APCu for submission rate limit;
 
 note right
-  <u>APCu</u> = an in-memory cache storage in PHP.
+  <u>APCu</u> is an in-memory cache storage in PHP.
 end note
 
 if (Reached rate limit?) then (yes)
