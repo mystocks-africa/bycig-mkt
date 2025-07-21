@@ -1,38 +1,50 @@
-<?php 
-    // allow composer files to be used (not needed in php frameworks)
-    require 'vendor/autoload.php';
+<?php
+require 'vendor/autoload.php';
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $first_name = filter_input(INPUT_POST, "first_name", FILTER_SANITIZE_SPECIAL_CHARS);
-        $last_name = filter_input(INPUT_POST, "last_name", FILTER_SANITIZE_SPECIAL_CHARS);
-        $stock_name = filter_input(INPUT_POST, "stock_name", FILTER_SANITIZE_SPECIAL_CHARS);
+use React\EventLoop\Loop;
+use React\Http\Browser;
 
-        echo $first_name . $last_name . $stock_name;
-    }
+$loop = Loop::get();
+$browser = new Browser($loop);
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $firstName = filter_input(INPUT_POST, 'first_name', FILTER_SANITIZE_SPECIAL_CHARS);
+    $lastName = filter_input(INPUT_POST, 'last_name', FILTER_SANITIZE_SPECIAL_CHARS);
+    $stockName = filter_input(INPUT_POST, 'stock_name', FILTER_SANITIZE_SPECIAL_CHARS);
+
+    $loop->addTimer(1.5, function () {
+        echo "Timer done after 1.5";
+    });
+
+    echo $firstName . $lastName . $stockName;
+
+    $loop->run();
+
+    // Message should be short and sweet
+    $message = "Thank you for contributing to BYCIG!";
+    header("Location: thankyou.php?message={$message}&message_type=success");
+
+    exit; 
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
     <title>BYCIG Stock Proposal Submission</title>
 </head>
 <body>
-    <form action="<?php echo $_SERVER["PHP_SELF"] ?>" method="post">
-
+    <form method="post" action="<?php echo $_SERVER["PHP_SELF"] ?>">
         <label>First Name:</label>
-        <input type="text" name="first_name">
+        <input type="text" name="first_name" required>
         <br>
-
         <label>Last Name:</label>
-        <input type="text" name="last_name">
+        <input type="text" name="last_name" required>
         <br>
-        
         <label>Stock:</label>
-        <input type="text" name="stock_name">
+        <input type="text" name="stock_name" required>
         <br>
-        
         <button type="submit">Submit</button>
     </form>
 </body>
