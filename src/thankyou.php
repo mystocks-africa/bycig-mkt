@@ -19,8 +19,8 @@
     </form>
 
     <script>
-        const msg_type = "<?php echo filter_input(INPUT_GET, "message_type", FILTER_SANITIZE_SPECIAL_CHARS); ?>";
-        const msg = "<?php echo filter_input(INPUT_GET, "message", FILTER_SANITIZE_SPECIAL_CHARS); ?>";
+        const msg_type = "<?php echo filter_input(INPUT_GET, "message_type", FILTER_SANITIZE_SPECIAL_CHARS); ?>" || "success";
+        const msg = "<?php echo filter_input(INPUT_GET, "message", FILTER_SANITIZE_SPECIAL_CHARS); ?>" || "Thank you :)";
 
         const textElement = document.getElementById("main-text");
         textElement.innerHTML = msg;
