@@ -3,9 +3,9 @@
     require 'vendor/autoload.php';
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $first_name = $_POST["first_name"];
-        $last_name = $_POST["last_name"];
-        $stock_name = $_POST["stock_name"];
+        $first_name = filter_input(INPUT_POST, "first_name", FILTER_SANITIZE_SPECIAL_CHARS);
+        $last_name = filter_input(INPUT_POST, "last_name", FILTER_SANITIZE_SPECIAL_CHARS);
+        $stock_name = filter_input(INPUT_POST, "stock_name", FILTER_SANITIZE_SPECIAL_CHARS);
 
         echo $first_name . $last_name . $stock_name;
     }
