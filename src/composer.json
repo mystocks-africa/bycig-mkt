@@ -1,0 +1,22 @@
+{
+    "name": "hemit99123/proposal-submission-software",
+    "description": "The software for submitting stock proposal",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Hemit99123\\ProposalSubmissionSoftware\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Hemit Patel",
+            "email": "hemitvpatel@gmail.com"
+        }
+    ],
+    "require": {
+        "react/http": "^1.11",
+        "react/event-loop": "^1.5",
+        "react/socket": "^1.16",
+        "react/http-client": "^0.5.11"
+    }
+}
