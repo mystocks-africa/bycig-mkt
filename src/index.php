@@ -4,37 +4,20 @@ require 'vendor/autoload.php';
 
 use React\EventLoop\Loop;
 use React\Http\Browser;
-use Psr\Http\Message\ResponseInterface;
 
 $loop = Loop::get();
 $browser = new Browser($loop);
 $data = null;
 
-$env = parse_ini_file('.env');
-$finnhub_api_key = $env["FINNHUB_API_KEY"];
-
-$browser->get("https://finnhub.io/api/v1/stock/symbol?exchange=US&token=" . $finnhub_api_key, ['Content-Type' => 'application/json'])
-        ->then(
-            function (ResponseInterface $response) {
-                global $data;
-
-                $data = json_decode((string) $response->getBody(), true);
-                echo "Received " . count($data) . " stock symbols.\n";
-            },
-            function (Exception $error) {
-                global $loop;
-                
-                $message = urlencode("Error when fetching for stocks: " . $error->getMessage());
-                header("Location: redirect.php?message=$message&message_type=error");
-                $loop->stop();
-            }
-);
-
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $firstName = filter_input(INPUT_POST, 'first_name', FILTER_SANITIZE_SPECIAL_CHARS);
     $lastName = filter_input(INPUT_POST, 'last_name', FILTER_SANITIZE_SPECIAL_CHARS);
     $stockName = filter_input(INPUT_POST, 'stock_name', FILTER_SANITIZE_SPECIAL_CHARS);
+
+    // only temp (need something to mimick the behvaiour of I/o calls)
+    $loop->addTimer(1.5, function () {
+        echo "Test timer done";
+    });
 
     echo "$firstName . $lastName . $stockName \n";
 
@@ -54,6 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8" />
     <title>BYCIG Stock Proposal Submission</title>
+    <link rel="stylesheet" href="static/css/index.css" >
 </head>
 <body>
     <form method="post" action="<?php echo $_SERVER["PHP_SELF"] ?>">
@@ -68,10 +52,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <br>
         <button type="submit">Submit</button>
     </form>
-
-    <script>
-        const jsVar = "<?php echo $data; ?>"
-        console.log(jsVar)
-    </script>
 </body>
 </html>
