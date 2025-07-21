@@ -17,6 +17,7 @@
         "react/http": "^1.11",
         "react/event-loop": "^1.5",
         "react/socket": "^1.16",
-        "react/http-client": "^0.5.11"
+        "react/http-client": "^0.5.11",
+        "vlucas/phpdotenv": "^5.6"
     }
 }
