@@ -2,7 +2,15 @@ let currentBatchNumber = 0;
 
 document.addEventListener("DOMContentLoaded", function () {
     fetchNewStockBatch();
+    fetchClusterLeaders();
 });
+
+function appendNewSelectChild(content, element) {
+    const option = document.createElement("option");
+    option.value = content;
+    option.textContent = content;
+    element.appendChild(option)
+}
 
 function toggleStockInput() {
     const useSelect = document.getElementById('useSelect').checked;
@@ -32,7 +40,11 @@ function setFinalStockValue() {
 }
 
 function fetchNewStockBatch() {
-    fetch(`stock_cache.php?current_batch_number=${currentBatchNumber}`)
+    fetch(`stock_cache.php?current_batch_number=${currentBatchNumber}`, {
+          headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+          }
+    })
         .then(response => response.json())
         .then(stockBatch => {
             const dropdown = document.getElementById("stockSelect");
@@ -53,16 +65,33 @@ function fetchNewStockBatch() {
                 fetchButton.textContent = 'All stocks loaded';
             } else {
                 stockBatch.forEach(symbol => {
-                    const option = document.createElement("option");
-                    option.value = symbol;
-                    option.textContent = symbol;
-                    dropdown.appendChild(option);
+                    appendNewSelectChild(symbol, dropdown)
                 });
 
                 currentBatchNumber++;
             }
         })
         .catch(error => {
-            console.error('Error:', error);
+            alert("Error" + error)
         });
+}
+
+function fetchClusterLeaders() {
+    fetch("submit-proposal.php", {
+    headers: {
+        'Accept': 'application/json'
+    }
+    })
+    .then(response => response.json())
+    .then(clusterLeader => {
+        const dropdown = document.getElementById("leaderSelect")
+
+        clusterLeader.forEach(leader => {
+            appendNewSelectChild(leader, dropdown)
+        });
+    })
+    .catch(error => {
+        alert("Error" + error)
+    });
+
 }

@@ -5,7 +5,7 @@
         global $curl_handle;
         global $symbols;
 
-        $env = parse_ini_file(filename: '.env');
+        $env = parse_ini_file(filename: '../.env');
         $finnhub_api_key = $env["FINNHUB_API_KEY"];
 
         curl_setopt_array($curl_handle, [
@@ -38,7 +38,7 @@
 
         // a CLI script (CRON), so we need to request a server (can't directly access APCu)
         curl_setopt_array($curl_handle, [
-            CURLOPT_URL => "http://localhost:3000/src/cache.php",
+            CURLOPT_URL => "http://localhost:3000/src/stock_cache.php",
             CURLOPT_POSTFIELDS => $post,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_TIMEOUT => 10
