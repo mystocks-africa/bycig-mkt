@@ -1,8 +1,8 @@
 <?php 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])) {
-    header("Location: submit-proposal.php");
-    exit;  // always good to stop execution after redirect
-}
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])) {
+        header("Location: submit-proposal.php");
+        exit;  
+    }
 ?>
 
 <!DOCTYPE html>
