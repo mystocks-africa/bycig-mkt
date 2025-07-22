@@ -26,6 +26,7 @@
         exit;
     }
 
+    $loop->stop();
 ?>
 
 <!DOCTYPE html>
