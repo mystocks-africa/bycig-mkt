@@ -77,7 +77,7 @@ function fetchNewStockBatch() {
 }
 
 function fetchClusterLeaders() {
-    fetch("submit-proposal.php", {
+    fetch("submit_proposal.php", {
     headers: {
         'Accept': 'application/json'
     }
