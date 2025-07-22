@@ -120,6 +120,7 @@
         
         <!-- Hidden field to send the final stock value -->
         <input type="hidden" id="finalStockName" name="stock_name">
+        
         <button onclick="fetchNewStockBatch()">Fetch more stocks</button>
         <br><br>
 
