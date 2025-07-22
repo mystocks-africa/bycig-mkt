@@ -18,6 +18,7 @@
     $mysql = $factory->createLazyConnection($mysql_uri);
     
     $request_method = $_SERVER["REQUEST_METHOD"];
+    
     function client_expects_json(): bool {
         $accept = $_SERVER['HTTP_ACCEPT'] ?? '';
         return stripos($accept, 'application/json') !== false;
@@ -52,31 +53,92 @@
         exit;
     }
 
-    else if ($request_method === 'POST' && $is_ajax) {
-        global $mysql;
-
-
-        $firstName = filter_input(INPUT_POST, 'first_name', FILTER_SANITIZE_SPECIAL_CHARS);
-        $lastName = filter_input(INPUT_POST, 'last_name', FILTER_SANITIZE_SPECIAL_CHARS);
-        $stockName = filter_input(INPUT_POST, 'stock_name', FILTER_SANITIZE_SPECIAL_CHARS);
-
+    else if ($request_method === 'POST') {
         // Initialize session if not started
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
-        
-        // Initialize or increment batch number
-        $current_batch_number = isset($_SESSION["current_batch_number"]) ? $_SESSION["current_batch_number"] + 1 : 1;
-        $_SESSION["current_batch_number"] = $current_batch_number;
 
-        $loop->addTimer(1.5, function () {
-            echo "Timer done (temp)";
-        });
+        $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+        $stockName = filter_input(INPUT_POST, 'stock_name', FILTER_SANITIZE_SPECIAL_CHARS);
+        $title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_SPECIAL_CHARS);
+        $content = filter_input(INPUT_POST, 'content', FILTER_SANITIZE_SPECIAL_CHARS);
+        $leader = filter_input(INPUT_POST, 'leader_select', FILTER_SANITIZE_SPECIAL_CHARS);
 
-        // Short and sweet message
-        $message = "Thank you for contributing to BYCIG!";
-        header("Location: redirect.php?message=" . urlencode($message) . "&message_type=success");
-        
+        // Validate required fields
+        if (!$email || !$stockName || !$title || !$content) {
+            echo "All fields are required.";
+            exit;
+        }
+
+        // ** IN THE FUTURE SEND EMAIL TO USER TO VERIFY IT IS THEM **
+        $slug = strtolower(str_replace(' ', '-', preg_replace('/[^A-Za-z0-9 ]/', '', $title)));
+        $date = date('Y-m-d H:i:s');
+        $guid = "https://member.bycig.org/proposal/$slug/";
+
+        // 1. Get user ID by email
+        $user_query = "SELECT ID FROM wp_users WHERE user_email = ?";
+
+        $mysql->query($user_query, [$email])->then(function (QueryResult $result) use ($mysql, $title, $content, $slug, $date, $guid, $stockName) {
+            if (count($result->resultRows) === 0) {
+                echo "User not found with that email address.";
+                return;
+            }
+
+            $user_id = $result->resultRows[0]['ID'];
+
+            // 2. Insert proposal with dynamic values
+            $proposal_insert_query = "
+                INSERT INTO wp_posts (
+                    post_author,
+                    post_date,
+                    post_date_gmt,
+                    post_content,
+                    post_title,
+                    post_excerpt,
+                    post_status,
+                    comment_status,
+                    ping_status,
+                    post_password,
+                    post_name,
+                    to_ping,
+                    pinged,
+                    post_modified,
+                    post_modified_gmt,
+                    post_content_filtered,
+                    post_parent,
+                    guid,
+                    menu_order,
+                    post_type,
+                    post_mime_type,
+                    comment_count
+                )
+                VALUES (?, ?, ?, ?, ?, '', 'publish', 'closed', 'closed', '', ?, '', '', ?, ?, '', 0, ?, 0, 'proposal', '', 0);
+            ";
+
+            $params = [
+                $user_id,
+                $date,
+                $date,
+                $content,
+                $title,
+                $slug,
+                $date,
+                $date,
+                $guid
+            ];
+
+        return $mysql->query($proposal_insert_query, $params);
+            })->then(function (?QueryResult $result) use ($stockName) {
+                if ($result instanceof QueryResult) {
+                    $message = "Thank you for contributing to BYCIG! Your proposal for $stockName has been submitted.";
+                    header("Location: redirect.php?message=" . urlencode($message) . "&message_type=success");
+                    exit;
+                }
+            }, function (Exception $error) {
+                echo "Error: " . $error->getMessage();
+            });
+
         exit;
     }
 
@@ -93,12 +155,16 @@
 </head>
 <body>
     <form method="post" action="<?php echo $_SERVER["PHP_SELF"] ?>">
-        <label>First Name:</label>
-        <input type="text" name="first_name" required>
+        <label>Email:</label>
+        <input type="email" name="email" required>
         <br><br>
         
-        <label>Last Name:</label>
-        <input type="text" name="last_name" required>
+        <label>Proposal Title:</label>
+        <input type="text" name="title" required>
+        <br><br>
+        
+        <label>Proposal Content:</label>
+        <textarea name="content" required></textarea>
         <br><br>
         
         <label>Pick a stock:</label>
@@ -120,8 +186,8 @@
         
         <!-- Hidden field to send the final stock value -->
         <input type="hidden" id="finalStockName" name="stock_name">
-        
-        <button onclick="fetchNewStockBatch()">Fetch more stocks</button>
+
+        <button type="button" onclick="fetchNewStockBatch()">Fetch more stocks</button>
         <br><br>
 
         <label>Choose your Cluster Leader:</label>

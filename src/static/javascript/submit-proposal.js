@@ -3,6 +3,7 @@ let currentBatchNumber = 0;
 document.addEventListener("DOMContentLoaded", function () {
     fetchNewStockBatch();
     fetchClusterLeaders();
+    
 });
 
 function appendNewSelectChild(content, element) {
@@ -40,40 +41,44 @@ function setFinalStockValue() {
 }
 
 function fetchNewStockBatch() {
-    fetch(`stock_cache.php?current_batch_number=${currentBatchNumber}`, {
-          headers: {
-                'X-Requested-With': 'XMLHttpRequest'
-          }
+    const params = new URLSearchParams({
+        current_batch_number: currentBatchNumber
+    });
+
+    fetch(`stock_cache.php?${params.toString()}`, {
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        }
     })
-        .then(response => response.json())
-        .then(stockBatch => {
-            const dropdown = document.getElementById("stockSelect");
+    .then(response => response.json())
+    .then(stockBatch => {
+        const dropdown = document.getElementById("stockSelect");
 
-            if (currentBatchNumber === 0) {
-                dropdown.innerHTML = '<option value="">Select a stock...</option>';
-            }
+        if (currentBatchNumber === 0) {
+            dropdown.innerHTML = '<option value="">Select a stock...</option>';
+        }
 
-            if (stockBatch === "no_more_stocks") {
-                const noMoreOption = document.createElement("option");
-                noMoreOption.value = "no_more";
-                noMoreOption.textContent = "--- No more stocks available ---";
-                noMoreOption.disabled = true;
-                dropdown.appendChild(noMoreOption);
+        if (stockBatch === "no_more_stocks") {
+            const noMoreOption = document.createElement("option");
+            noMoreOption.value = "no_more";
+            noMoreOption.textContent = "--- No more stocks available ---";
+            noMoreOption.disabled = true;
+            dropdown.appendChild(noMoreOption);
 
-                const fetchButton = document.querySelector('button[onclick="fetchNewStockBatch()"]');
-                fetchButton.disabled = true;
-                fetchButton.textContent = 'All stocks loaded';
-            } else {
-                stockBatch.forEach(symbol => {
-                    appendNewSelectChild(symbol, dropdown)
-                });
+            const fetchButton = document.querySelector('button[onclick="fetchNewStockBatch()"]');
+            fetchButton.disabled = true;
+            fetchButton.textContent = 'All stocks loaded';
+        } else {
+            stockBatch.forEach(symbol => {
+                appendNewSelectChild(symbol, dropdown);
+            });
 
-                currentBatchNumber++;
-            }
-        })
-        .catch(error => {
-            alert("Error" + error)
-        });
+            currentBatchNumber++;
+        }
+    })
+    .catch(error => {
+        alert("Error: " + error);
+    });
 }
 
 function fetchClusterLeaders() {

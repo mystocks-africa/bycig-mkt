@@ -2,7 +2,6 @@
     if ($_SERVER["REQUEST_METHOD"] == "GET") {
         header('Content-Type: application/json');
 
-        // Get current batch number from cookie
         $current_batch_number = $_GET["current_batch_number"];
         $batches_count = apcu_fetch("count");
 
