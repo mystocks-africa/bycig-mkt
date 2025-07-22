@@ -5,7 +5,7 @@
         global $curl_handle;
         global $symbols;
 
-        $env = parse_ini_file('.env');
+        $env = parse_ini_file(filename: '.env');
         $finnhub_api_key = $env["FINNHUB_API_KEY"];
 
         curl_setopt_array($curl_handle, [

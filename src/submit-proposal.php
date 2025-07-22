@@ -4,16 +4,36 @@
 
     use React\EventLoop\Loop;
     use React\Http\Browser;
-
+    use React\MySQL\Factory;
+    
     $loop = Loop::get();
     $browser = new Browser($loop);
+    
+    $env = parse_ini_file('.env');
+    $mysql_uri = $env["MYSQL_URI"];
 
+    $factory =  new Factory();
+    $mysql = $factory->createLazyConnection($mysql_uri);
+    
+    // Test connection with a ping
+    $mysql->ping()->then(function () {
+        echo "Connected to MySQL!" . PHP_EOL;
+    }, function (Exception $error) {
+        echo "Error connecting: " . $error->getMessage() . PHP_EOL;
+    });
+    
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $firstName = filter_input(INPUT_POST, 'first_name', FILTER_SANITIZE_SPECIAL_CHARS);
         $lastName = filter_input(INPUT_POST, 'last_name', FILTER_SANITIZE_SPECIAL_CHARS);
         $stockName = filter_input(INPUT_POST, 'stock_name', FILTER_SANITIZE_SPECIAL_CHARS);
 
-        // Update session batch count
+        // Initialize session if not started
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        
+        // Initialize or increment batch number
+        $current_batch_number = isset($_SESSION["current_batch_number"]) ? $_SESSION["current_batch_number"] + 1 : 1;
         $_SESSION["current_batch_number"] = $current_batch_number;
 
         $loop->addTimer(1.5, function () {
@@ -26,6 +46,7 @@
         exit;
     }
 
+    $mysql->quit();
     $loop->stop();
 ?>
 
