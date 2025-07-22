@@ -1,30 +1,30 @@
 <?php
-error_reporting(E_ALL & ~E_DEPRECATED);
-require 'vendor/autoload.php';
+    error_reporting(E_ALL & ~E_DEPRECATED);
+    require 'vendor/autoload.php';
 
-use React\EventLoop\Loop;
-use React\Http\Browser;
+    use React\EventLoop\Loop;
+    use React\Http\Browser;
 
-$loop = Loop::get();
-$browser = new Browser($loop);
+    $loop = Loop::get();
+    $browser = new Browser($loop);
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $firstName = filter_input(INPUT_POST, 'first_name', FILTER_SANITIZE_SPECIAL_CHARS);
-    $lastName = filter_input(INPUT_POST, 'last_name', FILTER_SANITIZE_SPECIAL_CHARS);
-    $stockName = filter_input(INPUT_POST, 'stock_name', FILTER_SANITIZE_SPECIAL_CHARS);
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $firstName = filter_input(INPUT_POST, 'first_name', FILTER_SANITIZE_SPECIAL_CHARS);
+        $lastName = filter_input(INPUT_POST, 'last_name', FILTER_SANITIZE_SPECIAL_CHARS);
+        $stockName = filter_input(INPUT_POST, 'stock_name', FILTER_SANITIZE_SPECIAL_CHARS);
 
-    // Update session batch count
-    $_SESSION["current_batch_number"] = $current_batch_number;
+        // Update session batch count
+        $_SESSION["current_batch_number"] = $current_batch_number;
 
-    $loop->addTimer(1.5, function () {
-        echo "Timer done (temp)";
-    });
+        $loop->addTimer(1.5, function () {
+            echo "Timer done (temp)";
+        });
 
-    // Short and sweet message
-    $message = "Thank you for contributing to BYCIG!";
-    header("Location: redirect.php?message=" . urlencode($message) . "&message_type=success");
-    exit;
-}
+        // Short and sweet message
+        $message = "Thank you for contributing to BYCIG!";
+        header("Location: redirect.php?message=" . urlencode($message) . "&message_type=success");
+        exit;
+    }
 
 ?>
 
