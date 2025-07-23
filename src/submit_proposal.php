@@ -19,17 +19,47 @@
     
     $request_method = $_SERVER["REQUEST_METHOD"];
     
-    function client_expects_json(): bool {
+    function client_expects_json() {
         $accept = $_SERVER['HTTP_ACCEPT'] ?? '';
         return stripos($accept, 'application/json') !== false;
     }
 
-    function apcu_get_expiry($key) {
-        $info = apcu_cache_info();
-        $entry = array_filter($info['cache_list'], fn($e) => $e['info'] === $key);
-        if (!$entry) return null;
-        $entry = reset($entry);
-        return $entry['ttl'] > 0 ? $entry['creation_time'] + $entry['ttl'] : null;
+    function set_rate_limit_cache($attempts) {
+        $payload = apcu_fetch("rate_limit");
+
+        // Variables to set rate limit cache
+        $ttl = null;
+        $new_payload = null;
+
+        if ($payload === false) {
+            $ttl = 1000;
+            $expires_at = time() + $ttl;
+
+            $new_payload = json_encode([
+                'attempts' => 1,
+                'expires_at' => $expires_at,
+            ]);
+        } else {
+            $data = json_decode($payload, true);
+
+            $ttl = $data['expires_at'] - time();
+            $new_value = $data['attempts'] + 1;
+
+            if ($ttl <= 0) return false; // Already expired
+
+            $new_payload = json_encode([
+                'attempts' => $new_value,
+                'expires_at' => $data['expires_at'] // Do not update expires_at (should remain same)
+            ]);
+
+        }  
+        
+        apcu_store("rate_limit", $new_payload, $ttl);
+
+    }
+
+    function redirect_to_result($message, $type) {
+        header("Location: redirect.php?message=" . urlencode($message) . "&message_type=$type");
     }
 
     if ($request_method == "GET" && client_expects_json()) {
@@ -65,14 +95,10 @@
     else if ($request_method === 'POST') {
         $rate_limit = apcu_fetch("rate_limit");
 
-        if ($rate_limit == 10) {
-            $expiry_time = apcu_get_expiry("rate_limit");
-            echo "Cannot add proposal at this moment. Please try again after $expiry_time";
+        if ($rate_limit == 2) {
+            $message = "Cannot add proposal at this moment. Limit reached for posting proposals.";
+            redirect_to_result($message, "error");
             exit;
-        } 
-        
-        else if (empty($rate_limit)) {
-            apcu_store("rate_limit", 1) ;
         } 
         
         $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
@@ -86,7 +112,7 @@
             exit;
         }
 
-        // ** IN THE FUTURE SEND EMAIL TO USER TO VERIFY IT IS THEM **
+        // == IN THE FUTURE SEND EMAIL TO USER TO VERIFY IT IS THEM ==
         $slug = strtolower(str_replace(' ', '-', preg_replace('/[^A-Za-z0-9 ]/', '', $title)));
         $date = date('Y-m-d H:i:s');
         $guid = "https://member.bycig.org/proposal/$slug/";
@@ -149,7 +175,7 @@
             })->then(function (?QueryResult $result) use ($stockName) {
                 if ($result instanceof QueryResult) {
                     $message = "Thank you for contributing to BYCIG! Your proposal for $stockName has been submitted.";
-                    header("Location: redirect.php?message=" . urlencode($message) . "&message_type=success");
+                    redirect_to_result($message, "success");
                     exit;
                 }
             }, function (Exception $error) {
@@ -174,6 +200,7 @@
     <script src="static/javascript/submit-proposal.js"></script>
 </head>
 <body>
+    <?= apcu_fetch("rate_limit") ?>
     <form method="post" action="<?php echo $_SERVER["PHP_SELF"] ?>">
         <label>Email:</label>
         <input type="email" name="email" required>
