@@ -1,15 +1,12 @@
 <?php    
 require 'vendor/autoload.php';
 
+include 'database.php';
+
 use React\EventLoop\Loop;
-use React\MySQL\Factory;
 use React\MySQL\QueryResult;
 
-// Setup
 $loop = Loop::get();
-$factory = new Factory();
-$env = parse_ini_file('.env');
-$mysql = $factory->createLazyConnection($env["MYSQL_URI"]);
 
 $request_method = $_SERVER["REQUEST_METHOD"];
 
@@ -31,17 +28,18 @@ if ($request_method === "GET") {
             }, $result->resultRows);
 
             echo json_encode($leaders);
+
+            $loop->stop(); 
             exit;
         },
         function (Exception $e) use ($loop) {
             header('Content-Type: application/json');
             http_response_code(500);
             echo json_encode(["error" => $e->getMessage()]);
-            $loop->stop();
+            $loop->stop(); 
             exit;
         }
     );
 
-    // 🌀 Start async processing
-    $loop->stop();
+    $loop->run(); 
 }

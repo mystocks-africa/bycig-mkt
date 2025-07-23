@@ -1,21 +1,16 @@
 <?php
-    // PHP API 
     require 'vendor/autoload.php';
+
+    include 'database.php';
 
     error_reporting(E_ALL & ~E_DEPRECATED);
 
     use React\EventLoop\Loop;
-    use React\MySQL\Factory;
     use React\MySQL\QueryResult;
     // Deferred class is used to create a Promise function 
     use React\Promise\Deferred;
 
     $loop = Loop::get();
-
-    $factory =  new Factory();
-    $env = parse_ini_file('.env');
-    $mysql_uri = $env["MYSQL_URI"];
-    $mysql = $factory->createLazyConnection($mysql_uri);
     
     $request_method = $_SERVER["REQUEST_METHOD"];
 
