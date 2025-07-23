@@ -8,6 +8,8 @@
     use React\Http\Browser;
     use React\MySQL\Factory;
     use React\MySQL\QueryResult;
+    // Deferred class is used to create a Promise function 
+    use React\Promise\Deferred;
 
     $loop = Loop::get();
     $browser = new Browser($loop);
@@ -71,6 +73,105 @@
         header("Location: redirect.php?message=" . urlencode($message) . "&message_type=$type");
     }
 
+    function insert_proposal($title, $content, $slug, $date, $guid, $email, $stockName) {
+        global $mysql;
+
+        $deferred = new Deferred();
+
+        $user_query = "
+            SELECT ID 
+            FROM wp_users 
+            WHERE user_email = ?
+        ";
+
+        $mysql->query($user_query, [$email])
+            ->then(function (QueryResult $result) use ($mysql, $title, $content, $slug, $date, $guid, $stockName, $deferred) {
+                if (count($result->resultRows) === 0) {
+                    $deferred->reject(new Exception("User not found with that email address."));
+                    return;
+                }
+
+                $user_id = $result->resultRows[0]['ID'];
+
+                $proposal_insert_query = "
+                    INSERT INTO wp_2_posts (
+                        post_author,
+                        post_date,
+                        post_date_gmt,
+                        post_content,
+                        post_title,
+                        post_excerpt,
+                        post_status,
+                        comment_status,
+                        ping_status,
+                        post_password,
+                        post_name,
+                        to_ping,
+                        pinged,
+                        post_modified,
+                        post_modified_gmt,
+                        post_content_filtered,
+                        post_parent,
+                        guid,
+                        menu_order,
+                        post_type,
+                        post_mime_type,
+                        comment_count
+                    )
+                    VALUES (
+                        ?, ?, ?, ?, ?, '', 'publish', 'closed', 'closed', '', ?, '', '', ?, ?, '', 0, ?, 0, 'proposal', '', 0
+                    );
+                ";
+
+                $params = [
+                    $user_id,
+                    $date,
+                    $date,
+                    $content,
+                    $title,
+                    $slug,
+                    $date,
+                    $date,
+                    $guid
+                ];
+
+                $mysql->query($proposal_insert_query, $params)
+                    ->then(function (QueryResult $insert_result) use ($stockName, $deferred) {
+                        $deferred->resolve($insert_result);
+                    })
+                    ->otherwise(function (Exception $error) use ($deferred) {
+                        $deferred->reject($error);
+                    });
+            })
+            ->otherwise(function (Exception $error) use ($deferred) {
+                $deferred->reject($error);
+            });
+
+        return $deferred->promise();
+    }
+
+    function insert_proposal_meta($post_id, $leader) {
+        global $mysql;
+
+        $proposal_meta_insery_query = "
+            INSERT INTO wp_2_postmeta (
+                post_id,
+                meta_key,
+                meta_value
+            )
+            VALUES (
+                ?, 'proposal_cluster_leader', ?
+            );
+        ";
+
+        $params = [
+            $post_id,
+            $leader
+        ];
+
+        $mysql->query($proposal_meta_insery_query, $params);
+    }
+
     if ($request_method == "GET" && client_expects_json()) {
         header('Content-Type: application/json');
 
@@ -126,71 +227,20 @@
         $date = date('Y-m-d H:i:s');
         $guid = "https://member.bycig.org/proposal/$slug/";
 
-        // 1. Get user ID by email
-        $user_query = "SELECT ID FROM wp_users WHERE user_email = ?";
+        insert_proposal($title, $content, $slug, $date, $guid, $email, $stockName)
+            ->then(function ($insert_result) {
+                global $leader;
 
-        $mysql->query($user_query, [$email])->then(function (QueryResult $result) use ($mysql, $title, $content, $slug, $date, $guid, $stockName) {
-            if (count($result->resultRows) === 0) {
-                echo "User not found with that email address.";
-                return;
-            }
+                insert_proposal_meta($insert_result["id"], $leader);
 
-            $user_id = $result->resultRows[0]['ID'];
+                $success_message = "Thank you for contributing to the BYCIG platform!";
+                redirect_to_result($success_message, "success");
+                exit;
+            })
+            ->otherwise(function (Exception $e) {
+                echo "Error: " . $e->getMessage();
+        });
 
-            // Most of these fields do not need values, just need to be acknowledged 
-            $proposal_insert_query = "
-                INSERT INTO wp_2_posts (
-                    post_author,
-                    post_date,
-                    post_date_gmt,
-                    post_content,
-                    post_title,
-                    post_excerpt,
-                    post_status,
-                    comment_status,
-                    ping_status,
-                    post_password,
-                    post_name,
-                    to_ping,
-                    pinged,
-                    post_modified,
-                    post_modified_gmt,
-                    post_content_filtered,
-                    post_parent,
-                    guid,
-                    menu_order,
-                    post_type,
-                    post_mime_type,
-                    comment_count
-                )
-                VALUES (
-                    ?, ?, ?, ?, ?, '', 'publish', 'closed', 'closed', '', ?, '', '', ?, ?, '', 0, ?, 0, 'proposal', '', 0
-                );
-            ";
-
-            $params = [
-                $user_id,
-                $date,
-                $date,
-                $content,
-                $title,
-                $slug,
-                $date,
-                $date,
-                $guid
-            ];
-
-        return $mysql->query($proposal_insert_query, $params);
-            })->then(function (?QueryResult $result) use ($stockName) {
-                if ($result instanceof QueryResult) {
-                    $message = "Thank you for contributing to BYCIG! Your proposal for $stockName has been submitted.";
-                    redirect_to_result($message, "success");
-                    exit;
-                }
-            }, function (Exception $error) {
-                echo "Error: " . $error->getMessage();
-            });
-        
         set_rate_limit_cache();
         exit;
     }
