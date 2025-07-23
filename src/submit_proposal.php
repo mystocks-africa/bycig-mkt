@@ -1,7 +1,7 @@
 <?php
     // PHP API 
-    
     error_reporting(E_ALL & ~E_DEPRECATED);
+
     require 'vendor/autoload.php';
 
     use React\EventLoop\Loop;
