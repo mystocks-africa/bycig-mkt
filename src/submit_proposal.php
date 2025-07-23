@@ -72,7 +72,7 @@
         } 
         
         else if (empty($rate_limit)) {
-            apcu_add("rate_limit", 1) 
+            apcu_add("rate_limit", 1) ;
         } 
         
         $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
@@ -155,7 +155,10 @@
             }, function (Exception $error) {
                 echo "Error: " . $error->getMessage();
             });
-
+        
+        $new_rate_limit = $rate_limit + 1;
+        apcu_store("rate_limit", $new_rate_limit);
+        
         exit;
     }
 
