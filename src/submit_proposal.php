@@ -18,13 +18,15 @@
     $mysql = $factory->createLazyConnection($mysql_uri);
     
     $request_method = $_SERVER["REQUEST_METHOD"];
-    
+
+    // This is to ensure that requests are not made when the file isn't loaded
     function client_expects_json() {
+        // Must add this header to ajax request
         $accept = $_SERVER['HTTP_ACCEPT'] ?? '';
         return stripos($accept, 'application/json') !== false;
     }
 
-    function set_rate_limit_cache($attempts) {
+    function set_rate_limit_cache() {
         $payload = apcu_fetch("rate_limit");
 
         // Variables to set rate limit cache
@@ -32,7 +34,7 @@
         $new_payload = null;
 
         if ($payload === false) {
-            $ttl = 1000;
+            $ttl = 120; // 2 minutes (60 seconds * 2)
             $expires_at = time() + $ttl;
 
             $new_payload = json_encode([
@@ -56,6 +58,13 @@
         
         apcu_store("rate_limit", $new_payload, $ttl);
 
+    }
+
+    function get_rate_limit_cache() {
+        $rate_limit = apcu_fetch("rate_limit");
+        $payload = json_decode($rate_limit, true);
+
+        return $payload;
     }
 
     function redirect_to_result($message, $type) {
@@ -93,9 +102,9 @@
     }
 
     else if ($request_method === 'POST') {
-        $rate_limit = apcu_fetch("rate_limit");
+        $rate_limit_cache = get_rate_limit_cache();
 
-        if ($rate_limit == 2) {
+        if ($rate_limit_cache["attempts"] >= 2) {
             $message = "Cannot add proposal at this moment. Limit reached for posting proposals.";
             redirect_to_result($message, "error");
             exit;
@@ -182,9 +191,7 @@
                 echo "Error: " . $error->getMessage();
             });
         
-        $new_rate_limit = $rate_limit + 1;
-        apcu_store("rate_limit", $new_rate_limit);
-        
+        set_rate_limit_cache();
         exit;
     }
 
