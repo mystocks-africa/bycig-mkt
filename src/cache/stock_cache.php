@@ -1,14 +1,8 @@
 <?php
     $request_method = $_SERVER["REQUEST_METHOD"];
 
-    if ($request_method == "GET") {
+    if ($request_method == "GET" && isset($_GET["current_batch_number"])) {
         header('Content-Type: application/json');
-
-        if (!isset($_GET["current_batch_number"])) {
-            echo json_encode(["error" => "current_batch_number is not provider"]);
-            exit;
-        }
-
         $current_batch_number = $_GET["current_batch_number"];
         $batches_count = apcu_fetch("count");
 
@@ -18,6 +12,12 @@
             $batch = json_decode(apcu_fetch("symbols_" . $current_batch_number), true);            
             echo json_encode($batch);
         }
+        exit;
+    }
+
+    else if ($request_method == "GET" && !isset($_GET["current_batch_number"])) {
+        echo json_encode(["error"=> "current_batch_number query parameter is required"]);
+        exit;
     }
 
     else if ($request_method == "POST") {
@@ -27,5 +27,5 @@
 
         apcu_store($key, $value);
         echo "Cache key-value pair is added.";
-
+        exit;
 } 
