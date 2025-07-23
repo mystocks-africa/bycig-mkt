@@ -89,7 +89,7 @@
 
             // 2. Insert proposal with dynamic values
             $proposal_insert_query = "
-                INSERT INTO wp_posts (
+                INSERT INTO wp_2_posts (
                     post_author,
                     post_date,
                     post_date_gmt,
