@@ -5,14 +5,12 @@
     error_reporting(E_ALL & ~E_DEPRECATED);
 
     use React\EventLoop\Loop;
-    use React\Http\Browser;
     use React\MySQL\Factory;
     use React\MySQL\QueryResult;
     // Deferred class is used to create a Promise function 
     use React\Promise\Deferred;
 
     $loop = Loop::get();
-    $browser = new Browser($loop);
 
     $factory =  new Factory();
     $env = parse_ini_file('.env');
