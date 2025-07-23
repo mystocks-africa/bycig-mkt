@@ -1,8 +1,8 @@
 <?php
     // PHP API 
-    error_reporting(E_ALL & ~E_DEPRECATED);
-
     require 'vendor/autoload.php';
+    
+    error_reporting(E_ALL & ~E_DEPRECATED);
 
     use React\EventLoop\Loop;
     use React\Http\Browser;
@@ -28,41 +28,36 @@
         return stripos($accept, 'application/json') !== false;
     }
 
-    function set_rate_limit_cache() {
-        $payload = apcu_fetch("rate_limit");
+    function set_rate_limit() {
+        $ttl = 120; // 2 minutes (60 seconds * 2)
+        $expires_at = time() + $ttl;
 
-        // Variables to set rate limit cache
-        $ttl = null;
-        $new_payload = null;
+        $new_payload = json_encode([
+            'attempts' => 1,
+            'expires_at' => $expires_at,
+        ]);
 
-        if ($payload === false) {
-            $ttl = 120; // 2 minutes (60 seconds * 2)
-            $expires_at = time() + $ttl;
-
-            $new_payload = json_encode([
-                'attempts' => 1,
-                'expires_at' => $expires_at,
-            ]);
-        } else {
-            $data = json_decode($payload, true);
-
-            $ttl = $data['expires_at'] - time();
-            $new_value = $data['attempts'] + 1;
-
-            if ($ttl <= 0) return false; // Already expired
-
-            $new_payload = json_encode([
-                'attempts' => $new_value,
-                'expires_at' => $data['expires_at'] // Do not update expires_at (should remain same)
-            ]);
-
-        }  
-        
         apcu_store("rate_limit", $new_payload, $ttl);
-
     }
 
-    function get_rate_limit_cache() {
+    function update_rate_limit($payload) {
+        $remaining_ttl = null;
+        $new_encoded_payload = null;
+        
+        $ttl = $payload['expires_at'] - time();
+        $new_value = $payload['attempts'] + 1;
+
+        if ($ttl <= 0) return false; // Already expired
+
+        $new_encoded_payload = json_encode([
+            'attempts' => $new_value,
+            'expires_at' => $payload['expires_at'] // Do not update expires_at (should remain same)
+        ]);
+
+        apcu_store("rate_limit", $new_encoded_payload, $remaining_ttl);
+    }  
+        
+    function get_rate_limit() {
         $rate_limit = apcu_fetch("rate_limit");
         $payload = json_decode($rate_limit, true);
 
@@ -153,23 +148,28 @@
     function insert_proposal_meta($post_id, $leader) {
         global $mysql;
 
-        $proposal_meta_insery_query = "
+        $deferred = new Deferred();
+
+        $query = "
             INSERT INTO wp_2_postmeta (
                 post_id,
                 meta_key,
                 meta_value
             )
-            VALUES (
-                ?, 'proposal_cluster_leader', ?
-            );
+            VALUES (?, 'proposal_cluster_leader', ?)
         ";
 
-        $params = [
-            $post_id,
-            $leader
-        ];
+        $params = [$post_id, $leader];
 
-        $mysql->query($proposal_meta_insery_query, $params);
+        $mysql->query($query, $params)
+            ->then(function (QueryResult $result) use ($deferred) {
+                $deferred->resolve($result);
+            })
+            ->otherwise(function (Exception $error) use ($deferred) {
+                $deferred->reject($error);
+            });
+
+        return $deferred->promise();
     }
 
     if ($request_method == "GET" && client_expects_json()) {
@@ -203,13 +203,18 @@
     }
 
     else if ($request_method === 'POST') {
-        $rate_limit_cache = get_rate_limit_cache();
+        $rate_limit_payload = get_rate_limit();
 
-        if ($rate_limit_cache["attempts"] >= 2) {
+        if ($rate_limit_payload == false) {
+            set_rate_limit();
+            $rate_limit_payload = get_rate_limit();
+        } 
+
+        if ($rate_limit_payload["attempts"] >= 2) {
             $message = "Cannot add proposal at this moment. Limit reached for posting proposals.";
             redirect_to_result($message, "error");
-            exit;
-        } 
+            exit;        
+        }
         
         $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
         $stockName = filter_input(INPUT_POST, 'stock_name', FILTER_SANITIZE_SPECIAL_CHARS);
@@ -228,20 +233,19 @@
         $guid = "https://member.bycig.org/proposal/$slug/";
 
         insert_proposal($title, $content, $slug, $date, $guid, $email, $stockName)
-            ->then(function ($insert_result) {
-                global $leader;
+            ->then(function ($insert_result) use ($leader) {
+                insert_proposal_meta($insert_result->insertId, $leader);
 
-                insert_proposal_meta($insert_result["id"], $leader);
-
-                $success_message = "Thank you for contributing to the BYCIG platform!";
-                redirect_to_result($success_message, "success");
-                exit;
+                $message = "Thank you for contributing to BYCIG's platform!";
+                redirect_to_result($message, "success");
             })
-            ->otherwise(function (Exception $e) {
-                echo "Error: " . $e->getMessage();
+            ->otherwise(function (Exception $error) {
+                $message = "There has been an error in submitting proposal " . $error->getMessage();
+                redirect_to_result($message, "error");
+                exit;
         });
 
-        set_rate_limit_cache();
+        update_rate_limit($rate_limit_payload);
         exit;
     }
 
@@ -302,6 +306,5 @@
         
         <button type="submit" onclick="setFinalStockValue()">Submit</button>
     </form>
-
 </body>
 </html>
