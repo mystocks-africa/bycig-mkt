@@ -35,6 +35,7 @@
     if ($request_method == "GET" && client_expects_json()) {
         header('Content-Type: application/json');
 
+        // user_login is the formatted name of a user
         $cluster_leader_query = "
             SELECT user_login 
             FROM `wp_usermeta` 
@@ -80,7 +81,6 @@
         $content = filter_input(INPUT_POST, 'content', FILTER_SANITIZE_SPECIAL_CHARS);
         $leader = filter_input(INPUT_POST, 'leader_select', FILTER_SANITIZE_SPECIAL_CHARS);
 
-        // Validate required fields
         if (!$email || !$stockName || !$title || !$content) {
             echo "All fields are required.";
             exit;
@@ -102,7 +102,7 @@
 
             $user_id = $result->resultRows[0]['ID'];
 
-            // 2. Insert proposal with dynamic values
+            // Most of these fields do not need values, just need to be acknowledged 
             $proposal_insert_query = "
                 INSERT INTO wp_2_posts (
                     post_author,
