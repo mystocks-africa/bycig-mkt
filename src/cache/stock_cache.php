@@ -4,7 +4,7 @@
     if ($request_method == "GET") {
         header('Content-Type: application/json');
 
-        if (empty($_GET["current_batch_number"])) {
+        if (!isset($_GET["current_batch_number"])) {
             echo json_encode(["error" => "current_batch_number is not provider"]);
             exit;
         }
@@ -28,4 +28,4 @@
         apcu_store($key, $value);
         echo "Cache key-value pair is added.";
 
-    } 
+} 
