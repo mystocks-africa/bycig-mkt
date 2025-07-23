@@ -88,11 +88,7 @@ function fetchNewStockBatch() {
 }
 
 function fetchClusterLeaders() {
-    fetch("submit_proposal.php", {
-    headers: {
-        'Accept': 'application/json'
-    }
-    })
+    fetch("cluster_leader.php")
     .then(response => response.json())
     .then(clusterLeader => {
         const dropdown = document.getElementById("leaderSelect")
@@ -104,5 +100,4 @@ function fetchClusterLeaders() {
     .catch(error => {
         alert("Error" + error)
     });
-
 }

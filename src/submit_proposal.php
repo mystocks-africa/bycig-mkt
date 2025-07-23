@@ -1,7 +1,7 @@
 <?php
     // PHP API 
     require 'vendor/autoload.php';
-    
+
     error_reporting(E_ALL & ~E_DEPRECATED);
 
     use React\EventLoop\Loop;
@@ -21,29 +21,19 @@
     
     $request_method = $_SERVER["REQUEST_METHOD"];
 
-    // This is to ensure that requests are not made when the file isn't loaded
-    function client_expects_json() {
-        // Must add this header to ajax request
-        $accept = $_SERVER['HTTP_ACCEPT'] ?? '';
-        return stripos($accept, 'application/json') !== false;
-    }
-
     function set_rate_limit() {
         $ttl = 120; // 2 minutes (60 seconds * 2)
         $expires_at = time() + $ttl;
 
         $new_payload = json_encode([
-            'attempts' => 1,
+            'attempts' => 0,
             'expires_at' => $expires_at,
         ]);
 
         apcu_store("rate_limit", $new_payload, $ttl);
     }
 
-    function update_rate_limit($payload) {
-        $remaining_ttl = null;
-        $new_encoded_payload = null;
-        
+    function update_rate_limit($payload) {        
         $ttl = $payload['expires_at'] - time();
         $new_value = $payload['attempts'] + 1;
 
@@ -54,13 +44,14 @@
             'expires_at' => $payload['expires_at'] // Do not update expires_at (should remain same)
         ]);
 
-        apcu_store("rate_limit", $new_encoded_payload, $remaining_ttl);
+        apcu_store("rate_limit", $new_encoded_payload, $ttl);
     }  
         
     function get_rate_limit() {
         $rate_limit = apcu_fetch("rate_limit");
-        $payload = json_decode($rate_limit, true);
+        if ($rate_limit === false) return false;
 
+        $payload = json_decode($rate_limit, true);
         return $payload;
     }
 
@@ -162,47 +153,21 @@
         $params = [$post_id, $leader];
 
         $mysql->query($query, $params)
-            ->then(function (QueryResult $result) use ($deferred) {
+            ->then(function (QueryResult $result) {
+                global $deferred;
+
                 $deferred->resolve($result);
             })
-            ->otherwise(function (Exception $error) use ($deferred) {
+            ->otherwise(function (Exception $error) {
+                global $deferred;
+
                 $deferred->reject($error);
             });
 
         return $deferred->promise();
     }
 
-    if ($request_method == "GET" && client_expects_json()) {
-        header('Content-Type: application/json');
-
-        // user_login is the formatted name of a user
-        $cluster_leader_query = "
-            SELECT user_login 
-            FROM `wp_usermeta` 
-            INNER JOIN `wp_users` ON `wp_usermeta`.`user_id` = `wp_users`.`ID` 
-            WHERE `meta_key` = 'wp_capabilities' 
-            AND `meta_value` = 'a:1:{s:14:\"cluster-leader\";b:1;}';
-        ";
-
-        $cluster_leaders = [];
-
-        $mysql->query($cluster_leader_query)->then(function (QueryResult $command) {
-            global $cluster_leaders;
-
-            foreach ($command->resultRows as $row) {
-                $one_cluster_leader = $row["user_login"];
-                array_push($cluster_leaders, $one_cluster_leader);
-            }
-
-            echo json_encode($cluster_leaders);
-        }, function (Exception $error) {
-            echo "Error: {$error->getMessage()}" . PHP_EOL;
-        });
-
-        exit;
-    }
-
-    else if ($request_method === 'POST') {
+    if ($request_method === 'POST') {
         $rate_limit_payload = get_rate_limit();
 
         if ($rate_limit_payload == false) {
@@ -210,7 +175,7 @@
             $rate_limit_payload = get_rate_limit();
         } 
 
-        if ($rate_limit_payload["attempts"] >= 2) {
+        if ($rate_limit_payload["attempts"] == 2) {
             $message = "Cannot add proposal at this moment. Limit reached for posting proposals.";
             redirect_to_result($message, "error");
             exit;        
@@ -243,7 +208,7 @@
                 $message = "There has been an error in submitting proposal " . $error->getMessage();
                 redirect_to_result($message, "error");
                 exit;
-        });
+            });
 
         update_rate_limit($rate_limit_payload);
         exit;
