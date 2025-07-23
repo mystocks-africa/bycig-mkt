@@ -15,17 +15,23 @@ function appendNewSelectChild(content, element) {
 
 function toggleStockInput() {
     const useSelect = document.getElementById('useSelect').checked;
+    
     const stockSelect = document.getElementById('stockSelect');
     const customStock = document.getElementById('customStock');
+    const fetchNewStockBtn = document.getElementById('fetchNewStockBtn');
 
     if (useSelect) {
         stockSelect.disabled = false;
-        customStock.disabled = true;
+        fetchNewStockBtn.disabled = false;
+        customStock.disabled = true;     
+
         customStock.value = '';
     } else {
         stockSelect.disabled = true;
-        stockSelect.selectedIndex = 0;
         customStock.disabled = false;
+        fetchNewStockBtn.disabled = true;
+        
+        stockSelect.selectedIndex = 0;
     }
 }
 

@@ -207,7 +207,7 @@
         <!-- Hidden field to send the final stock value -->
         <input type="hidden" id="finalStockName" name="stock_name">
 
-        <button type="button" onclick="fetchNewStockBatch()">Fetch more stocks</button>
+        <button id="fetchNewStockBtn" type="button" onclick="fetchNewStockBatch()">Fetch more stocks</button>
         <br><br>
 
         <label>Choose your Cluster Leader:</label>
