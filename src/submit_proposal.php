@@ -24,6 +24,14 @@
         return stripos($accept, 'application/json') !== false;
     }
 
+    function apcu_get_expiry($key) {
+        $info = apcu_cache_info();
+        $entry = array_filter($info['cache_list'], fn($e) => $e['info'] === $key);
+        if (!$entry) return null;
+        $entry = reset($entry);
+        return $entry['ttl'] > 0 ? $entry['creation_time'] + $entry['ttl'] : null;
+    }
+
     if ($request_method == "GET" && client_expects_json()) {
         header('Content-Type: application/json');
 
@@ -54,11 +62,18 @@
     }
 
     else if ($request_method === 'POST') {
-        // Initialize session if not started
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
+        $rate_limit = apcu_fetch("rate_limit");
 
+        if ($rate_limit == 10) {
+            $expiry_time = apcu_get_expiry("rate_limit");
+            echo "Cannot add proposal at this moment. Please try again after $expiry_time";
+            exit;
+        } 
+        
+        else if (empty($rate_limit)) {
+            apcu_add("rate_limit", 1) 
+        } 
+        
         $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
         $stockName = filter_input(INPUT_POST, 'stock_name', FILTER_SANITIZE_SPECIAL_CHARS);
         $title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_SPECIAL_CHARS);
