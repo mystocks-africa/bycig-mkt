@@ -38,7 +38,7 @@
 
         // a CLI script (CRON), so we need to request a server (can't directly access APCu)
         curl_setopt_array($curl_handle, [
-            CURLOPT_URL => "http://localhost:3000/src/stock_cache.php",
+            CURLOPT_URL => "http://localhost:3000/src/cache/stock_cache.php",
             CURLOPT_POSTFIELDS => $post,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_TIMEOUT => 10

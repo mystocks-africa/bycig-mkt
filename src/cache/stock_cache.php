@@ -1,5 +1,7 @@
-<?php 
-    if ($_SERVER["REQUEST_METHOD"] == "GET") {
+<?php
+    $request_method = $_SERVER["REQUEST_METHOD"];
+
+    if ($request_method == "GET") {
         header('Content-Type: application/json');
 
         if (empty($_GET["current_batch_number"])) {
@@ -18,7 +20,7 @@
         }
     }
 
-    else if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    else if ($request_method == "POST") {
         $key = $_POST["key"];
         $value = $_POST['value'] ?? [];
         var_dump(value: $value);
@@ -27,4 +29,3 @@
         echo "Cache key-value pair is added.";
 
     } 
-?>

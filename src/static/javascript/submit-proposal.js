@@ -51,7 +51,7 @@ function fetchNewStockBatch() {
         current_batch_number: currentBatchNumber
     });
 
-    fetch(`stock_cache.php?${params.toString()}`, {
+    fetch(`cache/stock_cache.php?${params.toString()}`, {
         headers: {
             'X-Requested-With': 'XMLHttpRequest'
         }
