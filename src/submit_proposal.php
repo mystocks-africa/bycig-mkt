@@ -128,7 +128,9 @@
                     post_mime_type,
                     comment_count
                 )
-                VALUES (?, ?, ?, ?, ?, '', 'publish', 'closed', 'closed', '', ?, '', '', ?, ?, '', 0, ?, 0, 'proposal', '', 0);
+                VALUES (
+                    ?, ?, ?, ?, ?, '', 'publish', 'closed', 'closed', '', ?, '', '', ?, ?, '', 0, ?, 0, 'proposal', '', 0
+                );
             ";
 
             $params = [
