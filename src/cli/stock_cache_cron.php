@@ -66,4 +66,3 @@
 
     add_cache("count", $batches_count);
     echo $batches_count;
-?>
