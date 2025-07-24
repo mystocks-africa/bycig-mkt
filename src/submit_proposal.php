@@ -1,12 +1,9 @@
 <?php
 include 'database.php'; 
 
-error_reporting(E_ALL & ~E_DEPRECATED);
-
 $ip = filter_var($_SERVER["REMOTE_ADDR"], FILTER_VALIDATE_IP);
 $request_method = $_SERVER["REQUEST_METHOD"];
 
-// RATE LIMIT FUNCTIONS
 function set_rate_limit() {
     global $ip;
     $ttl = 120; // 2 minutes
@@ -164,7 +161,6 @@ if ($request_method === 'POST') {
     redirect_to_result("Thank you for contributing to BYCIG's platform!", "success");
 }
 
-// Close DB connection at the end
 $mysqli->close();
 ?>
 
