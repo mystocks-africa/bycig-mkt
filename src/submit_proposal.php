@@ -15,7 +15,7 @@
     $request_method = $_SERVER["REQUEST_METHOD"];
 
     $ip = filter_var($_SERVER["REMOTE_ADDR"], FILTER_VALIDATE_IP);
-    
+
     function set_rate_limit() {
         global $ip;
 
@@ -48,7 +48,7 @@
         
     function get_rate_limit() {
         $rate_limit = apcu_fetch("rate_limit");
-        if ($rate_limit === false) return false;
+        if ($rate_limit == false) return false;
 
         $payload = json_decode($rate_limit, true);
         return $payload;
