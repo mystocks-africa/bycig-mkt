@@ -1,5 +1,6 @@
 let currentBatchNumber = 0;
 
+// Runs as soon as the HTML page loads
 document.addEventListener("DOMContentLoaded", function () {
     fetchNewStockBatch();
     fetchClusterLeaders();
