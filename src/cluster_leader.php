@@ -1,5 +1,4 @@
 <?php    
-require 'vendor/autoload.php';
 include 'database.php'; 
 
 $request_method = $_SERVER["REQUEST_METHOD"];
