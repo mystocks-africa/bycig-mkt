@@ -15,6 +15,7 @@
     $request_method = $_SERVER["REQUEST_METHOD"];
 
     $ip = filter_var($_SERVER["REMOTE_ADDR"], FILTER_VALIDATE_IP);
+    
     function set_rate_limit() {
         global $ip;
 
