@@ -5,7 +5,7 @@ $request_method = $_SERVER["REQUEST_METHOD"];
 
 if ($request_method === "GET") {
     $query = "
-        SELECT user_login 
+        SELECT ID, user_login 
         FROM `wp_usermeta` 
         INNER JOIN `wp_users` ON `wp_usermeta`.`user_id` = `wp_users`.`ID` 
         WHERE `meta_key` = 'wp_capabilities' 
@@ -17,7 +17,10 @@ if ($request_method === "GET") {
     if ($result = $mysqli->query($query)) {
         $leaders = [];
         while ($row = $result->fetch_assoc()) {
-            $leaders[] = $row['user_login'];
+            array_push($leaders, [
+                'user_login' => $row['user_login'],
+                'id' => $row['ID']
+            ]);        
         }
         echo json_encode($leaders);
         $result->free();

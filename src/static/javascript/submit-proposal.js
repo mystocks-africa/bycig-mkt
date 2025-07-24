@@ -6,9 +6,9 @@ document.addEventListener("DOMContentLoaded", function () {
     
 });
 
-function appendNewSelectChild(content, element) {
+function appendNewSelectChild(content, value, element) {
     const option = document.createElement("option");
-    option.value = content;
+    option.value = value;
     option.textContent = content;
     element.appendChild(option)
 }
@@ -32,17 +32,6 @@ function toggleStockInput() {
         fetchNewStockBtn.disabled = true;
         
         stockSelect.selectedIndex = 0;
-    }
-}
-
-function setFinalStockValue() {
-    const useSelect = document.getElementById('useSelect').checked;
-    const finalStockName = document.getElementById('finalStockName');
-
-    if (useSelect) {
-        finalStockName.value = document.getElementById('stockSelect').value;
-    } else {
-        finalStockName.value = document.getElementById('customStock').value;
     }
 }
 
@@ -76,7 +65,7 @@ function fetchNewStockBatch() {
             fetchButton.textContent = 'All stocks loaded';
         } else {
             stockBatch.forEach(symbol => {
-                appendNewSelectChild(symbol, dropdown);
+                appendNewSelectChild(symbol, symbol, dropdown);
             });
 
             currentBatchNumber++;
@@ -94,7 +83,7 @@ function fetchClusterLeaders() {
         const dropdown = document.getElementById("leaderSelect")
 
         clusterLeader.forEach(leader => {
-            appendNewSelectChild(leader, dropdown)
+            appendNewSelectChild(leader.user_login, leader.id, dropdown)
         });
     })
     .catch(error => {
