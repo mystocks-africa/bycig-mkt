@@ -14,7 +14,27 @@
     
     $request_method = $_SERVER["REQUEST_METHOD"];
 
+    $ip = '';
+
+    if (isset($_SERVER['HTTP_CLIENT_IP']) && $_SERVER['HTTP_CLIENT_IP'] != '127.0.0.1') {
+        $ip = $_SERVER['HTTP_CLIENT_IP'];
+    } elseif (isset($_SERVER['HTTP_X_FORWARDED_FOR']) && $_SERVER['HTTP_X_FORWARDED_FOR'] != '127.0.0.1') {
+        $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+    } elseif (isset($_SERVER['HTTP_X_FORWARDED']) && $_SERVER['HTTP_X_FORWARDED'] != '127.0.0.1') {
+        $ip = $_SERVER['HTTP_X_FORWARDED'];
+    } elseif (isset($_SERVER['HTTP_FORWARDED_FOR']) && $_SERVER['HTTP_FORWARDED_FOR'] != '127.0.0.1') {
+        $ip = $_SERVER['HTTP_FORWARDED_FOR'];
+    } elseif (isset($_SERVER['HTTP_FORWARDED']) && $_SERVER['HTTP_FORWARDED'] != '127.0.0.1') {
+        $ip = $_SERVER['HTTP_FORWARDED'];
+    } elseif (isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] != '127.0.0.1') {
+        $ip = $_SERVER['REMOTE_ADDR'];
+    } else {
+        $ip = 'UNKNOWN';
+    }
+
     function set_rate_limit() {
+        global $ip;
+
         $ttl = 120; // 2 minutes (60 seconds * 2)
         $expires_at = time() + $ttl;
 
@@ -23,10 +43,12 @@
             'expires_at' => $expires_at,
         ]);
 
-        apcu_store("rate_limit", $new_payload, $ttl);
+        apcu_store("$ip:rate_limit", $new_payload, $ttl);
     }
 
-    function update_rate_limit($payload) {        
+    function update_rate_limit($payload) {      
+        global $ip;
+
         $ttl = $payload['expires_at'] - time();
         $new_value = $payload['attempts'] + 1;
 
@@ -37,7 +59,7 @@
             'expires_at' => $payload['expires_at'] // Do not update expires_at (should remain same)
         ]);
 
-        apcu_store("rate_limit", $new_encoded_payload, $ttl);
+        apcu_store("$ip:rate_limit", $new_encoded_payload, $ttl);
     }  
         
     function get_rate_limit() {
