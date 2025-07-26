@@ -1,3 +1,119 @@
-body {
+:root {
+    --blue: #004297;
+    --light-grey: #e6e6e6;
+    --outline-focus: 0 0 5px var(--blue);
+}
+
+html, #redirect-body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#redirect-body {
     font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #f3f3f3;
+}
+
+#submit-proposal-body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f3f3f3;
+    color: #222;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+form {
+    width: 100vh;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+button {
+    background-color: var(--blue);
+    color: white;
+    border: none;
+    height: 50px;
+    width: 100%;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background-color: #0059c1;
+    transform: scale(1.03);
+}
+
+button:active {
+    background-color: #00377a;
+    transform: scale(0.98);
+}
+
+button:disabled {
+    background-color: var(--light-grey);
+    color: black;
+    cursor: not-allowed;
+}
+
+input {
+    background-color: var(--light-grey);
+    border: 1px solid ;
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: box-shadow 0.2s ease;
+    border: none;
+    width: 100%;
+}
+
+input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    vertical-align: middle;
+    cursor: pointer;
+    accent-color: var(--blue);
+    margin-right: 8px;
+}
+
+textarea {
+    background-color: var(--light-grey);
+    border: none;
+}
+
+select {
+    background-color: var(--light-grey);
+    border: 1px solid #ccc;
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: box-shadow 0.2s ease;
+}
+
+/* Remove outline when focusing on elements*/
+
+select:focus {
+    outline: none;
+    box-shadow: 0 0 5px var(--blue);
+}
+
+textarea:focus {
+    outline:none;
+    box-shadow: var(--outline-focus);
+}
+
+input:focus {
+    outline: none;
+    box-shadow: var(--outline-focus);
 }

@@ -167,8 +167,9 @@ $mysqli->close();
     <meta charset="UTF-8" />
     <title>BYCIG Stock Proposal Submission</title>
     <script src="static/javascript/submit-proposal.js"></script>
+    <link rel="stylesheet" href="static/css/index.css" >
 </head>
-<body>
+<body id="submit-proposal-body">
     <h1>Submit Your Stock Proposal</h1>
     <form method="post" enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
         <label for="email">Email Address:</label><br>
