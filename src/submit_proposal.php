@@ -65,21 +65,37 @@ function validate_pdf_upload($file) {
     return true;
 }
 
-function upload_to_ftp() {
+function generate_rand_string() {
+    $length = 10;
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $charactersLength = strlen($characters);
+    $randomString = '';
+
+    for ($i = 0; $i < $length; $i++) {
+        $randomString .= $characters[random_int(0, $charactersLength - 1)];
+    }
+
+    return $randomString;
+}
+
+function upload_to_ftp($file) {
     global $env;
+
     $ftp_server = $env["FTP_SERVER"];
-    $error_message = "Could not connect to $ftp_server";
-    $ftp_conn = ftp_connect($ftp_server) or redirect_to_result($error_message, "error");
+    $ftp_conn = ftp_connect($ftp_server) or redirect_to_result("Could not connect too $ftp_server", "error");
     $ftp_user = $env["FTP_USER"];
     $ftp_pass = $env["FTP_PASS"];
-    $login = ftp_login( $ftp_conn, $ftp_user, $ftp_pass );
+    $remote_file_name = "uploads" . "/" . basename(generate_rand_string() . ".pdf");
+
+    ftp_login($ftp_conn, $ftp_user, $ftp_pass);
+    $save_file = ftp_put($ftp_conn, $remote_file_name, $file["tmp_name"], FTP_BINARY);
+    ftp_close($ftp_conn);
     
-    if ($login) {
-        // UPLOAD LOGIC HERE
-        
-        return "pathname";
+    if($save_file) {
+        return $remote_file_name;
     } else {
-        redirect_to_result($error_message, "error");
+        redirect_to_result("Error in uploading pdf file.", "error");
+        exit;
     }
 }
 
@@ -104,9 +120,10 @@ if ($request_method === 'POST') {
     $thesis = filter_input(INPUT_POST, 'thesis', FILTER_SANITIZE_SPECIAL_CHARS);
     $bid_price = filter_input(INPUT_POST, 'bid_price', FILTER_VALIDATE_FLOAT);
     $target_price = filter_input(INPUT_POST, 'target_price', FILTER_VALIDATE_FLOAT);
+    $file = $_FILES["proposal_file"] ?? null;
 
     if (!$email || !$cluster_leader_id || !$stock_ticker || !$stock_name || !$subject_line
-        || !$thesis || $bid_price === false || $target_price === false || !isset($_FILES["proposal_file"])) {
+        || !$thesis || $bid_price === false || $target_price === false || !isset($file)) {
         $message = "All fields are required and must be valid.";
         redirect_to_result($message, "error");
         exit;
@@ -125,7 +142,7 @@ if ($request_method === 'POST') {
         exit;
     } 
 
-    $pathname = upload_to_ftp();
+    $pathname = upload_to_ftp($file);
 
     $stmt = $mysqli->prepare("SELECT ID, display_name FROM wp_users WHERE user_email = ?");
     $stmt->bind_param('s', $email);
@@ -152,8 +169,6 @@ if ($request_method === 'POST') {
         ) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ";
 
-    // == THIS WILL HAVE A UPLOADED FILE PATH == 
-    $proposal_file_db_path = "TEST";
 
     $stmt = $mysqli->prepare($insert_extra_sql);
     $stmt->bind_param(
@@ -168,7 +183,7 @@ if ($request_method === 'POST') {
         $thesis,
         $bid_price,
         $target_price,
-        $proposal_file_db_path
+        $pathname
     );
 
     if (!$stmt->execute()) {
