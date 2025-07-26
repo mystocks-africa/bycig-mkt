@@ -167,7 +167,7 @@ $mysqli->close();
     <meta charset="UTF-8" />
     <title>BYCIG Stock Proposal Submission</title>
     <script src="static/javascript/submit-proposal.js"></script>
-    <link rel="stylesheet" href="static/css/submit_proposal.css" >
+    <link rel="stylesheet" href="static/css/index.css" >
 </head>
 <body id="submit-proposal-body">
     <h1>Submit Your Stock Proposal</h1>
