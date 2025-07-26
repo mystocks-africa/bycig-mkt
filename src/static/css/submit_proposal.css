@@ -8,8 +8,18 @@ body {
     font-family: Arial, Helvetica, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f9f9f9;
+    background-color: #f3f3f3;
     color: #222;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+form {
+    width: 100vh;
+    margin: 0 auto;
+    padding: 20px;
 }
 
 button {
@@ -17,7 +27,7 @@ button {
     color: white;
     border: none;
     height: 50px;
-    width: 150px;
+    width: 100%;
     border-radius: 10px;
     font-size: 1rem;
     font-weight: 600;
@@ -35,6 +45,12 @@ button:active {
     transform: scale(0.98);
 }
 
+button:disabled {
+    background-color: var(--light-grey);
+    color: black;
+    cursor: not-allowed;
+}
+
 input {
     background-color: var(--light-grey);
     border: 1px solid ;
@@ -43,6 +59,16 @@ input {
     font-size: 1rem;
     transition: box-shadow 0.2s ease;
     border: none;
+    width: 100%;
+}
+
+input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    vertical-align: middle;
+    cursor: pointer;
+    accent-color: var(--blue);
+    margin-right: 8px;
 }
 
 textarea {
