@@ -1,0 +1,78 @@
+:root {
+    --blue: #004297;
+    --light-grey: #e6e6e6;
+    --outline-focus: 0 0 5px var(--blue);
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #222;
+}
+
+button {
+    background-color: var(--blue);
+    color: white;
+    border: none;
+    height: 50px;
+    width: 150px;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background-color: #0059c1;
+    transform: scale(1.03);
+}
+
+button:active {
+    background-color: #00377a;
+    transform: scale(0.98);
+}
+
+input {
+    background-color: var(--light-grey);
+    border: 1px solid ;
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: box-shadow 0.2s ease;
+    border: none;
+}
+
+textarea {
+    background-color: var(--light-grey);
+    border: none;
+}
+
+select {
+    background-color: var(--light-grey);
+    border: 1px solid #ccc;
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: box-shadow 0.2s ease;
+}
+
+/* Remove outline when focusing on elements*/
+
+select:focus {
+    outline: none;
+    box-shadow: 0 0 5px var(--blue);
+}
+
+textarea:focus {
+    outline:none;
+    box-shadow: var(--outline-focus);
+}
+
+input:focus {
+    outline: none;
+    box-shadow: var(--outline-focus);
+}
