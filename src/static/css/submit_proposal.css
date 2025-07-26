@@ -4,7 +4,22 @@
     --outline-focus: 0 0 5px var(--blue);
 }
 
-body {
+html, #redirect-body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#redirect-body {
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #f3f3f3;
+}
+
+#submit-proposal-body {
     font-family: Arial, Helvetica, sans-serif;
     margin: 0;
     padding: 0;
