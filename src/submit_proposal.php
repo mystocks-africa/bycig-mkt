@@ -1,6 +1,8 @@
 <?php
 include 'database.php';
 
+$env = parse_ini_file('.env');
+
 $ip = filter_var($_SERVER["REMOTE_ADDR"], FILTER_VALIDATE_IP);
 $request_method = $_SERVER["REQUEST_METHOD"];
 
@@ -63,6 +65,24 @@ function validate_pdf_upload($file) {
     return true;
 }
 
+function upload_to_ftp() {
+    global $env;
+    $ftp_server = $env["FTP_SERVER"];
+    $error_message = "Could not connect to $ftp_server";
+    $ftp_conn = ftp_connect($ftp_server) or redirect_to_result($error_message, "error");
+    $ftp_user = $env["FTP_USER"];
+    $ftp_pass = $env["FTP_PASS"];
+    $login = ftp_login( $ftp_conn, $ftp_user, $ftp_pass );
+    
+    if ($login) {
+        // UPLOAD LOGIC HERE
+        
+        return "pathname";
+    } else {
+        redirect_to_result($error_message, "error");
+    }
+}
+
 if ($request_method === 'POST') {
     $rate_limit_payload = get_rate_limit();
 
@@ -103,7 +123,9 @@ if ($request_method === 'POST') {
     if ($file_validation_result !== true) {
         redirect_to_result($file_validation_result, "error");
         exit;
-    }
+    } 
+
+    $pathname = upload_to_ftp();
 
     $stmt = $mysqli->prepare("SELECT ID, display_name FROM wp_users WHERE user_email = ?");
     $stmt->bind_param('s', $email);
