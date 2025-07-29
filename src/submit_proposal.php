@@ -4,6 +4,8 @@ require 'phpmailer/SMTP.php';
 
 include 'database.php';
 
+use PHPMailer\PHPMailer\PHPMailer;
+
 $env = parse_ini_file('.env');
 
 $ip = filter_var($_SERVER["REMOTE_ADDR"], FILTER_VALIDATE_IP);
@@ -103,11 +105,14 @@ function upload_to_ftp($file) {
 }
 
 function email_cluster_leader() {
-    global $mysqli;
+    global $mysqli, $env;
 
-    ini_set("SMTP", "");
-    ini_set("smtp_port", "");
-    ini_set("sendmail_from", "");
+    $mail = new PHPMailer();
+    $host = $env["SMTP_HOST"];
+    $username = $env["SMTP_USERNAME"];
+    $password = $env["SMTP_PASSWORD"];
+    $port = $env["SMTP_PORT"];
+
     $find_cluster_email_query = "
         SELECT user_email
         FROM `wp_usermeta` 
@@ -122,13 +127,20 @@ function email_cluster_leader() {
     $stmt->bind_param("i", $id);
 
     if ($stmt->execute()) {
-        $result = $stmt->get_result();
-        $email = $result->fetch_assoc()["user_email"];
-        $subject = "SMTP Mail";
-        $message = "Sent using SMTP config in PHP.";
-        $headers = "From: apply@bycig.org";
+        $mail->isSMTP();
+        $mail->Host = $host;
+        $mail->SMTPAuth = true;
+        $mail->Username = $username; 
+        $mail->Password = $password;
+        $mail->SMTPSecure = 'ssl'; 
+        $mail->Port = $port;
 
-        mail($email, $subject, $message, $headers);
+        $mail->setFrom($username, 'No Reply');
+        $mail->addAddress('hemitvpatel@gmail.com', 'Hemit Patel');
+        $mail->Subject = 'Test Email from PHPMailer via Hostinger SMTP';
+        $mail->Body = 'This is a test email sent using PHPMailer with Hostinger SMTP.';
+
+        $mail->send();
     }
 }
 
