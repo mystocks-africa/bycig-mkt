@@ -99,6 +99,36 @@ function upload_to_ftp($file) {
     }
 }
 
+function email_cluster_leader() {
+    global $mysqli;
+
+    ini_set("SMTP", "");
+    ini_set("smtp_port", "");
+    ini_set("sendmail_from", "");
+    $find_cluster_email_query = "
+        SELECT user_email
+        FROM `wp_usermeta` 
+        INNER JOIN `wp_users` ON `wp_usermeta`.`user_id` = `wp_users`.`ID` 
+        WHERE `meta_key` = 'wp_capabilities' 
+        AND `meta_value` = 'a:1:{s:14:\"cluster-leader\";b:1;}'
+        AND `user_id` = ?
+        LIMIT 1;
+    ";  
+
+    $stmt = $mysqli->prepare($find_cluster_email_query);
+    $stmt->bind_param("i", $id);
+
+    if ($stmt->execute()) {
+        $result = $stmt->get_result();
+        $email = $result->fetch_assoc()["user_email"];
+        $subject = "SMTP Mail";
+        $message = "Sent using SMTP config in PHP.";
+        $headers = "From: apply@bycig.org";
+
+        mail($email, $subject, $message, $headers);
+    }
+}
+
 if ($request_method === 'POST') {
     $rate_limit_payload = get_rate_limit();
 
@@ -188,11 +218,11 @@ if ($request_method === 'POST') {
 
     if (!$stmt->execute()) {
         redirect_to_result("Error inserting proposal extra info: " . $stmt->error, "error");
-    } else {
-        $stmt->close();
-        update_rate_limit($rate_limit_payload);
-        redirect_to_result("Thank you for contributing to BYCIG's platform!", "success");
-    }
+    } 
+    
+    $stmt->close();
+    update_rate_limit($rate_limit_payload);
+    redirect_to_result("Thank you for contributing to BYCIG's platform!", "success");
 }
 
 $mysqli->close();
