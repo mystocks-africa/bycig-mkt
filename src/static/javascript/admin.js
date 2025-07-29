@@ -3,13 +3,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (jwtToken) {
         fetch(`admin.php?jwt=${jwtToken}`)
-        .then(response => response.json())
-        .then(data => {
-            alert(JSON.stringify(data));
+          .then(response => {
+            if (response.redirected) {
+            window.location.href = response.url;  // follow the redirect if needbe
+            }
         })
-        .catch(error => {
-            console.error("Error fetching JWT data:", error);
-        });
     } else {
         // Create a full page overlay to block user interaction
         const overlay = document.createElement("div");
@@ -30,4 +28,12 @@ document.addEventListener("DOMContentLoaded", function () {
         document.body.appendChild(overlay);
 
     }
-})
+});
+
+function handleSubmit(acceptOrDecline) {
+    if (acceptOrDecline !== "accept" && acceptOrDecline !== "decline") {
+        return null;
+    }
+
+    fetch(`admin.php?decline_or_accept=${acceptOrDecline}`)
+}

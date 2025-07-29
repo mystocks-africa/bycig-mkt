@@ -3,6 +3,7 @@ require 'vendor/autoload.php';
 
 include 'utils/database.php';
 include 'utils/env.php';
+include 'utils/redirection.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use Firebase\JWT\JWT;
@@ -45,11 +46,6 @@ function get_rate_limit() {
     $rate_limit = apcu_fetch("$ip:rate_limit");
     if ($rate_limit === false) return false;
     return json_decode($rate_limit, true);
-}
-
-function redirect_to_result($message, $type) {
-    header("Location: redirect.php?message=" . urlencode($message) . "&message_type=$type");
-    exit();
 }
 
 // Simple function to validate PDF upload
