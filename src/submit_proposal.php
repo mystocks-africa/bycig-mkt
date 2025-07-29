@@ -217,7 +217,7 @@ if ($request_method === 'POST') {
         INSERT INTO wp_2_proposals (
             post_author, full_name, email, cluster_leader_id, stock_ticker, stock_name,
             subject_line, thesis, bid_price, target_price, proposal_file
-        ) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ";
 
 

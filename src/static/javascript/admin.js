@@ -35,5 +35,11 @@ function handleSubmit(acceptOrDecline) {
         return null;
     }
 
-    fetch(`admin.php?decline_or_accept=${acceptOrDecline}`)
+    fetch('admin.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: `decline_or_accept=${encodeURIComponent(acceptOrDecline)}`
+    });
 }

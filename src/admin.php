@@ -9,7 +9,7 @@ use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
 $JWT_TOKEN = filter_input(INPUT_GET, "jwt", FILTER_SANITIZE_SPECIAL_CHARS);
-$DECLINE_OR_ACCEPT_PROPOSAL = filter_input(INPUT_GET, "decline_or_accept", FILTER_SANITIZE_SPECIAL_CHARS);
+$DECLINE_OR_ACCEPT_PROPOSAL = filter_input(INPUT_POST, "decline_or_accept", FILTER_SANITIZE_SPECIAL_CHARS);
 $request_method = $_SERVER["REQUEST_METHOD"];
 
 if (isset($JWT_TOKEN) && $request_method === "GET") {
@@ -61,7 +61,7 @@ if (isset($JWT_TOKEN) && $request_method === "GET") {
         echo $error;
         exit();
     }
-    
+
     session_start();
     $cluster_leader_id = $_SESSION["cluster_leader_id"];
     $proposal_id = $_SESSION["proposal_id"];
