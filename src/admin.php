@@ -51,10 +51,17 @@ if (isset($JWT_TOKEN) && $request_method === "GET") {
         $error_msg = $error->getMessage();
         echo $error_msg;
     } 
-} else if (
-    ($DECLINE_OR_ACCEPT_PROPOSAL === "accept" || $DECLINE_OR_ACCEPT_PROPOSAL === "decline") 
-    && $request_method === "POST"
-) {
+} else if (isset($DECLINE_OR_ACCEPT_PROPOSAL) && $request_method == "POST") {
+
+    if ($DECLINE_OR_ACCEPT_PROPOSAL !== "accept" && $DECLINE_OR_ACCEPT_PROPOSAL !== "decline") {
+        $error = json_encode([
+            "error" => "Query paramater must be either accept or decline"
+        ]);
+
+        echo $error;
+        exit();
+    }
+    
     session_start();
     $cluster_leader_id = $_SESSION["cluster_leader_id"];
     $proposal_id = $_SESSION["proposal_id"];
