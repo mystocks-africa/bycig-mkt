@@ -1,10 +1,10 @@
 <?php
-require 'phpmailer/PHPMailer.php';
-require 'phpmailer/SMTP.php';
+require 'vendor/autoload.php';
 
 include 'database.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
+use Firebase\JWT\JWT;
 
 $env = parse_ini_file('.env');
 
@@ -104,8 +104,9 @@ function upload_to_ftp($file) {
     }
 }
 
-function email_cluster_leader($id) {
-    global $mysqli, $env;
+function email_cluster_leader($cluster_leader_id, $proposal_id) {
+    global $mysqli;
+    global $env;
 
     $mail = new PHPMailer();
     $host = $env["SMTP_HOST"];
@@ -124,7 +125,7 @@ function email_cluster_leader($id) {
     ";  
 
     $stmt = $mysqli->prepare($find_cluster_email_query);
-    $stmt->bind_param("i", $id);
+    $stmt->bind_param("i", $cluster_leader_id);
 
     if ($stmt->execute()) {
         $mail->isSMTP();
@@ -135,10 +136,20 @@ function email_cluster_leader($id) {
         $mail->SMTPSecure = 'ssl'; 
         $mail->Port = $port;
 
+        // Create a JWT for an authentication token (on admin panel)
+        $secret_key = "SECRET KEY HERE!!!";
+        $payload = [
+            'proposal_id' => $proposal_id,
+            'cluster_leader_id' => $cluster_leader_id,
+            'exp' => time() + (30 * 24 * 60 * 60) // 30 days from now
+        ];
+        $jwt = JWT::encode($payload, $secret_key,'HS256', null);
+
         $mail->setFrom($username, 'No Reply');
         $mail->addAddress('hemitvpatel@gmail.com', 'Hemit Patel');
-        $mail->Subject = 'Test Email from PHPMailer via Hostinger SMTP';
-        $mail->Body = 'This is a test email sent using PHPMailer with Hostinger SMTP.';
+        $mail->Subject = 'New proposal submission - BYCIG';
+        $mail->Body = "Hi! You have a new proposal submission. Go to our platform admin panel and use the following token to access it. <br> JWT authentication token: $jwt";
+        $mail->isHTML(true);
 
         $mail->send();
     }
@@ -234,15 +245,17 @@ if ($request_method === 'POST') {
     if (!$stmt->execute()) {
         redirect_to_result("Error inserting proposal extra info: " . $stmt->error, "error");
     } 
-    
+
+    $proposal_id = $mysqli->insert_id; 
     $stmt->close();
 
     update_rate_limit($rate_limit_payload);
-    email_cluster_leader($cluster_leader_id);
+    email_cluster_leader($cluster_leader_id, $proposal_id);
     redirect_to_result("Thank you for contributing to BYCIG's platform!", "success");
+
+    $mysqli->close();
 }
 
-$mysqli->close();
 ?>
 
 <!DOCTYPE html>

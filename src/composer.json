@@ -1,0 +1,20 @@
+{
+    "name": "hemit99123/proposal-bycig-software",
+    "type": "n",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Hemit99123\\ProposalBycigSoftware\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Hemit Patel",
+            "email": "hemitvpatel@gmail.com"
+        }
+    ],
+    "require": {
+        "firebase/php-jwt": "^6.11",
+        "phpmailer/phpmailer": "^6.10"
+    }
+}
