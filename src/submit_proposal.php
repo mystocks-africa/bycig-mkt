@@ -1,12 +1,11 @@
 <?php
 require 'vendor/autoload.php';
 
-include 'database.php';
+include 'utils/database.php';
+include 'utils/env.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use Firebase\JWT\JWT;
-
-$env = parse_ini_file('.env');
 
 $ip = filter_var($_SERVER["REMOTE_ADDR"], FILTER_VALIDATE_IP);
 $request_method = $_SERVER["REQUEST_METHOD"];
@@ -137,7 +136,7 @@ function email_cluster_leader($cluster_leader_id, $proposal_id) {
         $mail->Port = $port;
 
         // Create a JWT for an authentication token (on admin panel)
-        $secret_key = "SECRET KEY HERE!!!";
+        $secret_key = $env["JWT_SECRET"];
         $payload = [
             'proposal_id' => $proposal_id,
             'cluster_leader_id' => $cluster_leader_id,
