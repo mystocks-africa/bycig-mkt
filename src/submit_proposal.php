@@ -1,7 +1,12 @@
 <?php
-include 'database.php';
+require 'vendor/autoload.php';
 
-$env = parse_ini_file('.env');
+include 'utils/database.php';
+include 'utils/env.php';
+include 'utils/redirection.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use Firebase\JWT\JWT;
 
 $ip = filter_var($_SERVER["REMOTE_ADDR"], FILTER_VALIDATE_IP);
 $request_method = $_SERVER["REQUEST_METHOD"];
@@ -41,11 +46,6 @@ function get_rate_limit() {
     $rate_limit = apcu_fetch("$ip:rate_limit");
     if ($rate_limit === false) return false;
     return json_decode($rate_limit, true);
-}
-
-function redirect_to_result($message, $type) {
-    header("Location: redirect.php?message=" . urlencode($message) . "&message_type=$type");
-    exit();
 }
 
 // Simple function to validate PDF upload
@@ -96,6 +96,57 @@ function upload_to_ftp($file) {
     } else {
         redirect_to_result("Error in uploading pdf file.", "error");
         exit;
+    }
+}
+
+function email_cluster_leader($cluster_leader_id, $proposal_id) {
+    global $mysqli;
+    global $env;
+
+    $mail = new PHPMailer();
+    $host = $env["SMTP_HOST"];
+    $username = $env["SMTP_USERNAME"];
+    $password = $env["SMTP_PASSWORD"];
+    $port = $env["SMTP_PORT"];
+
+    $find_cluster_email_query = "
+        SELECT user_email
+        FROM `wp_usermeta` 
+        INNER JOIN `wp_users` ON `wp_usermeta`.`user_id` = `wp_users`.`ID` 
+        WHERE `meta_key` = 'wp_capabilities' 
+        AND `meta_value` = 'a:1:{s:14:\"cluster-leader\";b:1;}'
+        AND `user_id` = ?
+        LIMIT 1;
+    ";  
+
+    $stmt = $mysqli->prepare($find_cluster_email_query);
+    $stmt->bind_param("i", $cluster_leader_id);
+
+    if ($stmt->execute()) {
+        $mail->isSMTP();
+        $mail->Host = $host;
+        $mail->SMTPAuth = true;
+        $mail->Username = $username; 
+        $mail->Password = $password;
+        $mail->SMTPSecure = 'ssl'; 
+        $mail->Port = $port;
+
+        // Create a JWT for an authentication token (on admin panel)
+        $secret_key = $env["JWT_SECRET"];
+        $payload = [
+            'proposal_id' => $proposal_id,
+            'cluster_leader_id' => $cluster_leader_id,
+            'exp' => time() + (30 * 24 * 60 * 60) // 30 days from now
+        ];
+        $jwt = JWT::encode($payload, $secret_key,'HS256', null);
+
+        $mail->setFrom($username, 'No Reply');
+        $mail->addAddress('hemitvpatel@gmail.com', 'Cluster Leader');
+        $mail->Subject = 'New proposal submission - BYCIG';
+        $mail->Body = "Hi! You have a new proposal submission. Go to our platform admin panel and use the following token to access it. <br> JWT authentication token: $jwt";
+        $mail->isHTML(true);
+
+        $mail->send();
     }
 }
 
@@ -162,15 +213,15 @@ if ($request_method === 'POST') {
 
     $stmt->close();
 
-    $insert_extra_sql = "
+    $insert_proposal_query = "
         INSERT INTO wp_2_proposals (
             post_author, full_name, email, cluster_leader_id, stock_ticker, stock_name,
             subject_line, thesis, bid_price, target_price, proposal_file
-        ) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ";
 
 
-    $stmt = $mysqli->prepare($insert_extra_sql);
+    $stmt = $mysqli->prepare($insert_proposal_query);
     $stmt->bind_param(
         'ississsssds',
         $post_author_id,
@@ -188,14 +239,18 @@ if ($request_method === 'POST') {
 
     if (!$stmt->execute()) {
         redirect_to_result("Error inserting proposal extra info: " . $stmt->error, "error");
-    } else {
-        $stmt->close();
-        update_rate_limit($rate_limit_payload);
-        redirect_to_result("Thank you for contributing to BYCIG's platform!", "success");
-    }
+    } 
+
+    $proposal_id = $mysqli->insert_id; 
+    $stmt->close();
+
+    update_rate_limit($rate_limit_payload);
+    email_cluster_leader($cluster_leader_id, $proposal_id);
+    redirect_to_result("Thank you for contributing to BYCIG's platform!", "success");
+
+    $mysqli->close();
 }
 
-$mysqli->close();
 ?>
 
 <!DOCTYPE html>

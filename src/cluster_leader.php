@@ -1,11 +1,11 @@
 <?php    
-include 'database.php'; 
+include 'utils/database.php'; 
 
 $request_method = $_SERVER["REQUEST_METHOD"];
 
 if ($request_method === "GET") {
     $query = "
-        SELECT ID, user_login 
+        SELECT ID, user_login
         FROM `wp_usermeta` 
         INNER JOIN `wp_users` ON `wp_usermeta`.`user_id` = `wp_users`.`ID` 
         WHERE `meta_key` = 'wp_capabilities' 
