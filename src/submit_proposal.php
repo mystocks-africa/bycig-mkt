@@ -104,7 +104,7 @@ function upload_to_ftp($file) {
     }
 }
 
-function email_cluster_leader() {
+function email_cluster_leader($id) {
     global $mysqli, $env;
 
     $mail = new PHPMailer();
@@ -207,7 +207,7 @@ if ($request_method === 'POST') {
 
     $stmt->close();
 
-    $insert_extra_sql = "
+    $insert_proposal_query = "
         INSERT INTO wp_2_proposals (
             post_author, full_name, email, cluster_leader_id, stock_ticker, stock_name,
             subject_line, thesis, bid_price, target_price, proposal_file
@@ -215,7 +215,7 @@ if ($request_method === 'POST') {
     ";
 
 
-    $stmt = $mysqli->prepare($insert_extra_sql);
+    $stmt = $mysqli->prepare($insert_proposal_query);
     $stmt->bind_param(
         'ississsssds',
         $post_author_id,
@@ -236,7 +236,9 @@ if ($request_method === 'POST') {
     } 
     
     $stmt->close();
+
     update_rate_limit($rate_limit_payload);
+    email_cluster_leader($cluster_leader_id);
     redirect_to_result("Thank you for contributing to BYCIG's platform!", "success");
 }
 
