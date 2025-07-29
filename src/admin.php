@@ -51,7 +51,10 @@ if (isset($JWT_TOKEN) && $request_method === "GET") {
         $error_msg = $error->getMessage();
         echo $error_msg;
     } 
-} else if ($DECLINE_OR_ACCEPT_PROPOSAL === "accept" || $DECLINE_OR_ACCEPT_PROPOSAL === "decline" && $request_method === "POST") {
+} else if (
+    ($DECLINE_OR_ACCEPT_PROPOSAL === "accept" || $DECLINE_OR_ACCEPT_PROPOSAL === "decline") 
+    && $request_method === "POST"
+) {
     session_start();
     $cluster_leader_id = $_SESSION["cluster_leader_id"];
     $proposal_id = $_SESSION["proposal_id"];

@@ -141,7 +141,7 @@ function email_cluster_leader($cluster_leader_id, $proposal_id) {
         $jwt = JWT::encode($payload, $secret_key,'HS256', null);
 
         $mail->setFrom($username, 'No Reply');
-        $mail->addAddress('hemitvpatel@gmail.com', 'Hemit Patel');
+        $mail->addAddress('hemitvpatel@gmail.com', 'Cluster Leader');
         $mail->Subject = 'New proposal submission - BYCIG';
         $mail->Body = "Hi! You have a new proposal submission. Go to our platform admin panel and use the following token to access it. <br> JWT authentication token: $jwt";
         $mail->isHTML(true);
