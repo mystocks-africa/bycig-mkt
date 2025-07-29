@@ -1,5 +1,7 @@
 <?php
-require 'vendor/autoload.php';
+require 'phpmailer/PHPMailer.php';
+require 'phpmailer/SMTP.php';
+
 include 'database.php';
 
 $env = parse_ini_file('.env');
