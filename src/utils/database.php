@@ -1,5 +1,6 @@
 <?php
-$env = parse_ini_file('.env');
+include 'env.php';
+
 $mysql_uri = $env["MYSQL_URI"] ?? null;
 
 if (!$mysql_uri) {
