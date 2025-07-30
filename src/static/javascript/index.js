@@ -9,8 +9,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
             proposals.forEach(proposal => {
                 const card = document.createElement('a');
-                card.href = `/src/proposal.php?proposal_id=${proposal.id}`
+                card.href = `/src/proposal.php?proposal_id=${proposal.post_id}`
                 card.className = "card";
+                card.style.textDecoration = "none";
+                card.style.color = "black";
 
                 card.innerHTML = `
                     <h3 class="truncate">${proposal.subject_line}</h3>

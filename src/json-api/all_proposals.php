@@ -7,7 +7,7 @@ if ($request_method == "GET") {
     header('Content-Type: application/json');
 
     $get_proposal_query = "
-        SELECT email, subject_line
+        SELECT post_id, email, subject_line
         FROM wp_2_proposals 
     ";
 
