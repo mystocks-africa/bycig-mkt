@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
             window.location.href = response.url;  // follow the redirect if needbe
             }
         })
-        .then(() => fetch("proposal_details.php?admin_purpose=true"))
+        .then(() => fetch("json-api/proposal_details.php?admin_purpose=true"))
         .then(response => response.json())
         .then(proposal => {
             const loaderElement = document.getElementById("loader");

@@ -8,7 +8,8 @@ document.addEventListener("DOMContentLoaded", () => {
             const containerElement = document.getElementById('grid-container');
 
             proposals.forEach(proposal => {
-                const card = document.createElement('div');
+                const card = document.createElement('a');
+                card.href = `/src/proposal.php?proposal_id=${proposal.id}`
                 card.className = "card";
 
                 card.innerHTML = `
