@@ -8,6 +8,34 @@ document.addEventListener("DOMContentLoaded", function () {
             window.location.href = response.url;  // follow the redirect if needbe
             }
         })
+        .then(() => fetch("admin.php?get_proposal_info=true"))
+        .then(response => response.json())
+        .then(proposal => {
+            const divElement = document.getElementById("content")
+            
+            const p1 = document.createElement("p");
+            p1.innerHTML = `<strong>Email:</strong> ${proposal.email}`;
+
+            const p2 = document.createElement("p");
+            p2.innerHTML = `<strong>Stock:</strong> ${proposal.stock_ticker} - ${proposal.stock_name}`;
+
+            const p3 = document.createElement("p");
+            p3.innerHTML = `<strong>Subject:</strong> ${proposal.subject_line}`;
+
+            const p4 = document.createElement("p");
+            p4.innerHTML = `<strong>Thesis:</strong> ${proposal.thesis}`;
+
+            const p5 = document.createElement("p");
+            p5.innerHTML = `<strong>Bid Price:</strong> ${proposal.bid_price}`;
+
+            const p6 = document.createElement("p");
+            p6.innerHTML = `<strong>Target Price:</strong> ${proposal.target_price}`;
+
+            const p7 = document.createElement("p");
+            p7.innerHTML = `<strong>Proposal File:</strong> <a href="${proposal.proposal_file}" target="_blank">View</a>`;
+
+            divElement.append(p1,p2,p3,p4,p5,p6,p7);
+        })
     } else {
         // Create a full page overlay to block user interaction
         const overlay = document.createElement("div");
@@ -26,7 +54,6 @@ document.addEventListener("DOMContentLoaded", function () {
         overlay.innerText = "Access Denied. Reload the page to try again.";
 
         document.body.appendChild(overlay);
-
     }
 });
 

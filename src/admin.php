@@ -10,7 +10,23 @@ use Firebase\JWT\Key;
 
 $JWT_TOKEN = filter_input(INPUT_GET, "jwt", FILTER_SANITIZE_SPECIAL_CHARS);
 $DECLINE_OR_ACCEPT_PROPOSAL = filter_input(INPUT_POST, "decline_or_accept", FILTER_SANITIZE_SPECIAL_CHARS);
+$GET_PROPOSAL_INFO = filter_input(INPUT_GET, "get_proposal_info", FILTER_SANITIZE_SPECIAL_CHARS);
+
 $request_method = $_SERVER["REQUEST_METHOD"];
+
+function get_session_variables () {
+    session_start();
+    $cluster_leader_id = $_SESSION["cluster_leader_id"];
+    $proposal_id = $_SESSION["proposal_id"];
+    $auth_to_access = $_SESSION["auth_to_access"];
+    session_abort();
+
+    return [
+        "cluster_leader_id"=> $cluster_leader_id,
+        "proposal_id"=> $proposal_id,
+        "auth_to_access"=> $auth_to_access
+    ];
+}
 
 if (isset($JWT_TOKEN) && $request_method === "GET") {
     $secret_key = $env["JWT_SECRET"];
@@ -43,7 +59,7 @@ if (isset($JWT_TOKEN) && $request_method === "GET") {
         session_start();
         $_SESSION["cluster_leader_id"] = $cluster_leader_id;
         $_SESSION["proposal_id"] = $proposal_id;
-        $_SESSION["auth_to_update"] = true;
+        $_SESSION["auth_to_access"] = true;
         session_write_close();
 
         $stmt->close();
@@ -62,13 +78,9 @@ if (isset($JWT_TOKEN) && $request_method === "GET") {
         exit();
     }
 
-    session_start();
-    $cluster_leader_id = $_SESSION["cluster_leader_id"];
-    $proposal_id = $_SESSION["proposal_id"];
-    $auth_to_update = $_SESSION["auth_to_update"];
-    session_abort();
+    $session = get_session_variables();
 
-    if ($auth_to_update) {
+    if ($session["auth_to_access"]) {
         $update_proposal_query = "
             UPDATE wp_2_proposals
             SET status = ?
@@ -77,9 +89,45 @@ if (isset($JWT_TOKEN) && $request_method === "GET") {
         ";
         
         $stmt = $mysqli->prepare($update_proposal_query);
-        $stmt->bind_param("sii", $DECLINE_OR_ACCEPT_PROPOSAL, $proposal_id, $cluster_leader_id);
+        $stmt->bind_param(
+            "sii", 
+            $DECLINE_OR_ACCEPT_PROPOSAL, 
+            $session["proposal_id"], 
+            $session["cluster_leader_id"]
+        );
         $stmt->execute();  
     }
+} else if (isset($GET_PROPOSAL_INFO) && $request_method == "GET") {
+    $session = get_session_variables();
+
+    $get_proposal_info_query = "
+        SELECT email, stock_ticker, stock_name, subject_line, thesis, bid_price, target_price, proposal_file
+        FROM wp_2_proposals 
+        WHERE post_id = ? AND cluster_leader_id = ?
+        LIMIT 1;  
+    ";
+    try {
+        $stmt = $mysqli->prepare($get_proposal_info_query);
+        $stmt->bind_param(
+            "ii",
+            $session["proposal_id"],
+            $session["cluster_leader_id"]
+        );
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $get_proposal_info = $result->fetch_assoc();
+        $stmt->close();  
+        $get_proposal_info_json = json_encode($get_proposal_info);
+        echo $get_proposal_info_json;  
+        exit();    
+    } catch(Exception $error) {
+        $error_message = json_encode([
+            "error" => $error->getMessage()
+        ]);
+        echo $error_message;
+        exit();
+    }
+
 }
 ?>
 
@@ -92,6 +140,7 @@ if (isset($JWT_TOKEN) && $request_method === "GET") {
     <script src="static/javascript/admin.js"></script>
 </head>
 <body>
+    <div id="content"></div>
     <button onclick="handleSubmit('accept')">Accept proposal</button>
     <button onclick="handleSubmit('decline')">Decline proposal</button>
 </body>
