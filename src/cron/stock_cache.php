@@ -1,11 +1,12 @@
 <?php 
+include "../utils/env.php";
     $curl_handle = curl_init();
     $symbols = [];
     function fetch_from_finnhub() {
         global $curl_handle;
         global $symbols;
+        global $env;
 
-        $env = parse_ini_file(filename: '../.env');
         $finnhub_api_key = $env["FINNHUB_API_KEY"];
 
         curl_setopt_array($curl_handle, [
