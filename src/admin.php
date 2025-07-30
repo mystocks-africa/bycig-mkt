@@ -147,6 +147,7 @@ if (isset($JWT_TOKEN) && $request_method === "GET") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel</title>
     <script src="static/javascript/admin.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="static/css/admin.css" >
 </head>
 <body>
