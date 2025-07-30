@@ -42,6 +42,8 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
         // Create a full page overlay to block user interaction
         const overlay = document.createElement("div");
+        overlay.className = "access-denied-overlay"
+        
         overlay.style.position = "fixed";
         overlay.style.top = 0;
         overlay.style.left = 0;

@@ -1,0 +1,121 @@
+/* Base reset and typography */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    background: linear-gradient(135deg, #e0f2fe 0%, #f8fafc 100%);
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 60px 20px;
+}
+
+/* Smooth animations */
+body, button, a {
+    transition: all 0.3s ease-in-out;
+}
+
+/* Loader styling */
+#loader {
+    font-size: 1.4rem;
+    color: #0c4a6e;
+    margin-bottom: 30px;
+    font-weight: 500;
+}
+
+/* Content container like a card */
+#content {
+    background: white;
+    padding: 40px;
+    border-radius: 24px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+    width: 100%;
+    max-width: 800px;
+    margin-bottom: 40px;
+    animation: fadeIn 0.6s ease;
+}
+
+#content p {
+    margin: 14px 0;
+    font-size: 1.05rem;
+    color: #334155;
+    line-height: 1.6;
+}
+
+#content p strong {
+    color: #1e40af;
+    font-weight: 600;
+}
+
+/* Modern buttons */
+button {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white;
+    border: none;
+    padding: 14px 32px;
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 10px;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(37, 99, 235, 0.3);
+}
+
+button:hover {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(37, 99, 235, 0.4);
+}
+
+button:active {
+    transform: scale(0.98);
+    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.25);
+}
+
+/* Link styling */
+a {
+    color: #1e40af;
+    text-decoration: none;
+    font-weight: 600;
+    border-bottom: 1px solid transparent;
+}
+
+a:hover {
+    border-bottom: 1px solid #1e40af;
+}
+
+/* Access denied overlay */
+.access-denied-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(15, 23, 42, 0.92);
+    color: white;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    padding: 20px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

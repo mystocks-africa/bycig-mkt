@@ -14,18 +14,28 @@ $GET_PROPOSAL_INFO = filter_input(INPUT_GET, "get_proposal_info", FILTER_SANITIZ
 
 $request_method = $_SERVER["REQUEST_METHOD"];
 
-function get_session_variables () {
+function get_session_variables ($delete_vars = false) {
     session_start();
     $cluster_leader_id = $_SESSION["cluster_leader_id"];
     $proposal_id = $_SESSION["proposal_id"];
     $auth_to_access = $_SESSION["auth_to_access"];
-    session_abort();
+
+    if ($delete_vars) {
+        $_SESSION = [];
+
+        session_destroy();
+        session_abort();
+    } else {
+        session_write_close();
+    }
+
 
     return [
         "cluster_leader_id"=> $cluster_leader_id,
         "proposal_id"=> $proposal_id,
         "auth_to_access"=> $auth_to_access
     ];
+
 }
 
 if (isset($JWT_TOKEN) && $request_method === "GET") {
@@ -98,7 +108,7 @@ if (isset($JWT_TOKEN) && $request_method === "GET") {
         $stmt->execute();  
     }
 } else if (isset($GET_PROPOSAL_INFO) && $request_method == "GET") {
-    $session = get_session_variables();
+    $session = get_session_variables(true);
 
     $get_proposal_info_query = "
         SELECT email, stock_ticker, stock_name, subject_line, thesis, bid_price, target_price, proposal_file
@@ -138,6 +148,7 @@ if (isset($JWT_TOKEN) && $request_method === "GET") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel</title>
     <script src="static/javascript/admin.js"></script>
+    <link rel="stylesheet" href="static/css/admin.css" >
 </head>
 <body>
     <div id="content">
