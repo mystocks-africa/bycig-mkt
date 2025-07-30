@@ -1,119 +1,121 @@
 :root {
-    --blue: #004297;
-    --light-grey: #e6e6e6;
-    --outline-focus: 0 0 5px var(--blue);
+  --gray-bg: #f3f3f3;
+  --gray-border: #d1d5db;
+  --text-main: #111827;
+  --text-muted: #6b7280;
+  --accent: #000000;
+  --font-sans: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
-html, #redirect-body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
+body, html {
+  margin: 0;
+  padding: 0;
+  background-color: var(--gray-bg);
+  font-family: var(--font-sans);
+  color: var(--text-main);
+  -webkit-font-smoothing: antialiased;
 }
 
+/* Page layout */
+#submit-proposal-body,
 #redirect-body {
-    font-family: Arial, Helvetica, sans-serif;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: #f3f3f3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
 }
 
-#submit-proposal-body {
-    font-family: Arial, Helvetica, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f3f3f3;
-    color: #222;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
+/* Form structure */
 form {
-    width: 100vh;
-    margin: 0 auto;
-    padding: 20px;
+  width: 100%;
+  max-width: 720px;
+  padding: 40px;
+  background-color: white;
+  border: 1px solid var(--gray-border);
+  border-radius: 16px;
 }
 
+/* Headings and layout spacing */
+h1, h2, h3 {
+  font-weight: 600;
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 6px;
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  font-size: 1rem;
+  padding: 14px;
+  margin-bottom: 20px;
+  border-radius: 12px;
+  border: 1px solid var(--gray-border);
+  background-color: #ffffff;
+  color: var(--text-main);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: black;
+  box-shadow: 0 0 0 1px black;
+}
+
+/* Radio buttons */
+input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  accent-color: black;
+  margin-right: 8px;
+  margin-bottom: 0;
+}
+
+/* Buttons */
 button {
-    background-color: var(--blue);
-    color: white;
-    border: none;
-    height: 50px;
-    width: 100%;
-    border-radius: 10px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+  background-color: black;
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 14px 24px;
+  border: none;
+  border-radius: 12px;
+  width: 100%;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
 button:hover {
-    background-color: #0059c1;
-    transform: scale(1.03);
+  background-color: #222;
+  transform: translateY(-2px);
 }
 
 button:active {
-    background-color: #00377a;
-    transform: scale(0.98);
+  transform: scale(0.98);
 }
 
 button:disabled {
-    background-color: var(--light-grey);
-    color: black;
-    cursor: not-allowed;
+  background-color: #d4d4d4;
+  color: #555;
+  cursor: not-allowed;
 }
 
-input {
-    background-color: var(--light-grey);
-    border: 1px solid ;
-    padding: 10px 15px;
-    border-radius: 10px;
-    font-size: 1rem;
-    transition: box-shadow 0.2s ease;
-    border: none;
-    width: 100%;
-}
-
-input[type="radio"] {
-    width: 18px;
-    height: 18px;
-    vertical-align: middle;
-    cursor: pointer;
-    accent-color: var(--blue);
-    margin-right: 8px;
-}
-
-textarea {
-    background-color: var(--light-grey);
-    border: none;
-}
-
-select {
-    background-color: var(--light-grey);
-    border: 1px solid #ccc;
-    padding: 10px 15px;
-    border-radius: 10px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: box-shadow 0.2s ease;
-}
-
-/* Remove outline when focusing on elements*/
-
-select:focus {
-    outline: none;
-    box-shadow: 0 0 5px var(--blue);
-}
-
-textarea:focus {
-    outline:none;
-    box-shadow: var(--outline-focus);
-}
-
-input:focus {
-    outline: none;
-    box-shadow: var(--outline-focus);
+/* Optional: layout helper class */
+.form-section {
+  margin-bottom: 32px;
 }

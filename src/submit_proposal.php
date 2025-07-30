@@ -258,6 +258,7 @@ if ($request_method === 'POST') {
 <head>
     <meta charset="UTF-8" />
     <title>BYCIG Stock Proposal Submission</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <script src="static/javascript/submit-proposal.js"></script>
     <link rel="stylesheet" href="static/css/index.css" >
 </head>

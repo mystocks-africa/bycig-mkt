@@ -40,25 +40,8 @@ document.addEventListener("DOMContentLoaded", function () {
             divElement.append(p1,p2,p3,p4,p5,p6,p7);
         })
     } else {
-        // Create a full page overlay to block user interaction
-        const overlay = document.createElement("div");
-        overlay.className = "access-denied-overlay"
-        
-        overlay.style.position = "fixed";
-        overlay.style.top = 0;
-        overlay.style.left = 0;
-        overlay.style.width = "100vw";
-        overlay.style.height = "100vh";
-        overlay.style.backgroundColor = "rgba(0,0,0,0.8)";
-        overlay.style.zIndex = 9999;
-        overlay.style.color = "white";
-        overlay.style.display = "flex";
-        overlay.style.justifyContent = "center";
-        overlay.style.alignItems = "center";
-        overlay.style.fontSize = "2rem";
-        overlay.innerText = "Access Denied. Reload the page to try again.";
-
-        document.body.appendChild(overlay);
+        const message = "JWT Token not provieded."
+        window.location.href = `redirect.php?message=${message}&message_type=success`
     }
 });
 
