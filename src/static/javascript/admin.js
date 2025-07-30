@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
     const jwtToken = prompt("Token:")
 
     if (jwtToken) {
