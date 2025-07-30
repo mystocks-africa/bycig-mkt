@@ -45,6 +45,7 @@ if (isset($GET_ALL_PROPOSALS) && $request_method == "GET") {
     <script src="static/javascript/index.js"></script>
 </head>
 <body>
-    
+    <p id="loader">Loading...</p>
+    <div id="grid-container"></div>
 </body>
 </html>
