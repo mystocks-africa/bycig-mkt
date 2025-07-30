@@ -2,13 +2,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const jwtToken = prompt("Token:")
 
     if (jwtToken) {
-        fetch(`admin.php?jwt=${jwtToken}`)
+        fetch(`json-api/validate_token.php?jwt=${jwtToken}`)
           .then(response => {
             if (response.redirected) {
             window.location.href = response.url;  // follow the redirect if needbe
             }
         })
-        .then(() => fetch("admin.php?get_proposal_info=true"))
+        .then(() => fetch("proposal_details.php?admin_purpose=true"))
         .then(response => response.json())
         .then(proposal => {
             const loaderElement = document.getElementById("loader");
@@ -50,7 +50,7 @@ function handleSubmit(acceptOrDecline) {
         return null;
     }
 
-    fetch('admin.php', {
+    fetch('json-api/update_proposal_status.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'

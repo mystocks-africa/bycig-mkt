@@ -1,5 +1,5 @@
 <?php    
-include 'utils/database.php'; 
+include '../utils/database.php'; 
 
 $request_method = $_SERVER["REQUEST_METHOD"];
 
@@ -33,3 +33,5 @@ if ($request_method === "GET") {
     $mysqli->close();
     exit();
 }
+
+exit();
