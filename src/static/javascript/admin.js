@@ -11,7 +11,10 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(() => fetch("admin.php?get_proposal_info=true"))
         .then(response => response.json())
         .then(proposal => {
-            const divElement = document.getElementById("content")
+            const loaderElement = document.getElementById("loader");
+            loaderElement.style.display = "none";
+
+            const divElement = document.getElementById("content");
             
             const p1 = document.createElement("p");
             p1.innerHTML = `<strong>Email:</strong> ${proposal.email}`;

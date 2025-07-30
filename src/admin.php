@@ -140,7 +140,9 @@ if (isset($JWT_TOKEN) && $request_method === "GET") {
     <script src="static/javascript/admin.js"></script>
 </head>
 <body>
-    <div id="content"></div>
+    <div id="content">
+        <p id="loader">Loading and authenticating...</p>
+    </div>
     <button onclick="handleSubmit('accept')">Accept proposal</button>
     <button onclick="handleSubmit('decline')">Decline proposal</button>
 </body>
