@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
         })
     } else {
         const message = "JWT Token not provieded."
-        window.location.href = `redirect.php?message=${message}&message_type=success`
+        window.location.href = `redirect.php?message=${message}&message_type=error`
     }
 });
 
