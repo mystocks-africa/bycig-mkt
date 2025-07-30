@@ -1,10 +1,14 @@
 <?php
 include '../utils/env.php';
 include '../utils/database.php';
+include '../utils/session_details.php';
 
 header('Content-Type: application/json');
 
 $DECLINE_OR_ACCEPT_PROPOSAL = filter_input(INPUT_POST, "decline_or_accept", FILTER_SANITIZE_SPECIAL_CHARS);
+
+// Last task in submit proposal workflow, so we clear session variables (true param)
+$session = get_session_variables(true);
 
 if (!in_array($DECLINE_OR_ACCEPT_PROPOSAL, ["accept", "decline"])) {
     http_response_code(400);
@@ -12,16 +16,14 @@ if (!in_array($DECLINE_OR_ACCEPT_PROPOSAL, ["accept", "decline"])) {
     exit();
 }
 
-session_start();
-if (!$_SESSION["auth_to_access"]) {
+if (!$session["auth_to_access"]) {
     http_response_code(403);
     echo json_encode(["error" => "Unauthorized"]);
     exit();
 }
 
-$proposal_id = $_SESSION["proposal_id"];
-$cluster_leader_id = $_SESSION["cluster_leader_id"];
-session_write_close();
+$proposal_id = $session["proposal_id"];
+$cluster_leader_id = $session["cluster_leader_id"];
 
 $stmt = $mysqli->prepare("
     UPDATE wp_2_proposals

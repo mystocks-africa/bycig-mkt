@@ -1,34 +1,15 @@
 <?php
 include '../utils/database.php';
+include '../utils/session_details.php';
 
 $request_method = $_SERVER["REQUEST_METHOD"];
 $PROPOSAL_ID = filter_input(INPUT_GET,  "proposal_id", FILTER_SANITIZE_SPECIAL_CHARS);  
 $ADMIN_PURPOSE = filter_input(INPUT_GET, "admin_purpose", FILTER_SANITIZE_SPECIAL_CHARS);
 
-function get_session_variables ($delete_vars = false) {
-    session_start();
-    $cluster_leader_id = $_SESSION["cluster_leader_id"];
-    $proposal_id = $_SESSION["proposal_id"];
-    $auth_to_access = $_SESSION["auth_to_access"];
 
-    if ($delete_vars) {
-        $_SESSION = [];
-        session_destroy();
-        session_abort();
-    } else {
-        session_write_close();
-    }
-
-    return [
-        "cluster_leader_id"=> $cluster_leader_id,
-        "proposal_id"=> $proposal_id,
-        "auth_to_access"=> $auth_to_access
-    ];
-
-}
 
 if (isset($ADMIN_PURPOSE) && $request_method == "GET") {
-    $session = get_session_variables(true);
+    $session = get_session_variables();
 
     $get_proposal_info_query = "
         SELECT email, stock_ticker, stock_name, subject_line, thesis, bid_price, target_price, proposal_file
