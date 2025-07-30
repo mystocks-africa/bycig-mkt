@@ -6,8 +6,6 @@ $request_method = $_SERVER["REQUEST_METHOD"];
 $PROPOSAL_ID = filter_input(INPUT_GET,  "proposal_id", FILTER_SANITIZE_SPECIAL_CHARS);  
 $ADMIN_PURPOSE = filter_input(INPUT_GET, "admin_purpose", FILTER_SANITIZE_SPECIAL_CHARS);
 
-
-
 if (isset($ADMIN_PURPOSE) && $request_method == "GET") {
     $session = get_session_variables();
 
