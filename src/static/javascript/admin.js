@@ -1,8 +1,9 @@
-document.addEventListener("DOMContentLoaded", () => {
+// Wait for EVERYTHING TO FINISH LOADING
+
+window.onload = () => {
     const jwtToken = prompt("Token:")
 
-    if (jwtToken) {
-        fetch(`json-api/validate_token.php?jwt=${jwtToken}`)
+    fetch(`json-api/validate_token.php?jwt=${jwtToken}`)
           .then(response => {
             if (response.redirected) {
             window.location.href = response.url;  // follow the redirect if needbe
@@ -38,12 +39,9 @@ document.addEventListener("DOMContentLoaded", () => {
             p7.innerHTML = `<strong>Proposal File:</strong> <a href="https://www.bycig.org/${proposal.proposal_file}">View</a>`;
 
             divElement.append(p1,p2,p3,p4,p5,p6,p7);
-        })
-    } else {
-        const message = "JWT Token not provieded."
-        window.location.href = `redirect.php?message=${message}&message_type=error`
-    }
-});
+    })
+
+};
 
 function handleSubmit(acceptOrDecline) {
     if (acceptOrDecline !== "accept" && acceptOrDecline !== "decline") {
