@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="static/css/index.css">
 </head>
 <body>
+    <button id="main-btn" onclick="goToSubmitProposal()">Make a proposal submission</button>
     <p id="loader">Loading...</p>
     <div id="grid-container"></div>
 </body>

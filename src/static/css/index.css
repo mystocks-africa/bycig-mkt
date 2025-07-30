@@ -142,3 +142,7 @@ button:disabled {
     background-color: #fff;
     cursor: pointer;
 }
+
+#main-btn {
+  margin-top: 20px;
+}

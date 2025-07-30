@@ -22,3 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
             alert("Failed to load proposals:", err);
         });
 });
+
+function goToSubmitProposal() {
+    window.location.href = 'submit_proposal.php'
+}
