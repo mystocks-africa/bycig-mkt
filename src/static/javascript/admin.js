@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
             p6.innerHTML = `<strong>Target Price:</strong> ${proposal.target_price}`;
 
             const p7 = document.createElement("p");
-            p7.innerHTML = `<strong>Proposal File:</strong> <a href="${proposal.proposal_file}" target="_blank">View</a>`;
+            p7.innerHTML = `<strong>Proposal File:</strong> <a href="https://www.bycig.org/${proposal.proposal_file}">View</a>`;
 
             divElement.append(p1,p2,p3,p4,p5,p6,p7);
         })
