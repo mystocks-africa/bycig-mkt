@@ -9,6 +9,8 @@ use Firebase\JWT\Key;
 
 $JWT_TOKEN = filter_input(INPUT_GET, "jwt", FILTER_SANITIZE_SPECIAL_CHARS);
 
+header('Content-Type: application/json');
+
 if (!$JWT_TOKEN) {
     http_response_code(400);
     echo json_encode(["error" => "Missing JWT token"]);

@@ -2,6 +2,8 @@
 include '../utils/env.php';
 include '../utils/database.php';
 
+header('Content-Type: application/json');
+
 $DECLINE_OR_ACCEPT_PROPOSAL = filter_input(INPUT_POST, "decline_or_accept", FILTER_SANITIZE_SPECIAL_CHARS);
 
 if (!in_array($DECLINE_OR_ACCEPT_PROPOSAL, ["accept", "decline"])) {
