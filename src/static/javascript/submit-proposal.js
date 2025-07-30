@@ -41,7 +41,7 @@ function fetchNewStockBatch() {
         current_batch_number: currentBatchNumber
     });
 
-    fetch(`/src/cache/stock_cache.php?${params.toString()}`, {
+    fetch(`cache/stock_cache.php?${params.toString()}`, {
         headers: {
             'X-Requested-With': 'XMLHttpRequest'
         }
@@ -78,7 +78,7 @@ function fetchNewStockBatch() {
 }
 
 function fetchClusterLeaders() {
-    fetch("cluster_leader.php")
+    fetch("json-api/cluster_leader.php")
     .then(response => response.json())
     .then(clusterLeader => {
         const dropdown = document.getElementById("leaderSelect")

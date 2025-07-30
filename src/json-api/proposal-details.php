@@ -1,0 +1,34 @@
+<?php
+include '../utils/database.php';
+
+$request_method = $_SERVER["REQUEST_METHOD"];
+$PROPOSAL_ID = filter_input(INPUT_GET,  "proposal_id", FILTER_SANITIZE_SPECIAL_CHARS);  
+
+if (isset($PROPOSAL_ID) && $request_method == "GET") {
+    header('Content-Type: application/json');
+
+    $get_proposal_query = "
+        SELECT email, stock_ticker, stock_name, subject_line, thesis, bid_price, target_price, proposal_file, status
+        FROM wp_2_proposals 
+        WHERE post_id = ? 
+        LIMIT 1;         
+    ";
+
+    try {
+        $stmt = $mysqli->prepare($get_proposal_query);
+        $stmt->bind_param("i", $PROPOSAL_ID);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $get_proposal_info = $result->fetch_assoc();
+        
+        $get_proposal_info_json = json_encode($get_proposal_info);
+        echo $get_proposal_info_json;
+    } catch (Exception $error) {
+        $error_message = json_encode([
+            "error"=> $error->getMessage()
+        ]);
+
+        echo $error_message;
+    }
+
+} 
