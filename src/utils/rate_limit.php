@@ -8,7 +8,6 @@ function set_rate_limit() {
         'attempts' => 0,
         'expires_at' => $expires_at,
     ]);
-
     apcu_store("$ip:rate_limit", $new_payload, $ttl);
 }
 
