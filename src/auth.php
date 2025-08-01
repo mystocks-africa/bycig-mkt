@@ -3,135 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Form</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 400px;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-        
-        .login-container {
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        h2 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 30px;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 5px;
-            color: #555;
-            font-weight: bold;
-        }
-        
-        input[type="email"], input[type="password"] {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 16px;
-            box-sizing: border-box;
-        }
-        
-        input[type="email"]:focus, input[type="password"]:focus {
-            outline: none;
-            border-color: #007bff;
-            box-shadow: 0 0 5px rgba(0,123,255,0.3);
-        }
-        
-        .login-btn {
-            width: 100%;
-            padding: 12px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        
-        .login-btn:hover {
-            background-color: #0056b3;
-        }
-        
-        .login-btn:disabled {
-            background-color: #6c757d;
-            cursor: not-allowed;
-        }
-        
-        .message {
-            margin-top: 15px;
-            padding: 10px;
-            border-radius: 4px;
-            text-align: center;
-        }
-        
-        .error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-        
-        .success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-        
-        .loading {
-            background-color: #d1ecf1;
-            color: #0c5460;
-            border: 1px solid #bee5eb;
-        }
-    </style>
+    <title>Login / Sign Up</title>
 </head>
 <body>
-    <div class="login-container">
-        <h2>Login</h2>
-        <form id="loginForm">
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-            </div>
+    <div class="auth-container">
+        <!-- Login Form -->
+        <div id="loginContainer" class="form-container">
+            <h2>Login</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email:</label>
+                    <input type="email" id="loginEmail" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="loginPassword">Password:</label>
+                    <input type="password" id="loginPassword" name="password" required>
+                </div>
+                
+                <button type="submit" class="auth-btn" id="loginBtn">Login</button>
+            </form>
             
-            <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
-            </div>
+            <div id="loginMessage" class="message" style="display: none;"></div>
             
-            <button type="submit" class="login-btn" id="loginBtn">Login</button>
-        </form>
-        
-        <div id="message" class="message" style="display: none;"></div>
+            <p class="switch-form">
+                Don't have an account? 
+                <a href="#" id="showSignup">Sign up here</a>
+            </p>
+        </div>
+
+        <!-- Sign Up Form -->
+        <div id="signupContainer" class="form-container" style="display: none;">
+            <h2>Sign Up</h2>
+            <form id="signupForm">
+                <div class="form-group">
+                    <label for="signupName">Full Name:</label>
+                    <input type="text" id="signupName" name="name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="signupEmail">Email:</label>
+                    <input type="email" id="signupEmail" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="signupPassword">Password:</label>
+                    <input type="password" id="signupPassword" name="password" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password:</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" required>
+                </div>
+                
+                <button type="submit" class="auth-btn" id="signupBtn">Sign Up</button>
+            </form>
+            
+            <div id="signupMessage" class="message" style="display: none;"></div>
+            
+            <p class="switch-form">
+                Already have an account? 
+                <a href="#" id="showLogin">Login here</a>
+            </p>
+        </div>
     </div>
 
     <script>
+        // Form switching functionality
+        document.getElementById('showSignup').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('loginContainer').style.display = 'none';
+            document.getElementById('signupContainer').style.display = 'block';
+            clearMessages();
+        });
+
+        document.getElementById('showLogin').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('signupContainer').style.display = 'none';
+            document.getElementById('loginContainer').style.display = 'block';
+            clearMessages();
+        });
+
+        // Login form handler
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
             const loginBtn = document.getElementById('loginBtn');
-            const messageDiv = document.getElementById('message');
+            const messageDiv = document.getElementById('loginMessage');
             
             // Show loading state
             loginBtn.disabled = true;
             loginBtn.textContent = 'Logging in...';
-            showMessage('Authenticating...', 'loading');
+            showMessage('Authenticating...', 'loading', 'loginMessage');
             
             try {
                 const response = await fetch('json-api/auth.php', {
@@ -140,6 +105,7 @@
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
+                        action: 'login',
                         email: email,
                         password: password
                     })
@@ -148,7 +114,7 @@
                 const data = await response.json();
                 
                 if (response.ok && data.success) {
-                    showMessage('Login successful!', 'success');
+                    showMessage('Login successful!', 'success', 'loginMessage');
                     
                     // Store token if provided
                     if (data.token) {
@@ -162,34 +128,102 @@
                     }, 1500);
                     
                 } else {
-                    showMessage(data.message || 'Login failed. Please try again.', 'error');
+                    showMessage(data.message || 'Login failed. Please try again.', 'error', 'loginMessage');
                 }
                 
             } catch (error) {
                 console.error('Login error:', error);
-                showMessage('Network error. Please check your connection and try again.', 'error');
+                showMessage('Network error. Please check your connection and try again.', 'error', 'loginMessage');
             } finally {
                 // Reset button state
                 loginBtn.disabled = false;
                 loginBtn.textContent = 'Login';
             }
         });
+
+        // Sign up form handler
+        document.getElementById('signupForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const signupBtn = document.getElementById('signupBtn');
+            
+            // Validate passwords match
+            if (password !== confirmPassword) {
+                showMessage('Passwords do not match.', 'error', 'signupMessage');
+                return;
+            }
+            
+            // Show loading state
+            signupBtn.disabled = true;
+            signupBtn.textContent = 'Creating Account...';
+            showMessage('Creating your account...', 'loading', 'signupMessage');
+            
+            try {
+                const response = await fetch('json-api/auth.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: 'signup',
+                        name: name,
+                        email: email,
+                        password: password
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok && data.success) {
+                    showMessage('Account created successfully! Please log in.', 'success', 'signupMessage');
+                    
+                    // Clear form
+                    document.getElementById('signupForm').reset();
+                    
+                    // Switch to login form after delay
+                    setTimeout(() => {
+                        document.getElementById('signupContainer').style.display = 'none';
+                        document.getElementById('loginContainer').style.display = 'block';
+                        clearMessages();
+                    }, 2000);
+                    
+                } else {
+                    showMessage(data.message || 'Sign up failed. Please try again.', 'error', 'signupMessage');
+                }
+                
+            } catch (error) {
+                console.error('Sign up error:', error);
+                showMessage('Network error. Please check your connection and try again.', 'error', 'signupMessage');
+            } finally {
+                // Reset button state
+                signupBtn.disabled = false;
+                signupBtn.textContent = 'Sign Up';
+            }
+        });
         
-        function showMessage(text, type) {
-            const messageDiv = document.getElementById('message');
+        function showMessage(text, type, messageId) {
+            const messageDiv = document.getElementById(messageId);
             messageDiv.textContent = text;
             messageDiv.className = 'message ' + type;
             messageDiv.style.display = 'block';
         }
         
-        // Clear message when user starts typing
-        document.getElementById('email').addEventListener('input', clearMessage);
-        document.getElementById('password').addEventListener('input', clearMessage);
-        
-        function clearMessage() {
-            const messageDiv = document.getElementById('message');
-            messageDiv.style.display = 'none';
+        function clearMessages() {
+            document.getElementById('loginMessage').style.display = 'none';
+            document.getElementById('signupMessage').style.display = 'none';
         }
+        
+        // Clear messages when user starts typing
+        document.getElementById('loginEmail').addEventListener('input', () => clearMessages());
+        document.getElementById('loginPassword').addEventListener('input', () => clearMessages());
+        document.getElementById('signupName').addEventListener('input', () => clearMessages());
+        document.getElementById('signupEmail').addEventListener('input', () => clearMessages());
+        document.getElementById('signupPassword').addEventListener('input', () => clearMessages());
+        document.getElementById('confirmPassword').addEventListener('input', () => clearMessages());
     </script>
 </body>
 </html>
