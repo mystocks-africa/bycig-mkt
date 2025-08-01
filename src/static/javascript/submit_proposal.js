@@ -78,7 +78,7 @@ function fetchNewStockBatch() {
 }
 
 function fetchClusterLeaders() {
-    fetch("json-api/cluster_leader.php")
+    fetch("json-api/proposal/cluster_leader.php")
     .then(response => response.json())
     .then(clusterLeader => {
         const dropdown = document.getElementById("leaderSelect")
