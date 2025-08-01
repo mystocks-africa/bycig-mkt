@@ -7,7 +7,8 @@ if ($request_method == "POST") {
     $full_name = filter_input(INPUT_POST, 'full_name', FILTER_SANITIZE_SPECIAL_CHARS);
     $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
     $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_SPECIAL_CHARS);
-    
+    $hash_password = password_hash($password, PASSWORD_DEFAULT);
+
     $post_user_query = "
         INSERT INTO users (full_name, email, pwd)
         VALUES (?, ?, ?)
@@ -19,7 +20,7 @@ if ($request_method == "POST") {
             "sss", 
             $full_name,
             $email, 
-            $password
+            $hash_password
         );
         $stmt->execute();
         $stmt->close();
