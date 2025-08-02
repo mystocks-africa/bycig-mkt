@@ -2,7 +2,7 @@
   $session_id_cookie = $_COOKIE['session_id'] ?? null;
 
   if (isset($session_id_cookie)) {
-    header("Location: logout.php");
+    header("Location: signout.php");
     exit();
   }
 ?>
