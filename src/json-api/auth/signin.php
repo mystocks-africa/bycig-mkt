@@ -20,6 +20,7 @@ function assign_session($role, $user_id) {
 if ($request_method == "POST") {
     $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
     $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
+    $hash_password = password_hash($password, PASSWORD_DEFAULT);
 
     $get_user_query = "
         SELECT id, role
@@ -29,7 +30,11 @@ if ($request_method == "POST") {
     ";
 
     $stmt = $mysqli->prepare("");
-    $stmt->bind_param("ss", $email);
+    $stmt->bind_param(
+        "ss", 
+        $email,
+        $hash_password
+    );
     $stmt->execute();
     $result = $stmt->get_result();
     $user = $result->fetch_assoc();
