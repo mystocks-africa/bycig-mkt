@@ -19,10 +19,10 @@ $user = $parsed['user'];
 $pass = $parsed['pass'];
 $dbname = ltrim($parsed['path'], '/'); 
 
-$mysqli = new mysqli($host, $user, $pass, $dbname, $port);
-
-if ($mysqli->connect_errno) {
-    die("Failed to connect to MySQL: " . $mysqli->connect_error);
+try {
+    $mysqli = new mysqli($host, $user, $pass, $dbname, $port);
+    $mysqli->set_charset("utf8mb4");
+} catch (Exception $error) {
+    echo $error->getMessage();
 }
 
-$mysqli->set_charset("utf8mb4");
