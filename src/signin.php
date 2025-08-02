@@ -12,6 +12,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Sign In</title>
+  <link rel="stylesheet" href="static/css/index.css">
 </head>
 <body>
   <h1>Sign In</h1>

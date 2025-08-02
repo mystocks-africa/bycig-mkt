@@ -1,6 +1,7 @@
 <?php
   $session_id_cookie = $_COOKIE["session_id"] ?? null;
-
+  echo $session_id_cookie;
+  
   if (empty($session_id_cookie)) {
     header("Location: signin.php");
     exit();
@@ -15,6 +16,8 @@
     <title>Sign Out</title>
 </head>
 <body>
-    <button>Sign out</button>
+    <form action="json-api/auth/signout.php" method="get">
+      <button type="submit">Sign out</button>
+    </form>
 </body>
 </html>
