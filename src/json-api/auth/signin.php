@@ -19,7 +19,7 @@ function assign_session($role, $user_id) {
 
 if ($request_method == "POST") {
     $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-    $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
+    $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_SPECIAL_CHARS);
     $hash_password = password_hash($password, PASSWORD_DEFAULT);
 
     $get_user_query = "
