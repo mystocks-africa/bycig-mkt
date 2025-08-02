@@ -1,6 +1,5 @@
 <?php
   $session_id_cookie = $_COOKIE["session_id"] ?? null;
-  echo $session_id_cookie;
   
   if (empty($session_id_cookie)) {
     header("Location: signin.php");

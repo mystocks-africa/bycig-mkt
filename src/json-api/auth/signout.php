@@ -9,7 +9,7 @@ $session = $memcached->get($session_id_cookie);
 $request_method = $_SERVER["REQUEST_METHOD"];
 
 if ($request_method == "GET" && isset($session)) {
-    $session->delete($session_id_cookie);
+    $memcached->delete($session_id_cookie);
     setcookie('session_id', "", 0,'/');
 } else if ($request_method == "GET" && empty($session_id_cookie)) {
     echo json_encode([
