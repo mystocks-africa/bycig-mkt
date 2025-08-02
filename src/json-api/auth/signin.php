@@ -20,27 +20,25 @@ function assign_session($role, $email) {
 if ($request_method == "POST") {
     $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
     $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_SPECIAL_CHARS);
-    $hash_password = password_hash($password, PASSWORD_DEFAULT);
 
     $get_user_query = "
-        SELECT email, role
+        SELECT email, pwd, role
         FROM users 
-        WHERE email = ? AND password = ?
+        WHERE email = ?
         LIMIT 1;
     ";
 
     $stmt = $mysqli->prepare($get_user_query);
     $stmt->bind_param(
-        "ss", 
+        "s", 
         $email,
-        $hash_password
     );
     $stmt->execute();
     $result = $stmt->get_result();
     $user = $result->fetch_assoc();
     $stmt->close();
 
-    if (isset($user)) {
+    if (isset($user) && password_verify($password, $user['pwd'])) {
         $session_id = assign_session($user['role'], $user['email']);
         setcookie('session_id', $session_id, time() + (86400 *24*60*60),'/');
         echo json_encode([
