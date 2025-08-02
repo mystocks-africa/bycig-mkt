@@ -1,27 +1,18 @@
 <?php 
-// Not SQLite database, it is the main MySQL database (conn logic)
-include "../../utils/database.php";
-$request_method = $_SERVER["REQUEST_METHOD"];
+$BASE_DIR = __DIR__ . "/../../";
 
-$session_db = new SQLite3(filename: "sessions.db");
+include $BASE_DIR . "utils/database.php";
+include $BASE_DIR . "utils/memcached.php";
+
+$request_method = $_SERVER["REQUEST_METHOD"];
+$EXPIRATION_DAYS = 60*60*24*30; // 30 days
 
 function assign_session($role, $user_id) {
-    global $session_db;
-
+    global $memcached;
+    global $EXPIRATION_DAYS;
+    
     $session_id = bin2hex(random_bytes(32)); // 64 character hex string
-    
-    $stmt = $session_db->prepare("
-        INSERT INTO sessions (session_id, user_id, role, created_at)
-        VALUES (?, ?, ?, CURRENT_TIMESTAMP)
-    ");
-    
-    $stmt->bindValue(1, $session_id, SQLITE3_TEXT);
-    $stmt->bindValue(1, $role, SQLITE3_TEXT);
-    $stmt->bindValue(2, $user_id, SQLITE3_INTEGER);
-    
-    $stmt->execute();
-    
-    $session_db->close();
+    $memcached->set($session_id, "$user_id, $role", $EXPIRATION_DAYS);
     
     return $session_id;
 }
