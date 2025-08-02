@@ -1,7 +1,7 @@
 <?php
-  $session_coookie = $_COOKIE["session_id"] ?? null;
+  $session_id_cookie = $_COOKIE["session_id"] ?? null;
 
-  if (empty($session_cookie)) {
+  if (empty($session_id_cookie)) {
     header("Location: signin.php");
     exit();
   }
@@ -12,7 +12,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Sign Out</title>
 </head>
 <body>
     <button>Sign out</button>
