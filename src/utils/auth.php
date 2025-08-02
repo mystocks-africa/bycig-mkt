@@ -17,7 +17,7 @@ function get_session() {
 }
 
 // Serverside check uses the actual memcached session to check
-function serverside_check_auth () {
+function serverside_check_auth() {
     global $memcached;
 
     $session_id = $_COOKIE["session_id"] ?? null;
@@ -26,7 +26,7 @@ function serverside_check_auth () {
 }
 
 // Clientside check only uses cookies
-function clientside_check_auth () {
+function clientside_check_auth() {
     $session_id_cookie = $_COOKIE["session_id"] ?? null;
 
     if (isset($session_id_cookie)) return true;
