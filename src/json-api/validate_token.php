@@ -1,8 +1,13 @@
 <?php
-require '../vendor/autoload.php';
-include '../utils/env.php';
-include '../utils/database.php';
-include '../utils/redirection.php';
+$BASE_DIR = __DIR__ . "../";
+require $BASE_DIR . 'vendor/autoload.php';
+
+include $BASE_DIR . 'utils/auth.php';
+include $BASE_DIR . 'utils/env.php';
+include $BASE_DIR . 'utils/database.php';
+include $BASE_DIR . 'utils/redirection.php';
+
+serverside_check_auth();
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;

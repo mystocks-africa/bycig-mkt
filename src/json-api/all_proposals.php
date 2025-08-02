@@ -1,5 +1,10 @@
 <?php
-include '../utils/database.php';
+$BASE_DIR = __DIR__ ."../";
+
+include $BASE_DIR . 'utils/auth.php';
+include $BASE_DIR . 'utils/database.php';
+
+serverside_check_auth();
 
 $request_method = $_SERVER['REQUEST_METHOD'];
 

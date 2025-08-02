@@ -22,7 +22,12 @@ function serverside_check_auth() {
 
     $session_id = $_COOKIE["session_id"] ?? null;
     $session = $memcached->get($session_id);
-    if (empty($session)) exit();
+    if (empty($session)) {
+        echo json_encode([
+            "error" => "Unauthenticated. Please log in and try again."
+        ]);
+        exit();
+    };
 }
 
 // Clientside check only uses cookies

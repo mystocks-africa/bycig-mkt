@@ -1,6 +1,11 @@
 <?php
-include '../utils/database.php';
-include '../utils/session_details.php';
+$BASE_DIR = __DIR__ . "../";
+
+include $BASE_DIR . 'utils/auth.php';
+include $BASE_DIR . 'utils/database.php';
+include $BASE_DIR . 'utils/session_details.php';
+
+serverside_check_auth();
 
 $request_method = $_SERVER["REQUEST_METHOD"];
 $PROPOSAL_ID = filter_input(INPUT_GET,  "proposal_id", FILTER_SANITIZE_SPECIAL_CHARS);  

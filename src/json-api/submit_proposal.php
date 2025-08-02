@@ -1,9 +1,14 @@
 <?php
-require '../vendor/autoload.php';
-include '../utils/database.php';
-include '../utils/env.php';
-include '../utils/redirection.php';
-include '../utils/rate_limit.php';
+$BASE_DIR = __DIR__ . "../";
+require $BASE_DIR . 'vendor/autoload.php';
+
+include $BASE_DIR . 'utils/auth.php';
+include $BASE_DIR . 'utils/database.php';
+include $BASE_DIR . 'utils/env.php';
+include $BASE_DIR . 'utils/redirection.php';
+include $BASE_DIR . 'utils/rate_limit.php';
+
+serverside_check_auth();
 
 use PHPMailer\PHPMailer\PHPMailer;
 use Firebase\JWT\JWT;

@@ -1,7 +1,13 @@
 <?php
-include '../utils/env.php';
-include '../utils/database.php';
-include '../utils/session_details.php';
+
+$BASE_DIR = __DIR__ . "../";
+
+include $BASE_DIR . 'utils/auth.php';
+include $BASE_DIR . 'utils/env.php';
+include $BASE_DIR . 'utils/database.php';
+include $BASE_DIR . 'utils/session_details.php';
+
+serverside_check_auth();
 
 header('Content-Type: application/json');
 
