@@ -41,9 +41,10 @@ class AuthController extends Controller
         }
     }
 
-    private function clearSession($session_id) 
+    private function clearSession() 
     {
         try {
+            $session_id = $_COOKIE['session_id'];
             $this->memcached->delete($session_id);
             return true;
         } catch (Exception $error) {
@@ -113,5 +114,11 @@ class AuthController extends Controller
         } catch (Exception $error) {
             parent::redirectToResult("Problem in signing up. Try again.", "error");
         }
+    }
+    public function signOutPost() {
+        parent::redirectIfNotAuth();
+
+        $this->clearSession();
+        $this->clearSessionCookie();
     }
 }
