@@ -57,12 +57,12 @@ class AuthController extends Controller
 
     public function signIn()
     {
-        parent::redirectAuth();
+        parent::redirectIfAuth();
         parent::render('signIn');
     }
 
     public function signInPost() {
-        parent::redirectAuth();
+        parent::redirectIfAuth();
 
         $email = trim(filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL));
         $pwd = trim(filter_input(INPUT_POST, 'password', FILTER_SANITIZE_SPECIAL_CHARS));
@@ -79,18 +79,18 @@ class AuthController extends Controller
 
     public function signUp()
     {
-        parent::redirectAuth();
+        parent::redirectIfAuth();
         parent::render('signUp');
     }
 
     public function signUpPost() 
     {
-        parent::redirectAuth();
+        parent::redirectIfAuth();
     }
 
     public function signOut() 
     {
-        parent::redirectNotAuth();
+        parent::redirectIfNotAuth();
         parent::render('signOut');
     }
 }

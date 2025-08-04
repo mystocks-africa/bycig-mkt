@@ -25,7 +25,7 @@ class Controller
         return $session;
     }
 
-    protected function redirectAuth() {
+    protected function redirectIfAuth() {
         $session = $this->getSession();
 
         if ($session) {
@@ -34,7 +34,7 @@ class Controller
         }
     }
 
-protected function redirectNotAuth() {
+protected function redirectIfNotAuth() {
     $session = $this->getSession();
     
     if (!$session) {
