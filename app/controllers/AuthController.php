@@ -92,6 +92,28 @@ class AuthController extends Controller
     public function signUpPost() 
     {
         parent::redirectIfAuth();
+
+        try {
+            $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+            $pwd = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_SPECIAL_CHARS);
+            $clusterLeader = filter_input(INPUT_POST, 'cluster_leader', FILTER_SANITIZE_SPECIAL_CHARS);
+            $fullName = filter_input(INPUT_POST, 'full_name', FILTER_SANITIZE_SPECIAL_CHARS);
+
+            $hashPwd = password_hash($pwd, PASSWORD_DEFAULT);
+
+            $user = new User($email, $hashPwd, $clusterLeader, $fullName);
+            $user->createUser();
+
+            return json_encode([
+                "success" => true 
+            ]);
+        } catch (Exception $error) {
+            return json_encode([
+                "error"=> true,
+                "errorMessage"=> $error->getMessage()
+            ]);
+        }
+
     }
 
     public function signOut() 
