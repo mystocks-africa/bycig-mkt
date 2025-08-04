@@ -11,4 +11,9 @@ class HomeController extends Controller
 
         parent::render('index');
     }
+
+    public function favicon()
+    {
+        parent::render('favicon');
+    }
 }
