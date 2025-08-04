@@ -11,7 +11,12 @@ use Exception;
 
 class AuthController extends Controller
 {   
-    private $memcached = $memcached;
+    private $memcached;
+
+    public function __construct() {
+        global $memcached;
+        $this->memcached = $memcached;
+    }
 
     private function assignSession($email, $role) {
         $EXPIRATION_DAYS = 60*60*24*30; // 30 days in seconds
