@@ -11,9 +11,12 @@ $router = new Router();
 
 $router->get('/', HomeController::class, 'index');
 $router->get('/favicon.ico', HomeController::class, 'favicon');
+$router->get('/redirect', HomeController::class, 'redirect');
 
 $router->get('/signup', AuthController::class,'signUp');
 $router->get('/signin', AuthController::class, 'signIn');
 $router->get('/signout', AuthController::class,'signOut');
+
+$router->post('/signin', AuthController::class,'signInPost');
 
 $router->dispatch();

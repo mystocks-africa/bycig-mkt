@@ -2,7 +2,7 @@
 namespace App\Models;
 
 use Exception;
-include_once "../../utils/database.php";
+include_once __DIR__ . "/../../utils/database.php";
 
 // SQL statements
 $get_user_query = "

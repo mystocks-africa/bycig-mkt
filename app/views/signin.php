@@ -3,11 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <title>Sign In</title>
-  <link rel="stylesheet" href="static/css/index.css">
 </head>
 <body>
   <h1>Sign In</h1>
-  <form action="json-api/auth/signin.php" method="post">
+  <form action="/signin" method="post">
     <label for="email">Email:</label>
     <input type="email" id="email" name="email"><br><br>
 

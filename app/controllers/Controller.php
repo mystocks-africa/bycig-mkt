@@ -1,6 +1,7 @@
 <?php
 
 namespace App;
+include_once __DIR__ . "/../../utils/memcached.php";
 
 class Controller
 {
@@ -11,21 +12,48 @@ class Controller
         include __DIR__ . "/../views/$view.php";
     }
 
-    protected function redirectAuth() {
-        $session_id_cookie = $_COOKIE['session_id'] ?? null;
+    private function getSession() {
+        global $memcached;
 
-        if (isset($session_id_cookie)) {
+        // check if session_id cookie is set and not empty
+        if (empty($_COOKIE["session_id"])) {
+            return false;
+        }
+
+        $session_id_cookie = $_COOKIE["session_id"];
+        $session = $memcached->get($session_id_cookie);
+        return $session;
+    }
+
+    protected function redirectAuth() {
+        $session = $this->getSession();
+
+        if ($session) {
             header("Location: signout");
             exit();
         }
     }
 
-    protected function redirectNotAuth() {
-        $session_id_cookie = $_COOKIE['session_idd'] ?? null;
+protected function redirectNotAuth() {
+    $session = $this->getSession();
+    
+    if (!$session) {
+        // For debugging - optional
+        echo 'session is not set';
+        // Redirect to signin
+        header("Location: signin");
+        exit();
+    }
 
-        if (!isset($session_id_cookie)) {
-            header("Location: signin");
-            exit();
+}
+
+
+    protected function redirectToResult($msg, $msgType) {
+        if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])) {
+            header("Location: index.php");
+            exit;  
         }
+
+        header("Location: redirect?message=$msg&message_type=$msgType");
     }
 }

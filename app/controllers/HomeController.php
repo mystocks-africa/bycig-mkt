@@ -17,4 +17,8 @@ class HomeController extends Controller
         parent::redirectNotAuth();
         parent::render('favicon');
     }
+
+    public function redirect() {
+        parent::render('redirect');
+    }
 }
