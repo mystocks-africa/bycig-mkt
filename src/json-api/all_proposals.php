@@ -12,8 +12,10 @@ if ($request_method == "GET") {
     header('Content-Type: application/json');
 
     $get_proposal_query = "
-        SELECT post_id, email, subject_line
+        SELECT post_id, subject_line, email, full_name 
         FROM proposals 
+        INNER JOIN users 
+        ON proposals.post_author = users.email;
     ";
 
     try {

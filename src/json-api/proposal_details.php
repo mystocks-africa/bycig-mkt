@@ -16,10 +16,11 @@ if (isset($ADMIN_PURPOSE) && $request_method == "GET") {
     $session = get_session_variables();
 
     $get_proposal_info_query = "
-        SELECT stock_ticker, stock_name, subject_line, thesis, bid_price, target_price, proposal_file
+        SELECT stock_ticker, stock_name, subject_line, thesis, bid_price, target_price, proposal_file, full_name 
         FROM proposals 
-        WHERE post_id = ? 
-        LIMIT 1;  
+        WHERE post_id = ?
+        INNER JOIN users 
+        ON proposals.post_author = users.email;
     ";
     try {
         $stmt = $mysqli->prepare($get_proposal_info_query);
@@ -47,10 +48,11 @@ else if (isset($PROPOSAL_ID) && $request_method == "GET") {
     header('Content-Type: application/json');
 
     $get_proposal_query = "
-        SELECT email, stock_ticker, stock_name, subject_line, thesis, bid_price, target_price, proposal_file, status
+        SELECT stock_ticker, stock_name, subject_line, thesis, bid_price, target_price, proposal_file, full_name, email
         FROM proposals 
-        WHERE post_id = ? 
-        LIMIT 1;         
+        INNER JOIN users 
+        ON proposals.post_author = users.email 
+        WHERE post_id = ?;
     ";
 
     try {
