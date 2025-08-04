@@ -1,6 +1,6 @@
 <?php 
 
-$BASE_DIR = __DIR__ . "../";
+$BASE_DIR = "../";
 
 include $BASE_DIR . 'utils/auth.php';
 include $BASE_DIR . 'utils/database.php'; 
@@ -13,24 +13,17 @@ if ($request_method === "GET") {
     header('Content-Type: application/json');
 
     $query = "
-        SELECT ID, user_login
-        FROM `wp_usermeta` 
-        INNER JOIN `wp_users` ON `wp_usermeta`.`user_id` = `wp_users`.`ID` 
-        WHERE `meta_key` = 'wp_capabilities' 
-        AND `meta_value` = 'a:1:{s:14:\"cluster-leader\";b:1;}';
+        SELECT email
+        FROM users
+        WHERE role = 'cluster_leader';
     ";
 
-
     if ($result = $mysqli->query($query)) {
-        $leaders = [];
+        $email = [];
         while ($row = $result->fetch_assoc()) {
-            array_push($leaders, [
-                'user_login' => $row['user_login'],
-                'id' => $row['ID']
-            ]);        
+            array_push($email, $row["email"]);       
         }
-        echo json_encode($leaders);
-        $result->free();
+        echo json_encode($email);
     } else {
         http_response_code(500);
         echo json_encode(["error" => $mysqli->error]);
@@ -39,5 +32,3 @@ if ($request_method === "GET") {
     $mysqli->close();
     exit();
 }
-
-exit();

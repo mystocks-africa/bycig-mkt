@@ -1,5 +1,5 @@
 <?php
-$BASE_DIR = __DIR__ ."../";
+$BASE_DIR = "../";
 
 include $BASE_DIR . 'utils/auth.php';
 include $BASE_DIR . 'utils/database.php';
@@ -12,8 +12,10 @@ if ($request_method == "GET") {
     header('Content-Type: application/json');
 
     $get_proposal_query = "
-        SELECT post_id, email, subject_line
-        FROM wp_2_proposals 
+        SELECT post_id, subject_line, email, full_name 
+        FROM proposals 
+        INNER JOIN users 
+        ON proposals.post_author = users.email;
     ";
 
     try {

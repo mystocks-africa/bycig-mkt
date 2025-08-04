@@ -10,28 +10,14 @@
 <body id="submit-proposal-body">
     <h1>Submit Your Stock Proposal</h1>
     <form method="post" enctype="multipart/form-data" action="json-api/submit_proposal.php">
-        <label for="email">Email Address:</label><br>
-        <input type="email" id="email" name="email" required><br><br>
-
         <label>Choose your Cluster Leader:</label>
         <select id="leaderSelect" name="cluster_leader_id">
             <option value="">Select your leader</option>
         </select>
         <br><br>
 
-        <input type="radio" id="useSelect" name="stock_option" value="select" checked onchange="toggleStockInput()">
-        <label for="useSelect">Choose from list:</label>
-        <select id="stockSelect" name="stock_ticker">
-            <option value="">Loading stocks...</option>
-        </select>
-        <br><br>
-
-        <input type="radio" id="useCustom" name="stock_option" value="custom" onchange="toggleStockInput()">
-        <label for="useCustom">Can't find your ticker? Enter a custom one:</label>
-        <input type="text" id="customStock" name="stock_ticker" placeholder="e.g. AAPL, TSLA" disabled>
-        <br><br>
-
-        <button id="fetchNewStockBtn" type="button" onclick="fetchNewStockBatch()">Fetch more stocks</button>
+        <label>Your Stock Ticker:</label>
+            <input type="text" id="customStock" name="stock_ticker" placeholder="e.g. AAPL, TSLA">
         <br><br>
 
         <label for="stock_name">Stock Name:</label><br>
