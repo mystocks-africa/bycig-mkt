@@ -1,29 +1,30 @@
 <?php
 namespace App\Models;
+include_once "../core/Dbh.php";
 
+use App\Dbh;
 use Exception;
-include_once __DIR__ . "/../../utils/database.php";
 
-// SQL statements
-$get_user_query = "
-    SELECT email, pwd, role
-    FROM users 
-    WHERE email = ?
-    LIMIT 1;
-";
-
-$post_user_query = "
-    INSERT INTO users (email, pwd, cluster_leader, full_name)
-    VALUES (?, ?, ?, ?)
-";
-
-class User
+class User extends Dbh
 {
     private string $email;
     private string $pwd;
     private string $cluster_leader; 
     private string $full_name; 
 
+    private string $get_user_query = "
+        SELECT email, pwd, role
+        FROM users 
+        WHERE email = ?
+        LIMIT 1;
+    ";
+
+    private string $post_user_query = "
+        INSERT INTO users (email, pwd, cluster_leader, full_name)
+        VALUES (?, ?, ?, ?)
+    ";
+
+    // Constructor with mysqli injection
     public function __construct(string $email, string $pwd, string $cluster_leader, string $full_name) {
         $this->email = $email;
         $this->pwd = $pwd;
@@ -32,10 +33,10 @@ class User
     }
 
     public function createUser() {
-        global $mysqli, $post_user_query;
-
         try {
-            $stmt = $mysqli->prepare($post_user_query);
+            parent::connect();
+
+            $stmt = parent::$mysqli->prepare($this->post_user_query);
             $stmt->bind_param(
                 "ssss", 
                 $this->email,
@@ -44,30 +45,32 @@ class User
                 $this->full_name
             );
             $stmt->execute();
-        } catch(Exception $error)  {
+            $stmt->close();
+            return true;
+        } catch(Exception $error) {
             return $error->getMessage();
         }
-
     }
 
-    public static function findByEmail(string $email) {
-        global $mysqli, $get_user_query;
+    public static function findByEmail(string $email) {        
+        $query = "
+            SELECT email, pwd, role
+            FROM users 
+            WHERE email = ?
+            LIMIT 1;
+        ";
 
         try {
-            $stmt = $mysqli->prepare($get_user_query);
-            $stmt->bind_param(
-                "s", 
-                $email,
-            );
+            parent::connect();
+            $stmt = parent::$mysqli->prepare($query);
+            $stmt->bind_param("s", $email);
             $stmt->execute();
             $result = $stmt->get_result();
             $user = $result->fetch_assoc();
             $stmt->close();
-
             return $user;
         } catch(Exception $error) {
             return $error->getMessage();
         }
-
     }
 }

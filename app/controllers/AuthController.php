@@ -11,12 +11,13 @@ use Exception;
 
 class AuthController extends Controller
 {   
+    private $memcached = $memcached;
+
     private function assignSession($email, $role) {
-        global $memcached;
         $EXPIRATION_DAYS = 60*60*24*30; // 30 days in seconds
         try {
             $session_id = bin2hex(random_bytes(32)); // 64 character hex string
-            $memcached->set($session_id, "$email, $role", $EXPIRATION_DAYS);
+            $this->memcached->set($session_id, "$email, $role", $EXPIRATION_DAYS);
             
             return $session_id;
         } catch(Exception $error) {
@@ -33,10 +34,8 @@ class AuthController extends Controller
     }
 
     private function clearSession($session_id) {
-        global $memcached;
-
         try {
-            $memcached->delete($session_id);
+            $this->memcached->delete($session_id);
             return true;
         } catch (Exception $error) {
             return $error->getMessage();
