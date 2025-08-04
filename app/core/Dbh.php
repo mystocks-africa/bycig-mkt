@@ -7,7 +7,8 @@ use Exception;
 class Dbh {
     protected static \mysqli $mysqli;
 
-    protected static function connect() {
+    protected static function connect() 
+    {
         global $env, $mysqli;
 
         $mysql_uri = $env["MYSQL_URI"] ?? null;

@@ -13,12 +13,14 @@ class AuthController extends Controller
 {   
     private $memcached;
 
-    public function __construct() {
+    public function __construct() 
+    {
         global $memcached;
         $this->memcached = $memcached;
     }
 
-    private function assignSession($email, $role) {
+    private function assignSession($email, $role) 
+    {
         $EXPIRATION_DAYS = 60*60*24*30; // 30 days in seconds
         try {
             $session_id = bin2hex(random_bytes(32)); // 64 character hex string
@@ -30,7 +32,8 @@ class AuthController extends Controller
         }
     }
 
-    private function assignSessionCookie($session_id) {
+    private function assignSessionCookie($session_id) 
+    {
         try {
             setcookie('session_id', $session_id);
         } catch(Exception $error) {
@@ -38,7 +41,8 @@ class AuthController extends Controller
         }
     }
 
-    private function clearSession($session_id) {
+    private function clearSession($session_id) 
+    {
         try {
             $this->memcached->delete($session_id);
             return true;
@@ -47,7 +51,8 @@ class AuthController extends Controller
         }
     }
 
-    private function clearSessionCookie() {
+    private function clearSessionCookie() 
+    {
         try {
             setcookie('session_id', '');
         } catch(Exception $error) {
@@ -61,7 +66,8 @@ class AuthController extends Controller
         parent::render('signIn');
     }
 
-    public function signInPost() {
+    public function signInPost() 
+    {
         parent::redirectIfAuth();
 
         $email = trim(filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL));

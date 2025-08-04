@@ -25,14 +25,16 @@ class User extends Dbh
     ";
 
     // Constructor with mysqli injection
-    public function __construct(string $email, string $pwd, string $cluster_leader, string $full_name) {
+    public function __construct(string $email, string $pwd, string $cluster_leader, string $full_name) 
+    {
         $this->email = $email;
         $this->pwd = $pwd;
         $this->cluster_leader = $cluster_leader;
         $this->full_name = $full_name;
     }
 
-    public function createUser() {
+    public function createUser() 
+    {
         try {
             parent::connect();
 
@@ -52,7 +54,8 @@ class User extends Dbh
         }
     }
 
-    public static function findByEmail(string $email) {        
+    public static function findByEmail(string $email) 
+    {        
         $query = "
             SELECT email, pwd, role
             FROM users 

@@ -12,7 +12,8 @@ class Controller
         include __DIR__ . "/../views/$view.php";
     }
 
-    private function getSession() {
+    private function getSession() 
+    {
         global $memcached;
 
         // check if session_id cookie is set and not empty
@@ -34,18 +35,20 @@ class Controller
         }
     }
 
-protected function redirectIfNotAuth() {
-    $session = $this->getSession();
-    
-    if (!$session) {
-        header("Location: signin");
-        exit();
+    protected function redirectIfNotAuth() 
+    {
+        $session = $this->getSession();
+        
+        if (!$session) {
+            header("Location: signin");
+            exit();
+        }
+
     }
 
-}
 
-
-    protected function redirectToResult($msg, $msgType) {
+    protected function redirectToResult($msg, $msgType) 
+    {
         if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])) {
             header("Location: index.php");
             exit;  
