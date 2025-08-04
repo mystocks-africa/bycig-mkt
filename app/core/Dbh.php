@@ -9,7 +9,7 @@ class Dbh {
 
     protected static function connect() 
     {
-        global $env, $mysqli;
+        global $env;
 
         $mysql_uri = $env["MYSQL_URI"] ?? null;
 
