@@ -60,12 +60,26 @@ class AuthController extends Controller
         }
     }
 
+    // Render views
     public function signIn()
     {
         parent::redirectIfAuth();
         parent::render('signIn');
     }
 
+    public function signOut() 
+    {
+        parent::redirectIfNotAuth();
+        parent::render('signOut');
+    }
+
+    public function signUp()
+    {
+        parent::redirectIfAuth();
+        parent::render('signUp');
+    }
+
+    // Backend logic (post methods)
     public function signInPost() 
     {
         parent::redirectIfAuth();
@@ -81,12 +95,6 @@ class AuthController extends Controller
         } else {
             parent::redirectToResult("Problem with logging in. Try again.", "error");
         } 
-    }
-
-    public function signUp()
-    {
-        parent::redirectIfAuth();
-        parent::render('signUp');
     }
 
     public function signUpPost() 
@@ -108,11 +116,5 @@ class AuthController extends Controller
         } catch (Exception $error) {
             parent::redirectToResult("Problem in signing up. Try again.", "error");
         }
-    }
-
-    public function signOut() 
-    {
-        parent::redirectIfNotAuth();
-        parent::render('signOut');
     }
 }
