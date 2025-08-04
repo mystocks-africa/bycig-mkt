@@ -8,12 +8,13 @@ class HomeController extends Controller
 {
     public function index()
     {
-
+        parent::redirectNotAuth();
         parent::render('index');
     }
 
     public function favicon()
     {
+        parent::redirectNotAuth();
         parent::render('favicon');
     }
 }
