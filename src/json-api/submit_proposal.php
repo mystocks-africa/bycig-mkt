@@ -1,9 +1,15 @@
 <?php
-require '../vendor/autoload.php';
-include '../utils/database.php';
-include '../utils/env.php';
-include '../utils/redirection.php';
-include '../utils/rate_limit.php';
+$BASE_DIR =  "../../";
+require  '../../vendor/autoload.php';
+
+include $BASE_DIR . 'utils/auth.php';
+include $BASE_DIR . 'utils/database.php';
+include $BASE_DIR . 'utils/env.php';
+include $BASE_DIR . 'utils/redirection.php';
+include $BASE_DIR . 'utils/rate_limit.php';
+include $BASE_DIR . 'utils/auth.php';
+
+serverside_check_auth();
 
 use PHPMailer\PHPMailer\PHPMailer;
 use Firebase\JWT\JWT;
@@ -111,7 +117,6 @@ redirect_to_result("Cannot add proposal at this moment. Limit reached for postin
 
 // Sanitize inputs
 $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-$cluster_leader_id = filter_input(INPUT_POST, 'cluster_leader_id', FILTER_VALIDATE_INT);
 $stock_ticker = filter_input(INPUT_POST, 'stock_ticker', FILTER_SANITIZE_SPECIAL_CHARS);
 $stock_name = filter_input(INPUT_POST, 'stock_name', FILTER_SANITIZE_SPECIAL_CHARS);
 $subject_line = filter_input(INPUT_POST, 'subject_line', FILTER_SANITIZE_SPECIAL_CHARS);
@@ -120,7 +125,7 @@ $bid_price = filter_input(INPUT_POST, 'bid_price', FILTER_VALIDATE_FLOAT);
 $target_price = filter_input(INPUT_POST, 'target_price', FILTER_VALIDATE_FLOAT);
 $file = $_FILES["proposal_file"] ?? null;
 
-if (!$email || !$cluster_leader_id || !$stock_ticker || !$stock_name || !$subject_line
+if (!$email || !$stock_ticker || !$stock_name || !$subject_line
 || !$thesis || $bid_price === false || $target_price === false || !isset($file)) {
 $message = "All fields are required and must be valid.";
 redirect_to_result($message, "error");
@@ -162,9 +167,9 @@ $stmt->close();
 
 $insert_proposal_query = "
 INSERT INTO wp_2_proposals (
-post_author, full_name, email, cluster_leader_id, stock_ticker, stock_name,
+post_author, stock_ticker, stock_name,
 subject_line, thesis, bid_price, target_price, proposal_file
-) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
 ";
 
 
@@ -172,9 +177,6 @@ $stmt = $mysqli->prepare($insert_proposal_query);
 $stmt->bind_param(
 'ississsssds',
 $post_author_id,
-$post_author_name,
-$email,
-$cluster_leader_id,
 $stock_ticker,
 $stock_name,
 $subject_line,
@@ -196,3 +198,5 @@ email_cluster_leader($cluster_leader_id, $proposal_id);
 redirect_to_result("Thank you for contributing to BYCIG's platform!", "success");
 
 $mysqli->close();
+
+echo get_session();

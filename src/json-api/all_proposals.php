@@ -1,5 +1,10 @@
 <?php
-include '../utils/database.php';
+$BASE_DIR = __DIR__ ."../";
+
+include $BASE_DIR . 'utils/auth.php';
+include $BASE_DIR . 'utils/database.php';
+
+serverside_check_auth();
 
 $request_method = $_SERVER['REQUEST_METHOD'];
 
@@ -8,7 +13,7 @@ if ($request_method == "GET") {
 
     $get_proposal_query = "
         SELECT post_id, email, subject_line
-        FROM wp_2_proposals 
+        FROM proposals 
     ";
 
     try {

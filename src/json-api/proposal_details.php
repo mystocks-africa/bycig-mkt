@@ -10,17 +10,16 @@ if (isset($ADMIN_PURPOSE) && $request_method == "GET") {
     $session = get_session_variables();
 
     $get_proposal_info_query = "
-        SELECT email, stock_ticker, stock_name, subject_line, thesis, bid_price, target_price, proposal_file
-        FROM wp_2_proposals 
-        WHERE post_id = ? AND cluster_leader_id = ?
+        SELECT stock_ticker, stock_name, subject_line, thesis, bid_price, target_price, proposal_file
+        FROM proposals 
+        WHERE post_id = ? 
         LIMIT 1;  
     ";
     try {
         $stmt = $mysqli->prepare($get_proposal_info_query);
         $stmt->bind_param(
-            "ii",
+            "i",
             $session["proposal_id"],
-            $session["cluster_leader_id"]
         );
         $stmt->execute();
         $result = $stmt->get_result();
