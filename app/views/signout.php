@@ -6,7 +6,7 @@
     <title>Sign Out</title>
 </head>
 <body>
-    <form action="/signout" method="get">
+    <form action="/signout" method="post">
       <button type="submit">Sign out</button>
     </form>
 </body>
