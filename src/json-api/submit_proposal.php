@@ -1,13 +1,13 @@
 <?php
-$BASE_DIR =  "../../";
-require  '../../vendor/autoload.php';
+$BASE_DIR =  "../";
+require  $BASE_DIR . 'vendor/autoload.php';
 
-include $BASE_DIR . 'utils/auth.php';
-include $BASE_DIR . 'utils/database.php';
-include $BASE_DIR . 'utils/env.php';
-include $BASE_DIR . 'utils/redirection.php';
-include $BASE_DIR . 'utils/rate_limit.php';
-include $BASE_DIR . 'utils/auth.php';
+include_once $BASE_DIR . 'utils/auth.php';
+include_once $BASE_DIR . 'utils/database.php';
+include_once $BASE_DIR . 'utils/env.php';
+include_once $BASE_DIR . 'utils/redirection.php';
+include_once $BASE_DIR . 'utils/rate_limit.php';
+include_once $BASE_DIR . 'utils/auth.php';
 
 serverside_check_auth();
 
@@ -19,9 +19,11 @@ header("Content-Type: application/json");
 $ip = $_SERVER["REMOTE_ADDR"];
 $request_method = $_SERVER["REQUEST_METHOD"];
 
+$email = get_session()['email'];
+
 // This API file is ONLY for POST requests
 if ($request_method !== 'POST') {
-exit();
+    exit();
 }
 
 function validate_pdf_upload($file) {
@@ -56,6 +58,7 @@ return $result ? $filename : false;
 function email_cluster_leader($cluster_leader_id, $proposal_id) {
     global $mysqli;
     global $env;
+    global $email;
 
     $mail = new PHPMailer();
     $host = $env["SMTP_HOST"];
@@ -63,18 +66,16 @@ function email_cluster_leader($cluster_leader_id, $proposal_id) {
     $password = $env["SMTP_PASSWORD"];
     $port = $env["SMTP_PORT"];
 
+
     $find_cluster_email_query = "
-        SELECT user_email
-        FROM `wp_usermeta` 
-        INNER JOIN `wp_users` ON `wp_usermeta`.`user_id` = `wp_users`.`ID` 
-        WHERE `meta_key` = 'wp_capabilities' 
-        AND `meta_value` = 'a:1:{s:14:\"cluster-leader\";b:1;}'
-        AND `user_id` = ?
+        SELECT cluster_leader
+        FROM users
+        WHERE email = ?
         LIMIT 1;
     ";  
 
     $stmt = $mysqli->prepare($find_cluster_email_query);
-    $stmt->bind_param("i", $cluster_leader_id);
+    $stmt->bind_param("i", $email);
 
     if ($stmt->execute()) {
         $mail->isSMTP();
@@ -107,16 +108,15 @@ function email_cluster_leader($cluster_leader_id, $proposal_id) {
 $rate_limit_payload = get_rate_limit();
 
 if ($rate_limit_payload === false) {
-set_rate_limit();
-$rate_limit_payload = get_rate_limit();
+    set_rate_limit();
+    $rate_limit_payload = get_rate_limit();
 }
 
 if ($rate_limit_payload["attempts"] >= 2) {
-redirect_to_result("Cannot add proposal at this moment. Limit reached for posting proposals.", "error");
+    redirect_to_result("Cannot add proposal at this moment. Limit reached for posting proposals.", "error");
 }
 
 // Sanitize inputs
-$email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
 $stock_ticker = filter_input(INPUT_POST, 'stock_ticker', FILTER_SANITIZE_SPECIAL_CHARS);
 $stock_name = filter_input(INPUT_POST, 'stock_name', FILTER_SANITIZE_SPECIAL_CHARS);
 $subject_line = filter_input(INPUT_POST, 'subject_line', FILTER_SANITIZE_SPECIAL_CHARS);
@@ -125,48 +125,37 @@ $bid_price = filter_input(INPUT_POST, 'bid_price', FILTER_VALIDATE_FLOAT);
 $target_price = filter_input(INPUT_POST, 'target_price', FILTER_VALIDATE_FLOAT);
 $file = $_FILES["proposal_file"] ?? null;
 
-if (!$email || !$stock_ticker || !$stock_name || !$subject_line
-|| !$thesis || $bid_price === false || $target_price === false || !isset($file)) {
-$message = "All fields are required and must be valid.";
-redirect_to_result($message, "error");
-exit;
+if (
+    empty($stock_ticker) ||
+    empty($stock_name) ||
+    empty($subject_line) ||
+    empty($thesis) ||
+    !isset($bid_price) || !is_numeric($bid_price) ||
+    !isset($target_price) || !is_numeric($target_price) ||
+    empty($file)
+) {
+    $message = "All fields are required and must be valid.";
+    redirect_to_result($message, "error");
+    exit();
 }
 
 if ($target_price < $bid_price) {
-$message = "Target price cannot be lower than bid price.";
-redirect_to_result($message, "error");
-exit;
+    $message = "Target price cannot be lower than bid price.";
+    redirect_to_result($message, "error");
+    exit();
 }
 
 $file_validation_result = validate_pdf_upload($_FILES['proposal_file']);
 
 if ($file_validation_result !== true) {
-redirect_to_result($file_validation_result, "error");
-exit;
+    redirect_to_result($file_validation_result, "error");
+    exit();
 } 
 
 $pathname = upload_to_ftp($file);
 
-$stmt = $mysqli->prepare("SELECT ID, display_name FROM wp_users WHERE user_email = ?");
-$stmt->bind_param('s', $email);
-$stmt->execute();
-$result = $stmt->get_result();
-if ($result->num_rows === 0) {
-$message = "Email address does not exist on database";
-redirect_to_result($message, "error");
-exit;
-}
-
-$user = $result->fetch_assoc();
-$post_author_id = $user["ID"];
-
-// display_name will give us the full name of a user (important info for proposal)
-$post_author_name = $user["display_name"];
-
-$stmt->close();
-
 $insert_proposal_query = "
-INSERT INTO wp_2_proposals (
+INSERT INTO proposals (
 post_author, stock_ticker, stock_name,
 subject_line, thesis, bid_price, target_price, proposal_file
 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
@@ -175,8 +164,8 @@ subject_line, thesis, bid_price, target_price, proposal_file
 
 $stmt = $mysqli->prepare($insert_proposal_query);
 $stmt->bind_param(
-'ississsssds',
-$post_author_id,
+'ssssssss',
+$email,
 $stock_ticker,
 $stock_name,
 $subject_line,
@@ -198,5 +187,3 @@ email_cluster_leader($cluster_leader_id, $proposal_id);
 redirect_to_result("Thank you for contributing to BYCIG's platform!", "success");
 
 $mysqli->close();
-
-echo get_session();

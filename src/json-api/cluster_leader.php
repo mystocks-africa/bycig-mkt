@@ -1,6 +1,6 @@
 <?php 
 
-$BASE_DIR = __DIR__ . "../";
+$BASE_DIR = "../";
 
 include $BASE_DIR . 'utils/auth.php';
 include $BASE_DIR . 'utils/database.php'; 

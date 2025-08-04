@@ -1,5 +1,5 @@
 <?php
-$BASE_DIR = __DIR__ . "../";
+$BASE_DIR = "../";
 
 include $BASE_DIR . 'utils/auth.php';
 include $BASE_DIR . 'utils/database.php';
@@ -12,6 +12,7 @@ $PROPOSAL_ID = filter_input(INPUT_GET,  "proposal_id", FILTER_SANITIZE_SPECIAL_C
 $ADMIN_PURPOSE = filter_input(INPUT_GET, "admin_purpose", FILTER_SANITIZE_SPECIAL_CHARS);
 
 if (isset($ADMIN_PURPOSE) && $request_method == "GET") {
+    header("Content-Type: application/json");
     $session = get_session_variables();
 
     $get_proposal_info_query = "
@@ -47,7 +48,7 @@ else if (isset($PROPOSAL_ID) && $request_method == "GET") {
 
     $get_proposal_query = "
         SELECT email, stock_ticker, stock_name, subject_line, thesis, bid_price, target_price, proposal_file, status
-        FROM wp_2_proposals 
+        FROM proposals 
         WHERE post_id = ? 
         LIMIT 1;         
     ";
