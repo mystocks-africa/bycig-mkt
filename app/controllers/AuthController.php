@@ -104,16 +104,10 @@ class AuthController extends Controller
             $user = new User($email, $hashPwd, $clusterLeader, $fullName);
             $user->createUser();
 
-            return json_encode([
-                "success" => true 
-            ]);
+            parent::redirectToResult("User has been created. You may sign in now.", "success");
         } catch (Exception $error) {
-            return json_encode([
-                "error"=> true,
-                "errorMessage"=> $error->getMessage()
-            ]);
+            parent::redirectToResult("Problem in signing up. Try again.", "error");
         }
-
     }
 
     public function signOut() 
