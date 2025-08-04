@@ -38,9 +38,6 @@ protected function redirectNotAuth() {
     $session = $this->getSession();
     
     if (!$session) {
-        // For debugging - optional
-        echo 'session is not set';
-        // Redirect to signin
         header("Location: signin");
         exit();
     }

@@ -62,6 +62,8 @@ class AuthController extends Controller
     }
 
     public function signInPost() {
+        parent::redirectAuth();
+
         $email = trim(filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL));
         $pwd = trim(filter_input(INPUT_POST, 'password', FILTER_SANITIZE_SPECIAL_CHARS));
 
@@ -79,6 +81,11 @@ class AuthController extends Controller
     {
         parent::redirectAuth();
         parent::render('signUp');
+    }
+
+    public function signUpPost() 
+    {
+        parent::redirectAuth();
     }
 
     public function signOut() 
