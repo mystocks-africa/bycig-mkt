@@ -1,3 +1,12 @@
+<?php
+  $session_id_cookie = $_COOKIE['session_id'] ?? null;
+
+  if (isset($session_id_cookie)) {
+    header("Location: signout.php");
+    exit();
+  }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
