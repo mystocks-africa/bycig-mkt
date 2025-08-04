@@ -15,9 +15,6 @@
 
     <input type="submit" value="Sign Up">
   </form>
-
-  <p>Sign up failed. Please try again.</p>
-
   <p>Already have an account? <a href="login.php">Login here</a></p>
 </body>
 </html>
