@@ -1,6 +1,6 @@
 <?php
 namespace App;
-include "../../utils/env.php";
+include __DIR__ . "/../../utils/env.php";
 
 use Exception;
 

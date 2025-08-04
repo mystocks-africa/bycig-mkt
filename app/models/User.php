@@ -1,6 +1,6 @@
 <?php
 namespace App\Models;
-include_once "../core/Dbh.php";
+include_once __DIR__ . "/../core/Dbh.php";
 
 use App\Dbh;
 use Exception;
