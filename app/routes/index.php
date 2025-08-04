@@ -18,5 +18,6 @@ $router->get('/signin', AuthController::class, 'signIn');
 $router->get('/signout', AuthController::class,'signOut');
 
 $router->post('/signin', AuthController::class,'signInPost');
+$router->post("/signup", AuthController::class, 'signUpPost');
 
 $router->dispatch();
