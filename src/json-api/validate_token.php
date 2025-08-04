@@ -1,5 +1,6 @@
 <?php
 require '../vendor/autoload.php';
+
 include '../utils/env.php';
 include '../utils/database.php';
 include '../utils/redirection.php';
