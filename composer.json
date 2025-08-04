@@ -4,7 +4,8 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Hemit99123\\ProposalBycigSoftware\\": "src/"
+            "Hemit99123\\ProposalBycigSoftware\\": "App\\",
+            "App\\": "app/"
         }
     },
     "authors": [
