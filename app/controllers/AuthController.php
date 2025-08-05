@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 include_once __DIR__ . "/Controller.php";
