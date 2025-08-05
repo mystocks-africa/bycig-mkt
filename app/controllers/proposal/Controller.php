@@ -31,11 +31,6 @@ class ProposalController extends Controller {
         return $result ? $filename : false;
     }
 
-    public function index() 
-    {
-        parent::render("proposal/index");    
-    }
-
     public function submit() 
     {
         $clusterLeadersAssoc = User::findAllClusterLeaders();
