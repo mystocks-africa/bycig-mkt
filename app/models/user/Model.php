@@ -25,6 +25,11 @@ class User extends Dbh
         VALUES (?, ?, ?, ?)
     ";
 
+    private static string $findClusterLeaderQuery = "
+        SELECT * FROM users
+        WHERE role = ?;
+    ";
+
     // Constructor with mysqli injection
     public function __construct(string $email, string $pwd, string $cluster_leader, string $full_name) 
     {
@@ -74,6 +79,21 @@ class User extends Dbh
             $stmt->close();
             return $user;
         } catch(Exception $error) {
+            return $error->getMessage();
+        }
+    }
+
+    public static function findAllClusterLeaders() 
+    {
+        try {
+            parent::connect();
+            $stmt = parent::$mysqli->prepare(self::$findClusterLeaderQuery);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $clusterLeaders = $result->fetch_assoc();
+            $stmt->close();
+            return $clusterLeaders;
+        } catch (Exception $error) {
             return $error->getMessage();
         }
     }
