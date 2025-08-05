@@ -47,6 +47,8 @@ class Controller
             exit();
         }
 
+        return $session;
+
     }
 
     protected static function redirectToResult($msg, $msgType) 
