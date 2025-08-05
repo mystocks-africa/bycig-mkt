@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Controllers;
-include_once "Controller.php";
+include_once __DIR__ . "/../Controller.php";
 include_once __DIR__ . "/../../models/proposals/Model.php";
 include_once __DIR__ . "/../../models/user/Model.php";
 include_once __DIR__ . "/../../../utils/env.php";

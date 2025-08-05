@@ -9,7 +9,7 @@
 <body id="submit-proposal-body">
     <h1>Submit Your Stock Proposal</h1>
 
-    <form method="post" enctype="multipart/form-data" action="json-api/submit_proposal.php" novalidate>
+    <form method="post" enctype="multipart/form-data" action="/proposals/submit" novalidate>
         <label for="leaderSelect">Choose your Cluster Leader:</label>
         <select id="leaderSelect" name="cluster_leader_id" required>
             <option value="" disabled selected>Select your leader</option>
