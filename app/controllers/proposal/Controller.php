@@ -75,11 +75,6 @@ class ProposalController extends Controller {
         parent::redirectToResult("Success in submitting proposal", "success");
     }
 
-    public function getAllProposals() {
-        $proposals = Proposal::findAllProposals();
-        echo json_encode($proposals);
-    }
-
     public function getOneProposal() {
         $post_id = filter_input(INPUT_GET, "post_id", FILTER_VALIDATE_INT);
 

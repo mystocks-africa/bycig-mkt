@@ -28,8 +28,6 @@ $router->post('/auth/signout', AuthController::class,'signOutPost');
 
 // Proposal get methods
 $router->get('/proposals', ProposalController::class, 'index');
-$router->get('/proposals/all', ProposalController::class,'getAllProposals');
-$router->get('/proposals/get-details', ProposalController::class,'getOneProposal');
 $router->get('/proposals/details', ProposalController::class, 'proposalDetails');
 
 // Proposal post method
