@@ -48,7 +48,6 @@ class Controller
 
     }
 
-
     protected static function redirectToResult($msg, $msgType) 
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])) {
