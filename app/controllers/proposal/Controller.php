@@ -42,25 +42,19 @@ class ProposalController extends Controller {
         $fileName = $this->uploadToFTP($proposalFile);
 
         if (!$stockTicker || !$stockName || !$subjectLine || !$thesis || !$bidPrice || !$targetPrice || !$fileName) {
-            return json_encode([
-                "error" => true,
-                "errorMessage" => "Fields were not properly sent to server"
-            ]); 
+            echo parent::returnJSON("Problem in input form", "error");
+            exit();
         }
 
         $proposal = new Proposal($session["email"], $stockTicker, $stockName, $subjectLine, $thesis, $bidPrice, $targetPrice, $fileName);
         $proposal->createProposal();
 
         if ($proposal && $proposal instanceof Exception) {
-            return json_encode([
-                "error" => true,
-                "errorMessage" => "Proposal submission did not work."
-            ]);
+            echo parent::returnJSON("Problem in submitting proposal", "error");
+            exit();
         }
-        
-        return json_encode([
-            "success" => true,
-            "successMessage" => "Submitted proposal"
-        ]);
+
+        echo parent::returnJSON("Success in submitting proposal", "success");
+        exit();
     }
 }
