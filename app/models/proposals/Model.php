@@ -36,7 +36,14 @@ class Proposal extends Dbh {
         INSERT INTO proposals (
         post_author, stock_ticker, stock_name,
         subject_line, thesis, bid_price, target_price, proposal_file, status
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
+    ";
+
+    private static string $updateProposalStatusQuery = "
+        UPDATE wp_2_proposals
+        SET status = ?
+        WHERE post_id = ? AND cluster_leader_id = ?
+        LIMIT 1;
     ";
 
 
@@ -52,25 +59,30 @@ class Proposal extends Dbh {
     }
 
     public function createProposal() {
-        parent::connect();
-        $stmt = parent::$mysqli->prepare(self::$insertProposalQuery);
-        $stmt->bind_param(
-            'sssssssss',
-            $this->post_author,
-            $this->stock_ticker,
-            $this->stock_name,
-            $this->subject_line,
-            $this->thesis,
-            $this->bid_price,
-            $this->target_price,
-            $this->proposal_file,
-            $this->status
-        );
-        
-        $result = $stmt->execute();
-        $stmt->close();
+        try {
+            parent::connect();
+            $stmt = parent::$mysqli->prepare(self::$insertProposalQuery);
+            $stmt->bind_param(
+                'sssssssss',
+                $this->post_author,
+                $this->stock_ticker,
+                $this->stock_name,
+                $this->subject_line,
+                $this->thesis,
+                $this->bid_price,
+                $this->target_price,
+                $this->proposal_file,
+                $this->status
+            );
+            
+            $result = $stmt->execute();
+            $stmt->close();
 
-        return $result;
+            return $result;
+        } catch (Exception $error) {
+            return $error->getMessage();
+        }
+
     }
 
     public static function findAllProposals() {
@@ -105,6 +117,18 @@ class Proposal extends Dbh {
             $getProposalInfo = $result->fetch_assoc();
             $stmt->close();
             return $getProposalInfo;
+        } catch(Exception $error) {
+            return $error->getMessage();
+        }
+    }
+
+    public static function updateProposalStatus() {
+        try {
+            $stmt = self::$mysqli->prepare(self::$updateProposalStatusQuery);
+            $stmt->bind_param("sii", $status, $proposal_id, $cluster_leader_id);
+            $result = $stmt->execute();
+            $stmt->close();
+            return $result;
         } catch(Exception $error) {
             return $error->getMessage();
         }
