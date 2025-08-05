@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 include_once __DIR__ . "/Controller.php";
 include_once __DIR__ . "/../../models/user/Model.php";
-include_once __DIR__. "../../../utils/memcached.php";
+include_once __DIR__. "/../../../utils/memcached.php";
 
 use App\Controller;
 use App\Models\User;
