@@ -29,6 +29,11 @@ class ProposalController extends Controller {
         return $result ? $filename : false;
     }
 
+    public function index() 
+    {
+        parent::render("proposal/index");    
+    }
+
     public function submitProposal() 
     {
         $session = parent::redirectIfNotAuth();
@@ -59,4 +64,6 @@ class ProposalController extends Controller {
 
         parent::redirectToResult("Success in submitting proposal", "success");
     }
+
+
 }

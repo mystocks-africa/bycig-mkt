@@ -5,6 +5,7 @@ include_once __DIR__ . "/Router.php";
 
 use App\Controllers\AuthController;
 use App\Controllers\HomeController;
+use App\Controllers\ProposalController;
 use App\Router;
 
 $router = new Router();
@@ -23,5 +24,8 @@ $router->get('/auth/signout', AuthController::class,'signOut');
 $router->post('/auth/signin', AuthController::class,'signInPost');
 $router->post("/auth/signup", AuthController::class, 'signUpPost');
 $router->post('/auth/signout', AuthController::class,'signOutPost');
+
+// Proposal get methods
+$router->get('/proposal', ProposalController::class, 'index');
 
 $router->dispatch();
