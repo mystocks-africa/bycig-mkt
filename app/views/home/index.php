@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/static/css/index.css">
     <script>
         function goToSubmitProposal() {
-            window.location.href = '/submit-proposal.php';
+            window.location.href = '/proposals/submit';
         }
     </script>
 </head>
