@@ -36,7 +36,7 @@ class ProposalController extends Controller {
 
     public function submitProposal() 
     {
-        $session = parent::redirectIfNotAuth();
+        $session = parent::redirectIfNotAuth(true);
         
 
         $stockTicker = filter_input(INPUT_POST, 'stock_ticker', FILTER_SANITIZE_SPECIAL_CHARS);

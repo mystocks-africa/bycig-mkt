@@ -38,7 +38,7 @@ class Controller
         }
     }
 
-    protected static function redirectIfNotAuth() 
+    protected static function redirectIfNotAuth($returnSession = false) 
     {
         $session = self::getSession();
         
@@ -47,8 +47,9 @@ class Controller
             exit();
         }
 
-        return $session;
-
+        if ($returnSession) {
+            return $session;
+        }
     }
 
     protected static function redirectToResult($msg, $msgType) 
