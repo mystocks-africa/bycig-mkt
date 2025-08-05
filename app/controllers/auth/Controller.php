@@ -29,7 +29,7 @@ class AuthController extends Controller
             
             return $session_id;
         } catch(Exception $error) {
-            return $error->getMessage();
+            return parent::redirectToResult($error->getMessage(), "error");
         }
     }
 
@@ -38,7 +38,7 @@ class AuthController extends Controller
         try {
             setcookie('session_id', $session_id);
         } catch(Exception $error) {
-            return $error->getMessage();
+            return parent::redirectToResult($error->getMessage(), "error");
         }
     }
 
@@ -47,9 +47,8 @@ class AuthController extends Controller
         try {
             $session_id = $_COOKIE['session_id'];
             $this->memcached->delete($session_id);
-            return true;
         } catch (Exception $error) {
-            return $error->getMessage();
+            return parent::redirectToResult($error->getMessage(), "error");
         }
     }
 
@@ -58,7 +57,7 @@ class AuthController extends Controller
         try {
             setcookie('session_id', '');
         } catch(Exception $error) {
-            return $error->getMessage();
+            return parent::redirectToResult($error->getMessage(), "error");
         }
     }
 
@@ -94,6 +93,7 @@ class AuthController extends Controller
         if (isset($user) && password_verify($pwd, $user["pwd"])) {
             $session_id = $this->assignSession($user["email"], $user["role"]);
             $this->assignSessionCookie($session_id);
+            parent::redirectToResult("Successfully logged in! Welcome!", "error");
         } else {
             parent::redirectToResult("Problem with logging in. Try again.", "error");
         } 
@@ -116,7 +116,7 @@ class AuthController extends Controller
 
             parent::redirectToResult("User has been created. You may sign in now.", "success");
         } catch (Exception $error) {
-            parent::redirectToResult("Problem in signing up. Try again.", "error");
+            parent::redirectToResult( $error->getMessage(), "error");
         }
     }
     
@@ -126,5 +126,6 @@ class AuthController extends Controller
 
         $this->clearSession();
         $this->clearSessionCookie();
+        parent::redirectToResult("Signed out successfully!", "success");
     }
 }
