@@ -23,6 +23,7 @@ class AuthController extends Controller
     private function assignSession($email, $role) 
     {
         $EXPIRATION_DAYS = 60*60*24*30; // 30 days in seconds
+        
         try {
             $session_id = bin2hex(random_bytes(32)); // 64 character hex string
             $this->memcached->set($session_id, "$email, $role", $EXPIRATION_DAYS);
