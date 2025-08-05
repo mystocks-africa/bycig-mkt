@@ -60,7 +60,7 @@ class Controller
         try {
 
             if ($msgType == "success" || $msgType == "error") {
-                header("Location: redirect?message=$msg&message_type=$msgType");
+                header("Location: /redirect?message=$msg&message_type=$msgType");
             }
 
             else {
