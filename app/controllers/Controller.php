@@ -3,6 +3,8 @@
 namespace App;
 include_once __DIR__ . "/../../utils/memcached.php";
 
+use Exception;
+
 class Controller
 {
     protected static function render($view, $data = [])
@@ -56,5 +58,29 @@ class Controller
         }
 
         header("Location: redirect?message=$msg&message_type=$msgType");
+    }
+
+    protected static function returnJSON($msg, $msgType) {
+        try {
+            if ($msgType == "success") {
+                return json_encode([
+                    "success" => true,
+                    "message" => $msg
+                ]);
+            } 
+
+            else if ($msgType == "error") {
+                return json_encode([
+                    "error" => true,
+                    "message" => $msg
+                ]);
+            }
+
+            else {
+                throw new Exception("Only success or error type is accepted");
+            }
+        } catch(Exception $error) {
+            return $error->getMessage();
+        }
     }
 }
