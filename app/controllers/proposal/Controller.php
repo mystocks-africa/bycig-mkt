@@ -65,5 +65,9 @@ class ProposalController extends Controller {
         parent::redirectToResult("Success in submitting proposal", "success");
     }
 
-
+    public function getAllProposals() {
+        $proposals = Proposal::findAllProposals();
+        return json_encode($proposals);
+    }
+    
 }
