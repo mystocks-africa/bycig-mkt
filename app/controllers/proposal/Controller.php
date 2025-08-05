@@ -42,7 +42,7 @@ class ProposalController extends Controller {
         $fileName = $this->uploadToFTP($proposalFile);
 
         if (!$stockTicker || !$stockName || !$subjectLine || !$thesis || !$bidPrice || !$targetPrice || !$fileName) {
-            echo parent::returnJSON("Problem in input form", "error");
+            parent::redirectToResult("Error in form input", "error");
             exit();
         }
 
@@ -50,11 +50,10 @@ class ProposalController extends Controller {
         $proposal->createProposal();
 
         if ($proposal && $proposal instanceof Exception) {
-            echo parent::returnJSON("Problem in submitting proposal", "error");
+            parent::redirectToResult("Error in submitting proposal", "error");
             exit();
         }
 
-        echo parent::returnJSON("Success in submitting proposal", "success");
-        exit();
+        parent::redirectToResult("Success in submitting proposal", "success");
     }
 }

@@ -57,27 +57,14 @@ class Controller
             exit;  
         }
 
-        header("Location: redirect?message=$msg&message_type=$msgType");
-    }
-
-    protected static function returnJSON($msg, $msgType) {
         try {
-            if ($msgType == "success") {
-                return json_encode([
-                    "success" => true,
-                    "message" => $msg
-                ]);
-            } 
 
-            else if ($msgType == "error") {
-                return json_encode([
-                    "error" => true,
-                    "message" => $msg
-                ]);
+            if ($msgType == "success" || $msgType == "error") {
+                header("Location: redirect?message=$msg&message_type=$msgType");
             }
 
             else {
-                throw new Exception("Only success or error type is accepted");
+                throw new Exception("Message type is not valid. It needs to be either success or error");
             }
         } catch(Exception $error) {
             return $error->getMessage();
