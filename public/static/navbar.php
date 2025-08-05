@@ -2,7 +2,7 @@
     <link rel="stylesheet" href="/static/css/navbar.css">
 </head>
     <nav>
-        <div class="logo">BYCIG</div>
+        <a href="/" class="logo">BYCIG</a>
 
         <button class="nav-toggle" aria-label="Toggle navigation">
             <span class="hamburger"></span>
@@ -10,9 +10,10 @@
 
         <ul class="nav-links">
             <li><a href="/">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#services">Services</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li><a href="/proposals/submit">Create Proposal</a></li>
+            <li><a href="/auth/signin">Sign in</a></li>
+            <li><a href="/auth/signup">Sign up</a></li>
+            <li><a href="/auth/signout">Sign out</a></li>
         </ul>
     </nav>
 
