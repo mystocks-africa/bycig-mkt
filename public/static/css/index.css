@@ -153,3 +153,8 @@ button:disabled {
 #main-btn {
   margin-top: 20px;
 }
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
