@@ -5,14 +5,14 @@ include_once __DIR__ . "/../../utils/memcached.php";
 
 class Controller
 {
-    protected function render($view, $data = [])
+    protected static function render($view, $data = [])
     {
         extract($data);
 
         include __DIR__ . "/../views/$view.php";
     }
 
-    private function getSession() 
+    private static function getSession() 
     {
         global $memcached;
 
@@ -26,8 +26,8 @@ class Controller
         return $session;
     }
 
-    protected function redirectIfAuth() {
-        $session = $this->getSession();
+    protected static function redirectIfAuth() {
+        $session = self::getSession();
 
         if ($session) {
             header("Location: signout");
@@ -35,9 +35,9 @@ class Controller
         }
     }
 
-    protected function redirectIfNotAuth() 
+    protected static function redirectIfNotAuth() 
     {
-        $session = $this->getSession();
+        $session = self::getSession();
         
         if (!$session) {
             header("Location: signin");
@@ -47,7 +47,7 @@ class Controller
     }
 
 
-    protected function redirectToResult($msg, $msgType) 
+    protected static function redirectToResult($msg, $msgType) 
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])) {
             header("Location: index.php");
