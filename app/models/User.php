@@ -20,7 +20,7 @@ class User extends Dbh
         LIMIT 1;
     ";
 
-    private string $post_user_query = "
+    private static string $post_user_query = "
         INSERT INTO users (email, pwd, cluster_leader, full_name)
         VALUES (?, ?, ?, ?)
     ";
