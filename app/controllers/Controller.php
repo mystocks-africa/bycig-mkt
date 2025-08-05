@@ -32,7 +32,7 @@ class Controller
         $session = self::getSession();
 
         if ($session) {
-            header("Location: signout");
+            header("Location: /auth/signout");
             exit();
         }
 
@@ -44,7 +44,7 @@ class Controller
         $session = self::getSession();
         
         if (!$session) {
-            header("Location: signin");
+            header("Location: /auth/signin");
             exit();
         }
 
