@@ -47,7 +47,17 @@ class Proposal extends Dbh {
     ";
 
 
-    public function __construct(string $post_author, string $stock_ticker, string $stock_name, string $subject_line, string $thesis, string $bid_price, string $target_price, string $proposal_file) {
+    public function __construct (
+        string $post_author, 
+        string $stock_ticker, 
+        string $stock_name, 
+        string $subject_line,
+        string $thesis, 
+        string $bid_price, 
+        string $target_price, 
+        string $proposal_file
+    ) 
+    {
         $this->post_author = $post_author;
         $this->stock_ticker = $stock_ticker;
         $this->stock_name = $stock_name;
@@ -58,7 +68,8 @@ class Proposal extends Dbh {
         $this->proposal_file = $proposal_file;
     }
 
-    public function createProposal() {
+    public function createProposal() 
+    {
         try {
             parent::connect();
             $stmt = parent::$mysqli->prepare(self::$insertProposalQuery);
@@ -85,7 +96,8 @@ class Proposal extends Dbh {
 
     }
 
-    public static function findAllProposals() {
+    public static function findAllProposals() 
+    {
         try {
             parent::connect();
             $stmt = parent::$mysqli->prepare(self::$getAllProposalQuery);
@@ -104,7 +116,8 @@ class Proposal extends Dbh {
         }
     }
 
-    public static function findProposalById(int $id) {
+    public static function findProposalById(int $id) 
+    {
         try {
             parent::connect();
             $stmt = parent::$mysqli->prepare(self::$insertProposalQuery);
@@ -122,7 +135,8 @@ class Proposal extends Dbh {
         }
     }
 
-    public static function updateProposalStatus() {
+    public static function updateProposalStatus() 
+    {
         try {
             $stmt = self::$mysqli->prepare(self::$updateProposalStatusQuery);
             $stmt->bind_param("sii", $status, $proposal_id, $cluster_leader_id);

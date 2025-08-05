@@ -120,7 +120,8 @@ class AuthController extends Controller
         }
     }
     
-    public function signOutPost() {
+    public function signOutPost() 
+    {
         parent::redirectIfNotAuth();
 
         $this->clearSession();

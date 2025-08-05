@@ -12,12 +12,14 @@ class ProposalController extends Controller {
 
     private $env;
 
-    public function __construct() {
+    public function __construct() 
+    {
         global $env;
         $this->env = $env; 
     }
 
-    private function uploadToFTP($file) {
+    private function uploadToFTP($file) 
+    {
         $ftp_conn = ftp_connect($this->env["FTP_SERVER"]) or die("FTP error");
         ftp_login($ftp_conn, $this->env["FTP_USER"], $this->env["FTP_PASS"]);
 
@@ -27,7 +29,8 @@ class ProposalController extends Controller {
         return $result ? $filename : false;
     }
 
-    public function submitProposal() {
+    public function submitProposal() 
+    {
         $session = parent::redirectIfNotAuth();
         
 
