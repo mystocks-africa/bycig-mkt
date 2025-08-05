@@ -67,14 +67,14 @@ class ProposalController extends Controller {
 
     public function getAllProposals() {
         $proposals = Proposal::findAllProposals();
-        return json_encode($proposals);
+        echo json_encode($proposals);
     }
 
     public function getOneProposal() {
         $post_id = filter_input(INPUT_GET, "post_id", FILTER_VALIDATE_INT);
 
         $proposal = Proposal::findProposalById($post_id);
-        return json_encode($proposal);
+        echo json_encode($proposal);
     }
     
 }

@@ -1,6 +1,7 @@
 <?php
 include_once __DIR__ . "/../controllers/home/Controller.php";
 include_once __DIR__ . "/../controllers/auth/Controller.php";
+include_once __DIR__ . "/../controllers/proposal/Controller.php";
 include_once __DIR__ . "/Router.php";
 
 use App\Controllers\AuthController;
@@ -26,6 +27,9 @@ $router->post("/auth/signup", AuthController::class, 'signUpPost');
 $router->post('/auth/signout', AuthController::class,'signOutPost');
 
 // Proposal get methods
-$router->get('/proposal', ProposalController::class, 'index');
+$router->get('/proposals', ProposalController::class, 'index');
+$router->get('/proposals/all', ProposalController::class,'getAllProposals');
+
+// Proposal post method
 
 $router->dispatch();

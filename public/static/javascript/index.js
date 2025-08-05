@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    fetch("json-api/all_proposals.php?get_all_proposals=true")
+    fetch("/proposals/all")
         .then(response => response.json())
         .then(proposals => {
             const loader = document.getElementById("loader");
