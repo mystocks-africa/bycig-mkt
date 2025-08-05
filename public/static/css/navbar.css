@@ -4,8 +4,12 @@
     box-sizing: border-box;
 }
 
-.navbar {
-    position: absolute;
+body {
+    margin-bottom: 10px;
+}
+
+nav {
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
@@ -18,8 +22,7 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     z-index: 1000;
-    min-height: 56px;
-    margin-bottom: 10px;
+    margin-bottom: 100px;
 }
 
 .logo {

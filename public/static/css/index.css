@@ -8,8 +8,6 @@
 }
 
 body, html {
-  margin: 0;
-  padding: 0;
   background-color: var(--gray-bg);
   font-family: var(--font-sans);
   color: var(--text-main);
@@ -29,11 +27,7 @@ body, html {
 /* Form structure */
 form {
   width: 100%;
-  max-width: 720px;
   padding: 40px;
-  background-color: white;
-  border: 1px solid var(--gray-border);
-  border-radius: 16px;
 }
 
 /* Headings and layout spacing */
@@ -64,7 +58,7 @@ select {
   margin-bottom: 20px;
   border-radius: 12px;
   border: 1px solid var(--gray-border);
-  background-color: #ffffff;
+  background-color: #dcd9d9;
   color: var(--text-main);
   transition: box-shadow 0.2s ease, border-color 0.2s ease;
 }

@@ -65,7 +65,7 @@ class ProposalController extends Controller {
         ]);
     }
     
-    public function submitProposal() 
+    public function submitPost() 
     {
         $session = parent::redirectIfNotAuth(true);
         
@@ -95,12 +95,4 @@ class ProposalController extends Controller {
 
         parent::redirectToResult("Success in submitting proposal", "success");
     }
-
-    public function getOneProposal() {
-        $post_id = filter_input(INPUT_GET, "post_id", FILTER_VALIDATE_INT);
-
-        $proposal = Proposal::findProposalById($post_id);
-        echo json_encode($proposal);
-    }
-    
 }

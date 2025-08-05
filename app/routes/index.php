@@ -32,5 +32,6 @@ $router->get('/proposals/details', ProposalController::class, 'proposalDetails')
 $router->get('/proposals/submit', ProposalController::class,'submit');
 
 // Proposal post method
+$router->post('/proposals/submit', ProposalController::class,'submitPost');
 
 $router->dispatch();
