@@ -66,19 +66,19 @@ class AuthController extends Controller
     public function signIn()
     {
         parent::redirectIfAuth();
-        parent::render('signIn');
+        parent::render('/auth/signin');
     }
 
     public function signOut() 
     {
         parent::redirectIfNotAuth();
-        parent::render('signOut');
+        parent::render('/auth/signout');
     }
 
     public function signUp()
     {
         parent::redirectIfAuth();
-        parent::render('signUp');
+        parent::render('/auth/signup');
     }
 
     // Backend logic (post methods)

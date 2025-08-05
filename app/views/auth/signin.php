@@ -6,7 +6,7 @@
 </head>
 <body>
   <h1>Sign In</h1>
-  <form action="/signin" method="post">
+  <form action="/auth/signin" method="post">
     <label for="email">Email:</label>
     <input type="email" id="email" name="email"><br><br>
 

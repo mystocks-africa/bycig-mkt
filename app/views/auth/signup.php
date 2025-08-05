@@ -6,7 +6,7 @@
 </head>
 <body>
   <h1>Sign Up</h1>
-  <form action="/signup" method="post">
+  <form action="/auth/signup" method="post">
     <label for="full_name">Full Name:</label>
     <input type="text" id="full_name" name="full_name"><br><br>
 
