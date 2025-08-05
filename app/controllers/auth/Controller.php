@@ -36,7 +36,11 @@ class AuthController extends Controller
     private function assignSessionCookie($session_id) 
     {
         try {
-            setcookie('session_id', $session_id);
+            setcookie('session_id', $session_id, [
+                'expires' => time() + (10* 365 * 24 * 60 * 60), // 10 years in seconds
+                'path' => '/',
+                'httponly' => true,
+            ]);
         } catch(Exception $error) {
             return parent::redirectToResult($error->getMessage(), "error");
         }
@@ -55,7 +59,11 @@ class AuthController extends Controller
     private function clearSessionCookie() 
     {
         try {
-            setcookie('session_id', '');
+            setcookie('session_id', '', [
+                'expires' => 0,
+                'path' => '/',
+                'httponly' => true,
+            ]);        
         } catch(Exception $error) {
             return parent::redirectToResult($error->getMessage(), "error");
         }

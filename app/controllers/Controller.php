@@ -25,6 +25,7 @@ class Controller
 
         $session_id_cookie = $_COOKIE["session_id"];
         $session = $memcached->get($session_id_cookie);
+
         return $session;
     }
 
@@ -35,8 +36,6 @@ class Controller
             header("Location: /auth/signout");
             exit();
         }
-
-        return $session;
     }
 
     protected static function redirectIfNotAuth() 
