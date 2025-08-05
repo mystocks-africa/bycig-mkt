@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
-    fetch(`json-api/proposal_details.php?proposal_id=${window.serverData.proposal_id}`)
+    console.log(window.serverData.post_id);
+    fetch(`/proposals/get-details?post_id=${window.serverData.post_id}`)
         .then(response => response.json())
         .then(proposal => {
             const container = document.getElementById("proposal-container");

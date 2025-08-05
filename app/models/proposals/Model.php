@@ -25,11 +25,11 @@ class Proposal extends Dbh {
     ";
 
     private static string $getProposalByIdQuery = "
-        SELECT stock_ticker, stock_name, subject_line, thesis, bid_price, target_price, proposal_file, full_name 
+        SELECT stock_ticker, stock_name, subject_line, thesis, bid_price, target_price, status, proposal_file, full_name, email
         FROM proposals 
-        WHERE post_id = ?
         INNER JOIN users 
-        ON proposals.post_author = users.email;
+            ON proposals.post_author = users.email
+        WHERE post_id = ?;
     ";
 
     private static string $insertProposalQuery = "
@@ -120,7 +120,7 @@ class Proposal extends Dbh {
     {
         try {
             parent::connect();
-            $stmt = parent::$mysqli->prepare(self::$insertProposalQuery);
+            $stmt = parent::$mysqli->prepare(self::$getProposalByIdQuery);
             $stmt->bind_param(
                 "i",
                 $id
@@ -131,7 +131,7 @@ class Proposal extends Dbh {
             $stmt->close();
             return $getProposalInfo;
         } catch(Exception $error) {
-            return $error->getMessage();
+            return ["error"=> $error->getMessage()];
         }
     }
 

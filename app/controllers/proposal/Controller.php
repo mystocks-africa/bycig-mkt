@@ -34,6 +34,16 @@ class ProposalController extends Controller {
         parent::render("proposal/index");    
     }
 
+    public function proposalDetails() 
+    {    
+        $postId = filter_input(INPUT_GET,"post_id", FILTER_SANITIZE_NUMBER_INT);
+        $proposal = Proposal::findProposalById($postId);
+
+        parent::render("proposal/details", [
+            "proposal" => $proposal
+        ]);
+    }
+
     public function submitProposal() 
     {
         $session = parent::redirectIfNotAuth(true);

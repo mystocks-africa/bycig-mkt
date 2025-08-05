@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             proposals.forEach(proposal => {
                 const card = document.createElement('a');
-                card.href = `/src/proposal.php?proposal_id=${proposal.post_id}`
+                card.href = `/proposals/details?post_id=${proposal.post_id}`
                 card.className = "card";
                 card.style.textDecoration = "none";
                 card.style.color = "black";
@@ -27,5 +27,5 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function goToSubmitProposal() {
-    window.location.href = 'submit_proposal.php'
+    window.location.href = '/submit-proposal.php';
 }
