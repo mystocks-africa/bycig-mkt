@@ -68,11 +68,13 @@ class AuthController extends Controller
         parent::redirectIfAuth();
         parent::render('signIn');
     }
+
     public function signOut() 
     {
         parent::redirectIfNotAuth();
         parent::render('signOut');
     }
+
     public function signUp()
     {
         parent::redirectIfAuth();
@@ -96,6 +98,7 @@ class AuthController extends Controller
             parent::redirectToResult("Problem with logging in. Try again.", "error");
         } 
     }
+
     public function signUpPost() 
     {
         parent::redirectIfAuth();
@@ -116,6 +119,7 @@ class AuthController extends Controller
             parent::redirectToResult("Problem in signing up. Try again.", "error");
         }
     }
+    
     public function signOutPost() {
         parent::redirectIfNotAuth();
 
