@@ -12,7 +12,7 @@
     </script>
 </head>
 <body>
-    <button id="main-btn" onclick="goToSubmitProposal()">Make a proposal submission</button>
+    <button id="plus-btn" onclick="goToSubmitProposal()">+</button>
 
     <div id="grid-container">
         <?php if (!empty($proposals)): ?>
