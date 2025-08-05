@@ -7,8 +7,6 @@
     <link rel="stylesheet" href="/static/css/index.css" >
 </head>
 <body id="submit-proposal-body">
-    <h1>Submit Your Stock Proposal</h1>
-
     <form method="post" enctype="multipart/form-data" action="/proposals/submit" novalidate>
         <label for="leaderSelect">Choose your Cluster Leader:</label>
         <select id="leaderSelect" name="cluster_leader_id" required>
