@@ -30,6 +30,13 @@ class User extends Dbh
         WHERE role = ?;
     ";
 
+    private static string $findUserQuery = "
+        SELECT email, pwd, role
+        FROM users 
+        WHERE email = ?
+        LIMIT 1;
+    ";
+
     // Constructor with mysqli injection
     public function __construct(string $email, string $pwd, string $cluster_leader, string $full_name) 
     {
@@ -62,16 +69,9 @@ class User extends Dbh
 
     public static function findByEmail(string $email) 
     {        
-        $query = "
-            SELECT email, pwd, role
-            FROM users 
-            WHERE email = ?
-            LIMIT 1;
-        ";
-
         try {
             parent::connect();
-            $stmt = parent::$mysqli->prepare($query);
+            $stmt = parent::$mysqli->prepare(self::$findUserQuery);
             $stmt->bind_param("s", $email);
             $stmt->execute();
             $result = $stmt->get_result();
