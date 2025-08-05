@@ -47,7 +47,7 @@ class Proposal extends Dbh {
     ";
 
 
-    public function __construct(string $post_id, string $post_author, string $stock_ticker, string $stock_name, string $subject_line, string $thesis, string $bid_price, string $target_price, string $proposal_file, string $status) {
+    public function __construct(string $post_author, string $stock_ticker, string $stock_name, string $subject_line, string $thesis, string $bid_price, string $target_price, string $proposal_file) {
         $this->post_author = $post_author;
         $this->stock_ticker = $stock_ticker;
         $this->stock_name = $stock_name;
