@@ -60,11 +60,6 @@ class Controller
 
     protected static function redirectToResult($msg, $msgType) 
     {
-        if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])) {
-            header("Location: index.php");
-            exit;  
-        }
-
         try {
 
             if ($msgType == "success" || $msgType == "error") {
