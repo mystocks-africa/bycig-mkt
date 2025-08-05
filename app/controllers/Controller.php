@@ -33,6 +33,8 @@ class Controller
             header("Location: signout");
             exit();
         }
+
+        return $session;
     }
 
     protected static function redirectIfNotAuth() 
