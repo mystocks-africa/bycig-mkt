@@ -13,13 +13,6 @@ class User extends Dbh
     private string $cluster_leader; 
     private string $full_name; 
 
-    private string $get_user_query = "
-        SELECT email, pwd, role
-        FROM users 
-        WHERE email = ?
-        LIMIT 1;
-    ";
-
     private static string $post_user_query = "
         INSERT INTO users (email, pwd, cluster_leader, full_name)
         VALUES (?, ?, ?, ?)
