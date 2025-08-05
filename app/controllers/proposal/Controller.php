@@ -3,10 +3,12 @@
 namespace App\Controllers;
 include_once "Controller.php";
 include_once __DIR__ . "/../../models/proposals/Model.php";
+include_once __DIR__ . "/../../models/user/Model.php";
 include_once __DIR__ . "/../../../utils/env.php";
 
 use App\Controller;
 use App\Models\Proposal;
+use App\Models\User;
 
 class ProposalController extends Controller {
 
@@ -34,15 +36,25 @@ class ProposalController extends Controller {
         parent::render("proposal/index");    
     }
 
-    public function proposalDetails() 
-    {    
-        $postId = filter_input(INPUT_GET,"post_id", FILTER_SANITIZE_NUMBER_INT);
-        $proposal = Proposal::findProposalById($postId);
+    public function submit() 
+    {
+        $clusterLeadersAssoc = User::findAllClusterLeaders();
 
-        parent::render("proposal/details", [
-            "proposal" => $proposal
+        // O(n) is fine here because cluster leaders length will always be small
+        $leaderEmails = [];
+        if (!empty($clusterLeadersAssoc) && is_array($clusterLeadersAssoc)) {
+            foreach ($clusterLeadersAssoc as $leader) {
+                if (isset($leader['email'])) {
+                    $leaderEmails[] = $leader['email'];
+                }
+            }
+        }
+
+        parent::render("proposal/submit", [
+            "emails" => $leaderEmails
         ]);
     }
+
 
     public function submitProposal() 
     {

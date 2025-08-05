@@ -19,8 +19,8 @@ class User extends Dbh
     ";
 
     private static string $findClusterLeaderQuery = "
-        SELECT * FROM users
-        WHERE role = ?;
+        SELECT email FROM users
+        WHERE role = 'cluster_leader';
     ";
 
     private static string $findUserQuery = "
@@ -83,11 +83,11 @@ class User extends Dbh
             $stmt = parent::$mysqli->prepare(self::$findClusterLeaderQuery);
             $stmt->execute();
             $result = $stmt->get_result();
-            $clusterLeaders = $result->fetch_assoc();
+            $clusterLeaders = $result->fetch_all(MYSQLI_ASSOC);
             $stmt->close();
             return $clusterLeaders;
         } catch (Exception $error) {
-            return $error->getMessage();
+            return ["error" => $error->getMessage()];
         }
     }
 }
