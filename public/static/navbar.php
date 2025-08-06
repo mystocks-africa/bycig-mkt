@@ -11,53 +11,22 @@
         <ul class="nav-links">
             <li><a href="/">Home</a></li>
             <li><a href="/proposals/submit">Create Proposal</a></li>
-            <li><a href="/auth/signin">Sign in</a></li>
-            <li><a href="/auth/signup">Sign up</a></li>
-            <li><a href="/auth/signout">Sign out</a></li>
+
+            <?php if (isset($_COOKIE["session_id"])): ?>
+                <li>
+                    <form action="/auth/signout" method="POST">
+                    <button id="signout-btn" type="submit">Sign out</button>
+                </form>  
+                </li>  
+            <?php else: ?>
+                <li><a href="/auth/signin">Sign in</a></li>
+                <li><a href="/auth/signup">Sign up</a></li>
+            <?php endif; ?>
         </ul>
+
     </nav>
 
     <div class="nav-overlay"></div>
 
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Get elements
-            const navToggle = document.querySelector('.nav-toggle');
-            const navLinks = document.querySelector('.nav-links');
-            const navOverlay = document.querySelector('.nav-overlay');
-
-            // Toggle nav menu on small screens
-            navToggle.addEventListener('click', function() {
-                navLinks.classList.toggle('active');
-                navToggle.classList.toggle('active');
-                navOverlay.classList.toggle('active');
-            });
-
-            // Close menu when clicking on overlay
-            navOverlay.addEventListener('click', function() {
-                navLinks.classList.remove('active');
-                navToggle.classList.remove('active');
-                navOverlay.classList.remove('active');
-            });
-
-            // Close menu when clicking on a nav link (useful for single-page sites)
-            navLinks.addEventListener('click', function(e) {
-                if (e.target.tagName === 'A') {
-                    navLinks.classList.remove('active');
-                    navToggle.classList.remove('active');
-                    navOverlay.classList.remove('active');
-                }
-            });
-
-            // Close menu when pressing Escape key
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && navLinks.classList.contains('active')) {
-                    navLinks.classList.remove('active');
-                    navToggle.classList.remove('active');
-                    navOverlay.classList.remove('active');
-                }
-            });
-        });
-    </script>
+    <script src="/static/javascript/navbar.js"></script>
 </html>

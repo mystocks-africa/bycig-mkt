@@ -14,6 +14,11 @@
 <body>
     <button id="plus-btn" onclick="goToSubmitProposal()">+</button>
 
+    <div class="demo-section">
+      <h1>Welcome to BYCIG</h1>
+      <p>Start by submitting a new proposal or exploring existing ones.</p>
+    </div>
+
     <div id="grid-container">
         <?php if (!empty($proposals)): ?>
             <?php foreach ($proposals as $proposal): ?>

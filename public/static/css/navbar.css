@@ -38,6 +38,19 @@ nav {
     gap: 1.5rem;
     margin: 0;
     padding: 0;
+    align-items: center;
+}
+
+.nav-links li {
+    display: flex;
+    align-items: center;
+}
+
+.nav-links form {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
 }
 
 .nav-links a {
@@ -102,6 +115,22 @@ nav {
     top: 0;
 }
 
+#signout-btn {
+    background-color: black;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+#signout-btn:hover {
+    background-color: #333;
+}
+
 @media (max-width: 768px) {
     .nav-toggle {
         display: block;
@@ -123,6 +152,7 @@ nav {
         transition: transform 0.3s ease;
         overflow-y: auto;
         z-index: 999;
+        align-items: stretch;
     }
 
     .nav-links.active {
@@ -131,6 +161,12 @@ nav {
 
     .nav-links li {
         width: 100%;
+        display: block;
+    }
+
+    .nav-links form {
+        width: 100%;
+        padding: 0 1.5rem;
     }
 
     .nav-links a {
@@ -142,6 +178,23 @@ nav {
 
     .nav-links a:hover {
         background-color: #f8f8f8;
+    }
+
+    #signout-btn {
+        width: 100%;
+        text-align: left;
+        padding: 1rem;
+        background: none;
+        color: #000;
+        border: none;
+        border-bottom: 1px solid #f0f0f0;
+        border-radius: 0;
+        font-weight: 500;
+    }
+
+    #signout-btn:hover {
+        background-color: #f8f8f8;
+        color: #000;
     }
 }
 
