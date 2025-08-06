@@ -7,6 +7,11 @@
     <link rel="stylesheet" href="/static/css/index.css">
 </head>
 <body>
+    <div class="hero-section">
+      <h1>Admin Portal</h1>
+      <p>Manage your cluster's proposals.</p>
+    </div>
+    
     <div id="grid-container">
         <?php if (!empty($proposals)): ?>
             <?php foreach ($proposals as $proposal): ?>
