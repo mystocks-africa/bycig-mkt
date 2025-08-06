@@ -2,7 +2,9 @@
 
 namespace App;
 include_once __DIR__ . "/../../utils/memcached.php";
+include_once __DIR__ . "/../controllers/auth/Controller.php";
 
+use App\Controllers\AuthController;
 use Exception;
 
 class Controller
@@ -18,15 +20,26 @@ class Controller
     {
         global $memcached;
 
-        // check if session_id cookie is set and not empty
+        // Check if session_id cookie is set and not empty
         if (empty($_COOKIE["session_id"])) {
             return false;
         }
 
         $session_id_cookie = $_COOKIE["session_id"];
         $session = $memcached->get($session_id_cookie);
+
+        if (!$session) {
+            // Clear the session cookie so that the navbar UI is updated
+            if (isset($_COOKIE["session_id"])) {
+                $auth = new AuthController();
+                $auth->clearSessionCookie();
+            }
+
+            return false;
+        }  
+
         $parts = explode(",", $session);
-        
+
         $sessionAssoc = [
             "email" => trim($parts[0]),
             "role" => trim($parts[1])

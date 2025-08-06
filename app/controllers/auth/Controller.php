@@ -57,7 +57,7 @@ class AuthController extends Controller
         }
     }
 
-    private function clearSessionCookie() 
+    public function clearSessionCookie() 
     {
         try {
             setcookie('session_id', '', [
