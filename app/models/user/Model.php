@@ -47,7 +47,7 @@ class User extends Dbh
     public function createUser() 
     {
         parent::connect();
-
+    
         if ($this->cluster_leader) {
             $stmt = parent::$mysqli->prepare($this->userInsertQuery);
             $stmt->bind_param(
