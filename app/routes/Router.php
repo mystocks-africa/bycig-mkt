@@ -1,6 +1,9 @@
 <?php
 
 namespace App;
+include_once __DIR__ . "/../controllers/not-found/Controller.php";
+
+use App\Controllers\NotFoundController;
 
 class Router
 {
@@ -34,7 +37,8 @@ class Router
             $controller = new $controller();
             $controller->$action();
         } else {
-            throw new \Exception("No route found for URI: $uri");
+            $notFound = new NotFoundController();
+            $notFound->index();        
         }
     }
 }
