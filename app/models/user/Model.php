@@ -13,9 +13,14 @@ class User extends Dbh
     private string $cluster_leader; 
     private string $full_name; 
 
-    private string $post_user_query = "
+    private string $userInsertQuery = "
         INSERT INTO users (email, pwd, cluster_leader, full_name)
         VALUES (?, ?, ?, ?)
+    ";
+
+    private string $userInsertNoLeaderQuery = "
+        INSERT INTO users (email, pwd, full_name)
+        VALUES (?, ?, ?)
     ";
 
     private static string $findClusterLeaderQuery = "
@@ -43,14 +48,27 @@ class User extends Dbh
     {
         parent::connect();
 
-        $stmt = parent::$mysqli->prepare($this->post_user_query);
-        $stmt->bind_param(
-            "ssss", 
-            $this->email,
-            $this->pwd,
-            $this->cluster_leader,
-            $this->full_name
-        );
+        if ($this->cluster_leader) {
+            $stmt = parent::$mysqli->prepare($this->userInsertQuery);
+            $stmt->bind_param(
+                "ssss", 
+                $this->email,
+                $this->pwd,
+                $this->cluster_leader,
+                $this->full_name
+            );
+        } 
+
+        else {
+            $stmt = parent::$mysqli->prepare($this->userInsertNoLeaderQuery);
+            $stmt->bind_param(
+                "sss", 
+                $this->email,
+                $this->pwd,
+                $this->full_name
+            );
+        }
+
         $stmt->execute();
         $stmt->close();
     }
