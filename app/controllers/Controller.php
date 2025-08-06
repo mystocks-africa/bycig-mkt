@@ -48,6 +48,8 @@ class Controller
             header("Location: /redirect?message=$msg&message_type=error");
             exit();
         }
+
+        return $session;
     }
 
     protected static function redirectToResult($msg, $msgType) 

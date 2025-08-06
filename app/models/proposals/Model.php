@@ -152,7 +152,7 @@ class Proposal extends Dbh {
         }
     }
 
-    public static function findProposalByClusterLeader() 
+    public static function findProposalByClusterLeader($clusterLeaderEmail) 
     {
         parent::connect();
 
