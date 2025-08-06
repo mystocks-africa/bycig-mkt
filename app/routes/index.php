@@ -19,7 +19,6 @@ $router->get('/redirect', HomeController::class, 'redirect');
 // Authentication get methods 
 $router->get('/auth/signup', AuthController::class,'signUp');
 $router->get('/auth/signin', AuthController::class, 'signIn');
-$router->get('/auth/signout', AuthController::class,'signOut');
 
 // Authentication post methods
 $router->post('/auth/signin', AuthController::class,'signInPost');

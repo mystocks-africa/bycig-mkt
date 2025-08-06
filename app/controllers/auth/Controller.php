@@ -77,12 +77,6 @@ class AuthController extends Controller
         parent::render('/auth/signin');
     }
 
-    public function signOut() 
-    {
-        parent::redirectIfNotAuth();
-        parent::render('/auth/signout');
-    }
-
     public function signUp()
     {
         parent::redirectIfAuth();
