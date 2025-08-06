@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <title>Sign In</title>
+  <link rel="stylesheet" href="/static/css/index.css">
 </head>
 <body>
-  <h1>Sign In</h1>
   <form action="/auth/signin" method="post">
     <label for="email">Email:</label>
     <input type="email" id="email" name="email"><br><br>
@@ -13,7 +13,7 @@
     <label for="password">Password:</label>
     <input type="password" id="password" name="password"><br><br>
 
-    <input type="submit" value="Sign Up">
+    <button type="submit">Sign in</button>
   </form>
   <p>Already have an account? <a href="login.php">Login here</a></p>
 </body>
