@@ -2,8 +2,10 @@
 include_once __DIR__ . "/../controllers/home/Controller.php";
 include_once __DIR__ . "/../controllers/auth/Controller.php";
 include_once __DIR__ . "/../controllers/proposal/Controller.php";
+include_once __DIR__ . "/../controllers/admin/Controller.php";
 include_once __DIR__ . "/Router.php";
 
+use App\Controllers\AdminController;
 use App\Controllers\AuthController;
 use App\Controllers\HomeController;
 use App\Controllers\ProposalController;
@@ -29,7 +31,10 @@ $router->post('/auth/signout', AuthController::class,'signOutPost');
 $router->get('/proposals/details', ProposalController::class, 'proposalDetails');
 $router->get('/proposals/submit', ProposalController::class,'submit');
 
-// Proposal post method
+// Proposal post methods
 $router->post('/proposals/submit', ProposalController::class,'submitPost');
+
+// Admin get methods
+$router->get('/admin', AdminController::class, 'index');
 
 $router->dispatch();
