@@ -9,6 +9,7 @@ include_once __DIR__. "/../../../utils/memcached.php";
 use App\Controller;
 use App\Models\User;
 use Exception;
+use Memcached;
 
 class AuthController extends Controller
 {   
@@ -16,7 +17,10 @@ class AuthController extends Controller
 
     public function __construct() 
     {
-        global $memcached;
+        $memcached = new Memcached();
+
+        // Connect via Unix socket (local communication)
+        $memcached->addServer('/tmp/memcached.sock', 0);
         $this->memcached = $memcached;
     }
 
