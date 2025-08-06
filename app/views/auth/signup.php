@@ -21,10 +21,10 @@
 
     <label for="cluster_leader">Your Cluster Leader:</label>
     <select id="cluster_leader" name="cluster_leader">
-      <option value="">-- None --</option>
-      <?php foreach ($clusterLeaders as $leader): ?>
-        <option value="<?php echo $leader['email'] ?>">
-          <?php echo $leader['full_name'] ?> (<?php echo $leader['email'] ?>)
+      <option value="">None</option>
+      <?php foreach ($clusterLeaderEmails as $leader): ?>
+        <option value="<?= $leader ?>">
+          <?= $leader ?>
         </option>
       <?php endforeach; ?>
     </select><br><br>
