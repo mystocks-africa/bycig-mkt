@@ -46,6 +46,23 @@ class Proposal extends Dbh {
         LIMIT 1;
     ";
 
+    private static string $findProposalByClusterLeaderQuery = "
+        SELECT 
+            proposals.post_author, 
+            proposals.stock_ticker, 
+            proposals.stock_name, 
+            proposals.subject_line, 
+            proposals.thesis, 
+            proposals.bid_price, 
+            proposals.target_price, 
+            proposals.proposal_file, 
+            proposals.status 
+        FROM proposals 
+        INNER JOIN users AS authors 
+            ON proposals.post_author = authors.email
+        WHERE authors.cluster_leader = ?;
+    ";
+
 
     public function __construct (
         string $post_author, 
@@ -133,6 +150,19 @@ class Proposal extends Dbh {
         } catch(Exception $error) {
             return ["error"=> $error->getMessage()];
         }
+    }
+
+    public static function findProposalByClusterLeader() 
+    {
+        parent::connect();
+
+        $stmt = parent::$mysqli->prepare(self::$findProposalByClusterLeaderQuery);
+        $stmt->bind_param("s", $clusterLeaderEmail);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $proposals = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+        return $proposals;
     }
 
     public static function updateProposalStatus() 
