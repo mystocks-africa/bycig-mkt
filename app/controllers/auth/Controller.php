@@ -103,7 +103,8 @@ class AuthController extends Controller
 
             parent::redirectToResult("User has been created. You may sign in now.", "success");
         } catch (Exception $error) {
-            parent::redirectToResult( $error->getMessage(), "error");
+            $msg = "There has been an error in signing up.";
+            parent::redirectToResult( $msg, "error");
         }
     }
     
