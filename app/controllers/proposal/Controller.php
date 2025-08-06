@@ -3,12 +3,10 @@
 namespace App\Controllers;
 include_once __DIR__ . "/../Controller.php";
 include_once __DIR__ . "/../../models/proposals/Model.php";
-include_once __DIR__ . "/../../models/user/Model.php";
 include_once __DIR__ . "/../../../utils/env.php";
 
 use App\Controller;
 use App\Models\Proposal;
-use App\Models\User;
 
 class ProposalController extends Controller {
 
@@ -35,21 +33,7 @@ class ProposalController extends Controller {
     {
         parent::redirectIfNotAuth();
 
-        $clusterLeadersAssoc = User::findAllClusterLeaders();
-
-        // O(n) is fine here because cluster leaders length will always be small
-        $leaderEmails = [];
-        if (!empty($clusterLeadersAssoc) && is_array($clusterLeadersAssoc)) {
-            foreach ($clusterLeadersAssoc as $leader) {
-                if (isset($leader['email'])) {
-                    $leaderEmails[] = $leader['email'];
-                }
-            }
-        }
-
-        parent::render("proposal/submit", [
-            "emails" => $leaderEmails
-        ]);
+        parent::render("proposal/submit");
     }
 
     public function proposalDetails() 
