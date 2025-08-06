@@ -33,6 +33,8 @@ class ProposalController extends Controller {
 
     public function submit() 
     {
+        parent::redirectIfNotAuth();
+
         $clusterLeadersAssoc = User::findAllClusterLeaders();
 
         // O(n) is fine here because cluster leaders length will always be small
