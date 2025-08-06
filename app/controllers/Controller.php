@@ -57,6 +57,21 @@ class Controller
         }
     }
 
+    protected static function redirectIfNotClusterLeader() {
+        $session = self::getSession();
+
+        if(!$session) {
+            header("Location: /auth/signin");
+            exit();
+        }
+
+        else if ($session['role'] != "cluster_leader") {
+            $msg = "You are not authenticated for this action.";
+            header("Location: /redirect?message=$msg&message_type=error");
+            exit();
+        }
+    }
+
     protected static function redirectIfNotAuth($returnSession = false) 
     {
         $session = self::getSession();
