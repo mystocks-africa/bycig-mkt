@@ -25,22 +25,6 @@ class Controller
         }
     }
 
-    protected static function redirectIfNotClusterLeader() {
-        $memcachedH = new MemcachedH();
-        $session = $memcachedH->getSession();
-
-        if(!$session) {
-            header("Location: /auth/signin");
-            exit();
-        }
-
-        else if ($session['role'] != "cluster_leader") {
-            $msg = "You are not authenticated for this action.";
-            header("Location: /redirect?message=$msg&message_type=error");
-            exit();
-        }
-    }
-
     protected static function redirectIfNotAuth($returnSession = false) 
     {
         $memcachedH = new MemcachedH();
@@ -53,6 +37,16 @@ class Controller
 
         if ($returnSession) {
             return $session;
+        }
+    }
+
+    protected static function redirectIfNotClusterLeader() {
+        $session = self::redirectIfNotAuth(returnSession: true);
+
+        if ($session['role'] != "cluster_leader") {
+            $msg = "You are not authenticated for this action.";
+            header("Location: /redirect?message=$msg&message_type=error");
+            exit();
         }
     }
 
