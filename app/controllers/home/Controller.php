@@ -14,7 +14,7 @@ class HomeController extends Controller
         parent::redirectIfNotAuth();
         $proposals = Proposal::findAllProposals();
         
-        parent::render("home/index", [
+        parent::render("index", [
             "proposals"=>$proposals
         ]);    
     }
