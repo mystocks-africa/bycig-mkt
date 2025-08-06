@@ -201,7 +201,7 @@ nav {
 body {
     padding-top: 56px;
     margin: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Arial', sans-serif;
     line-height: 1.6;
 }
 
@@ -227,6 +227,11 @@ body {
 .nav-overlay.active {
     display: block;
     opacity: 1;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
 }
 
 @media (max-width: 768px) {
