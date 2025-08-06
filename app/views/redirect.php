@@ -6,7 +6,7 @@
     <title>Redirection</title>
     <link rel="stylesheet" href="/static/css/index.css">
 </head>
-<body id="redirect-body">
+<body class="redirect-body">
     <h1 id="main-text"></h1>
     <button onclick="goBackHome()">Go back home</button>
         <script>

@@ -14,9 +14,9 @@ body, html {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Page layout */
 #submit-proposal-body,
-#redirect-body {
+#redirect-body,
+.not-found-body {
   display: flex;
   flex-direction: column;
   align-items: center;      
@@ -25,7 +25,10 @@ body, html {
   padding: 60px 20px;
 }
 
-
+.header {
+  font-size: 4.5rem;
+  font-weight:bolder;
+}
 /* Form structure */
 form {
   width: 100%;
