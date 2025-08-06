@@ -19,7 +19,7 @@ class User extends Dbh
     ";
 
     private static string $findClusterLeaderQuery = "
-        SELECT email FROM users
+        SELECT email, full_name FROM users
         WHERE role = 'cluster_leader';
     ";
 
