@@ -201,3 +201,9 @@ button:disabled {
 .close:focus {
   color: #000;
 }
+
+.side-by-side-btns {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
