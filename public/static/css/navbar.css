@@ -211,13 +211,6 @@ body {
     margin: 0 auto;
 }
 
-.demo-section {
-    margin-bottom: 2rem;
-    padding: 2rem;
-    background: #f8f9fa;
-    border-radius: 8px;
-}
-
 .nav-overlay {
     display: none;
     position: fixed;

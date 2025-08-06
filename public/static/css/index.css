@@ -108,7 +108,11 @@ button:disabled {
   cursor: not-allowed;
 }
 
-#plus-btn {
+.hero-section {
+    padding: 2rem;
+}
+
+.plus-btn {
   position: fixed;
   bottom: 20px;
   right: 20px;

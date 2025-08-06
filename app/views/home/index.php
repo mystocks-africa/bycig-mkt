@@ -8,9 +8,9 @@
     <link rel="stylesheet" href="/static/css/index.css">
 </head>
 <body>
-    <button id="plus-btn" onclick="goToSubmitProposal()">+</button>
+    <button class="plus-btn" onclick="goToSubmitProposal()">+</button>
 
-    <div class="demo-section">
+    <div class="hero-section">
       <h1 id="greeting"></h1>
       <p>Start by submitting a new proposal or exploring existing ones.</p>
     </div>
