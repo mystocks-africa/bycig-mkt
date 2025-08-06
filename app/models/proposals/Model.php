@@ -56,7 +56,7 @@ class Proposal extends Dbh {
             proposals.bid_price, 
             proposals.target_price, 
             proposals.proposal_file, 
-            proposals.status 
+            proposals.status
         FROM proposals 
         INNER JOIN users AS authors 
             ON proposals.post_author = authors.email
