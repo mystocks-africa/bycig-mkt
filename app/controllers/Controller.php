@@ -26,10 +26,10 @@ class Controller
         $session_id_cookie = $_COOKIE["session_id"];
         $session = $memcached->get($session_id_cookie);
         $parts = explode(",", $session);
-
+        
         $sessionAssoc = [
             "email" => trim($parts[0]),
-            "user" => trim($parts[1])
+            "role" => trim($parts[1])
         ];
 
         return $sessionAssoc;
