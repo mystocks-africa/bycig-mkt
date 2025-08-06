@@ -2,7 +2,7 @@
     <link rel="stylesheet" href="/static/css/navbar.css">
 </head>
     <nav>
-        <a href="/" class="logo">BYCIG</a>
+        <a href="/" class="logo">BYCIG MKT</a>
 
         <button class="nav-toggle" aria-label="Toggle navigation">
             <span class="hamburger"></span>
