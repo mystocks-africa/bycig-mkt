@@ -15,6 +15,6 @@
             msg: "<?php echo filter_input(INPUT_GET, 'message', FILTER_SANITIZE_SPECIAL_CHARS) ?: 'Thank you :)'; ?>"
         };
     </script>
-    <script src="static/javascript/redirect.js"></script>
+    <script src="static/js/redirect.js"></script>
 </body>
 </html>

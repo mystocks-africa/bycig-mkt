@@ -28,5 +28,5 @@
 
     <div class="nav-overlay"></div>
 
-    <script src="/static/javascript/navbar.js"></script>
+    <script src="/static/js/navbar.js"></script>
 </html>
