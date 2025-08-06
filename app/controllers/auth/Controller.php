@@ -26,6 +26,7 @@ class AuthController extends Controller
         }
     }
 
+    // Public because it's needed in memcached handler for sessions 
     public function clearSessionCookie() 
     {
         try {
