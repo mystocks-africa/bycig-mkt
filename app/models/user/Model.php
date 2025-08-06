@@ -10,8 +10,8 @@ class User extends Dbh
 {
     private string $email;
     private string $pwd;
-    private string $cluster_leader; 
-    private string $full_name; 
+    private string $clusterLeader; 
+    private string $fullName; 
 
     private string $userInsertQuery = "
         INSERT INTO users (email, pwd, cluster_leader, full_name)
@@ -35,37 +35,34 @@ class User extends Dbh
         LIMIT 1;
     ";
 
-    // Constructor with mysqli injection
-    public function __construct(string $email, string $pwd, string $cluster_leader, string $full_name) 
+    public function __construct(string $email, string $pwd, string $clusterLeader, string $fullName) 
     {
         $this->email = $email;
         $this->pwd = $pwd;
-        $this->cluster_leader = $cluster_leader;
-        $this->full_name = $full_name;
+        $this->clusterLeader = $clusterLeader;
+        $this->fullName = $fullName;
     }
 
     public function createUser() 
     {
         parent::connect();
     
-        if ($this->cluster_leader) {
+        if ($this->clusterLeader) {
             $stmt = parent::$mysqli->prepare($this->userInsertQuery);
             $stmt->bind_param(
                 "ssss", 
                 $this->email,
                 $this->pwd,
-                $this->cluster_leader,
-                $this->full_name
+                $this->clusterLeader,
+                $this->fullName
             );
-        } 
-
-        else {
+        } else {
             $stmt = parent::$mysqli->prepare($this->userInsertNoLeaderQuery);
             $stmt->bind_param(
                 "sss", 
                 $this->email,
                 $this->pwd,
-                $this->full_name
+                $this->fullName
             );
         }
 
