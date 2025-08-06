@@ -14,8 +14,8 @@ body, html {
   -webkit-font-smoothing: antialiased;
 }
 
-#submit-proposal-body,
-#redirect-body,
+.submit-proposal-body,
+.redirect-body,
 .not-found-body {
   display: flex;
   flex-direction: column;

@@ -6,7 +6,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/index.css" >
 </head>
-<body id="submit-proposal-body">
+<body class="submit-proposal-body">
     <form method="post" enctype="multipart/form-data" action="/proposals/submit" novalidate>
         <label for="leaderSelect">Choose your Cluster Leader:</label>
         <select id="leaderSelect" name="cluster_leader_id" required>
