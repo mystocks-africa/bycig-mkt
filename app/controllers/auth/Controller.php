@@ -52,7 +52,7 @@ class AuthController extends Controller
         parent::redirectIfAuth();
         $clusterLeaders = User::findAllClusterLeaders();
 
-        // O(n) is fine here because cluster leaders length will always be small
+        // O(n)/linear time complexity is fine here because cluster leaders length will always be small
         $clusterLeaderEmails = [];
 
         if (!empty($clusterLeaders) && is_array($clusterLeaders)) {
