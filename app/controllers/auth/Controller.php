@@ -4,40 +4,15 @@ namespace App\Controllers;
 
 include_once __DIR__ . "/Controller.php";
 include_once __DIR__ . "/../../models/user/Model.php";
-include_once __DIR__. "/../../../utils/memcached.php";
+include_once __DIR__ . "/../../core/Memcachedh.php";
 
 use App\Controller;
 use App\Models\User;
+use App\Core\MemcachedH;
 use Exception;
-use Memcached;
 
 class AuthController extends Controller
 {   
-    private $memcached;
-
-    public function __construct() 
-    {
-        $memcached = new Memcached();
-
-        // Connect via Unix socket (local communication)
-        $memcached->addServer('/tmp/memcached.sock', 0);
-        $this->memcached = $memcached;
-    }
-
-    private function assignSession($email, $role) 
-    {
-        $EXPIRATION_DAYS = 60*60*24*30; // 30 days in seconds
-        
-        try {
-            $session_id = bin2hex(random_bytes(32)); // 64 character hex string
-            $this->memcached->set($session_id, "$email, $role", $EXPIRATION_DAYS);
-            
-            return $session_id;
-        } catch(Exception $error) {
-            return parent::redirectToResult($error->getMessage(), "error");
-        }
-    }
-
     private function assignSessionCookie($session_id) 
     {
         try {
@@ -47,16 +22,6 @@ class AuthController extends Controller
                 'httponly' => true,
             ]);
         } catch(Exception $error) {
-            return parent::redirectToResult($error->getMessage(), "error");
-        }
-    }
-
-    private function clearSession() 
-    {
-        try {
-            $session_id = $_COOKIE['session_id'];
-            $this->memcached->delete($session_id);
-        } catch (Exception $error) {
             return parent::redirectToResult($error->getMessage(), "error");
         }
     }
@@ -84,7 +49,11 @@ class AuthController extends Controller
     public function signUp()
     {
         parent::redirectIfAuth();
-        parent::render('/auth/signup');
+        $clusterLeaders = User::findAllClusterLeaders();
+
+        parent::render('/auth/signup', [
+            'clusterLeaders'=> $clusterLeaders
+        ]);
     }
 
     // Backend logic (post methods)
@@ -98,8 +67,9 @@ class AuthController extends Controller
         $user = User::findByEmail($email);
 
         if (isset($user) && password_verify($pwd, $user["pwd"])) {
-            $session_id = $this->assignSession($user["email"], $user["role"]);
-            $this->assignSessionCookie($session_id);
+            $memcachedH = new MemcachedH();
+            $sessionId = $memcachedH->setSession($user["email"], $user["role"]);
+            $this->assignSessionCookie($sessionId);
             parent::redirectToResult("Successfully logged in! Welcome!", "success");
         } else {
             parent::redirectToResult("Problem with logging in. Try again.", "error");
@@ -130,8 +100,8 @@ class AuthController extends Controller
     public function signOutPost() 
     {
         parent::redirectIfNotAuth();
-
-        $this->clearSession();
+        $memcachedH = new MemcachedH();
+        $memcachedH->clearSession();
         $this->clearSessionCookie();
         parent::redirectToResult("Signed out successfully!", "success");
     }
