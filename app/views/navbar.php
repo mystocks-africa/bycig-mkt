@@ -9,7 +9,6 @@
         </button>
 
         <ul class="nav-links">
-            <li><a href="/">Home</a></li>
             <li><a href="/proposals/submit">Create Proposal</a></li>
 
             <?php if (isset($_COOKIE["session_id"])): ?>
