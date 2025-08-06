@@ -1,10 +1,9 @@
 <?php
 
 namespace App;
-include_once __DIR__ . "/../../utils/memcached.php";
 include_once __DIR__ . "/../core/Memcachedh.php";
 
-use App\Core\MemcachedH;
+use App\Core\Memcachedh;
 use Exception;
 
 class Controller

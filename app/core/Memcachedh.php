@@ -2,12 +2,12 @@
 
 namespace App\Core;
 
-include_once __DIR__ . "/../app/controllers/auth/Controller.php";
+include_once __DIR__ . '/../controllers/auth/Controller.php';
 
 use App\Controllers\AuthController;
 use Memcached;
 
-class MemcachedH {
+class Memcachedh {
     private $memcached;
 
     public function __construct() 
