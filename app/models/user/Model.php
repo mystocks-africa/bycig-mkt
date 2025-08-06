@@ -13,7 +13,7 @@ class User extends Dbh
     private string $cluster_leader; 
     private string $full_name; 
 
-    private static string $post_user_query = "
+    private string $post_user_query = "
         INSERT INTO users (email, pwd, cluster_leader, full_name)
         VALUES (?, ?, ?, ?)
     ";
@@ -41,23 +41,18 @@ class User extends Dbh
 
     public function createUser() 
     {
-        try {
-            parent::connect();
+        parent::connect();
 
-            $stmt = parent::$mysqli->prepare($this->post_user_query);
-            $stmt->bind_param(
-                "ssss", 
-                $this->email,
-                $this->pwd,
-                $this->cluster_leader,
-                $this->full_name
-            );
-            $stmt->execute();
-            $stmt->close();
-            return true;
-        } catch(Exception $error) {
-            return $error->getMessage();
-        }
+        $stmt = parent::$mysqli->prepare($this->post_user_query);
+        $stmt->bind_param(
+            "ssss", 
+            $this->email,
+            $this->pwd,
+            $this->cluster_leader,
+            $this->full_name
+        );
+        $stmt->execute();
+        $stmt->close();
     }
 
     public static function findByEmail(string $email) 
