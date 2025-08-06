@@ -102,7 +102,7 @@ class AuthController extends Controller
         if (isset($user) && password_verify($pwd, $user["pwd"])) {
             $session_id = $this->assignSession($user["email"], $user["role"]);
             $this->assignSessionCookie($session_id);
-            parent::redirectToResult("Successfully logged in! Welcome!", "error");
+            parent::redirectToResult("Successfully logged in! Welcome!", "success");
         } else {
             parent::redirectToResult("Problem with logging in. Try again.", "error");
         } 
