@@ -19,10 +19,12 @@ class HoldingsController extends Controller
         ]);
     }
 
-    public function deleteHolding()
+    public function delete()
     {
+        $session = parent::redirectIfNotAuth(returnSession: true);
         $id = filter_input(INPUT_GET, "id", FILTER_SANITIZE_NUMBER_INT);
 
-        Holding::deleteHolding($id);
+        // Query for email as well so only the owner can delete
+        Holding::deleteHolding($id, $session['email']);
     }
 }

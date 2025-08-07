@@ -47,4 +47,7 @@ $router->delete('/admin/delete-proposal', AdminController::class, 'deleteProposa
 // Holdings get methods
 $router->get('/holdings', HoldingsController::class, 'index');
 
+// Holdings delete methods
+$router->delete('/holdings/delete', HoldingsController::class, 'delete');
+
 $router->dispatch();

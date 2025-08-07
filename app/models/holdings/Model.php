@@ -32,7 +32,10 @@ class Holding extends Dbh
     ";
 
     private static string $deleteHoldingQuery = "
-    
+        DELETE 
+        FROM holdings 
+        WHERE id = ? 
+        AND investor = ?
     ";
 
     public function __construct(string $investor, string $stock_ticker, string $stock_name, string $bid_price, string $target_price, string $proposal_file)
@@ -77,11 +80,11 @@ class Holding extends Dbh
         return $holdings;
     }
 
-    public static function deleteHolding() 
+    public static function deleteHolding($id, $email) 
     {
         parent::connect();
         $stmt = parent::$mysqli->prepare(self::$deleteHoldingQuery);
-        $stmt->bind_param("s", $clusterLeaderEmail);
+        $stmt->bind_param("is", $id, $email);
         $stmt->execute();
     }
 }
