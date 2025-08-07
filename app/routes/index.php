@@ -37,8 +37,8 @@ $router->post('/proposals/submit', ProposalController::class,'submitPost');
 // Admin get methods
 $router->get('/admin', AdminController::class, 'index');
 
-// Admin post methods 
-$router->post('/admin/handle-proposal-status', AdminController::class,'handleProposalStatusPost');
+// Admin put methods 
+$router->put('/admin/handle-proposal-status', AdminController::class,'handleProposalStatusPost');
 
 // Admin delete methods
 $router->delete('/admin/delete-proposal', AdminController::class, 'deleteProposal');

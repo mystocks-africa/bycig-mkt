@@ -27,7 +27,7 @@ function handleUpdateStatus(postId, clusterLeaderEmail, status) {
     formData.append('cluster_leader_email', clusterLeaderEmail);
     formData.append('status', status);
 
-    fetch('/admin/update-proposal-status', {
+    fetch('/admin/handle-proposal-status', {
         method: 'PUT',
         body: formData,
     })
