@@ -29,8 +29,7 @@ class AdminController extends Controller
             $status = filter_input(INPUT_POST, 'status', FILTER_SANITIZE_SPECIAL_CHARS);
 
             if ($status != 'accept' && $status != 'decline') {
-                $msg = 'Status is not properly formatted';
-                throw new Exception($msg);
+                throw new Exception('Status is not properly formatted');
             }
 
             Proposal::updateProposalStatus($postId, $clusterLeaderEmail, $status);
@@ -51,8 +50,7 @@ class AdminController extends Controller
                 $holding->createHolding();
             }
 
-            $msg = 'Successfully updated status of proposal';
-            parent::redirectToResult($msg, 'success');
+            parent::redirectToResult('Successfully updated status of proposal', 'success');
         } catch (Exception $error) {
             parent::redirectToResult($error->getMessage(), 'error');
         }
