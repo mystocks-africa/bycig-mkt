@@ -1,8 +1,8 @@
 // HTML form does not support DELETE or PUT methods directly.
 
 function handleDeleteProposal(postId) {
-    if (!postId) {
-        alert('Post ID is required to delete a proposal.');
+    if (typeof postId !== 'number' || postId <= 0) {
+        alert("Invalid post ID.");
         return;
     }
     
@@ -27,8 +27,18 @@ function handleDeleteProposal(postId) {
 }
 
 function handleUpdateStatus(postId, clusterLeaderEmail, status) {
-    if (!postId || !clusterLeaderEmail || !status) {
-        alert('Missing required data to update status.');
+    if (typeof postId !== 'number' || postId <= 0) {
+        alert("Invalid post ID.");
+        return;
+    }
+
+    if (typeof clusterLeaderEmail !== 'string' || clusterLeaderEmail.trim() === '') {
+        alert("Invalid cluster leader email.");
+        return;
+    }
+
+    if (typeof status !== 'string' || !['approved', 'rejected'].includes(status)) {
+        alert("Invalid status. Must be 'approved', 'rejected', or 'pending'.");
         return;
     }
 
