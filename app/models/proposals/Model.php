@@ -4,6 +4,7 @@ namespace App\Models;
 include_once __DIR__ . "/../../core/Dbh.php";
 
 use App\Dbh;
+use Exception;
 
 class Proposal extends Dbh {
     private string $post_author;
