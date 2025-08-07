@@ -49,21 +49,18 @@
                         <p><strong>Status:</strong> <?= $status ?></p>
                         <p class="underline-text"><strong>File:</strong> <a href="https://bycig.org/<?= $proposalFile ?>"><?= $proposalFile ?></a></p>
 
-                        <?php if ($status == "pending"): ?>
-                            <div class="side-by-side-btns">
-                                <form action="/admin/handle-proposal-status" method="post">
-                                    <input type="hidden" name="post_id" value="<?= $postId ?>">
-                                    <input type="hidden" name="cluster_leader_email" value="<?= $clusterLeaderEmail ?>">
-                                    <div class="side-by-side-btns">
-                                        <button type="submit" name="status" value="accept">Accept</button>
-                                        <button type="submit" name="status" value="decline">Decline</button>
-                                    </div>
-                                </form>
-                            </div>
+                        <div style="margin-top: 40px;">
+                            <?php if ($status == "pending"): ?>
+                                <div class="side-by-side-btns">
+                                    <button onclick="handleUpdateStatus(<?= $postId ?>, <?= $clusterLeaderEmail ?>, 'accept')">Accept</button>
+                                    <button onclick="handleUpdateStatus(<?= $postId ?>, <?= $clusterLeaderEmail ?>, 'decline')">Decline</button>
+                                </div>
 
-                        <?php else: ?>
-                            <button onclick="handleDeleteProposal()">Delete proposal</button>
-                        <?php endif ?>
+                            <?php else: ?>
+                                <button onclick="handleDeleteProposal(<?= $postId ?>)">Delete proposal</button>
+                            <?php endif ?>
+                        </div>
+
                     </div>
                 </div>
             <?php endforeach; ?>

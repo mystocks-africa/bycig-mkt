@@ -212,7 +212,6 @@ button:disabled {
 }
 
 .side-by-side-btns {
-  margin-top: 20px;
   display: flex;
   gap: 10px;
 }
