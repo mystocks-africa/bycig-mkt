@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 include_once __DIR__ . "/../Controller.php";
-include_once __DIR__ . "/../../models/proposals/User.php";
+include_once __DIR__ . "/../../models/user/Model.php";
 
 use App\Controller;
 use App\Models\User;
@@ -10,7 +10,7 @@ use App\Models\User;
 class HomeController extends Controller
 {
     public function index()
-    {
+    { 
         parent::redirectIfNotAuth();
         $clusterLeaders = User::findAllClusterLeaders();
         

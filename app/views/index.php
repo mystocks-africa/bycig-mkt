@@ -16,15 +16,14 @@
     </div>
 
     <div id="grid-container">
-        <?php if (!empty($proposals)): ?>
-            <?php foreach ($proposals as $proposal): ?>
+        <?php if (!empty($clusterLeaders)): ?>
+            <?php foreach ($clusterLeaders as $clusterLeader): ?>
                 <?php
-                    $postId = htmlspecialchars($proposal['post_id'], ENT_QUOTES, 'UTF-8');
-                    $subject = htmlspecialchars($proposal['subject_line'], ENT_QUOTES, 'UTF-8');
-                    $email = htmlspecialchars($proposal['email'], ENT_QUOTES, 'UTF-8');
+                    $name = $clusterLeader["full_name"];  
+                    $email = $clusterLeader["email"];
                 ?>
-                <a href="/proposals/details?post_id=<?= $postId ?>" class="card" style="text-decoration: none; color: black;">
-                    <h3 class="truncate"><?= $subject ?></h3>
+                <a href="/holdings/details?email=<?= $email ?>" class="card" style="text-decoration: none; color: black;">
+                    <h3 class="truncate"><?= $name ?>'s Portfolio</h3>
                     <p><strong>Email:</strong> <span class="truncate"><?= $email ?></span></p>
                 </a>
             <?php endforeach; ?>
