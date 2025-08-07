@@ -16,14 +16,7 @@ class Proposal extends Dbh
     private string $target_price;
     private string $proposal_file;
     private string $status = "pending";
-
-    private static string $getAllProposalQuery = "
-        SELECT post_id, subject_line, email, full_name 
-        FROM proposals 
-        INNER JOIN users 
-        ON proposals.post_author = users.email;
-    ";
-
+    
     private static string $getProposalByIdQuery = "
         SELECT stock_ticker, stock_name, subject_line, thesis, bid_price, target_price, status, proposal_file, full_name, email
         FROM proposals 
@@ -109,22 +102,6 @@ class Proposal extends Dbh
             $this->proposal_file,
             $this->status
         ]);
-    }
-
-    public static function findAllProposals() 
-    {
-        parent::connect();
-        $stmt = parent::$mysqli->prepare(self::$getAllProposalQuery);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $stmt->close();
-
-        $rows = [];
-        while ($row = $result->fetch_assoc()) {
-            $rows[] = $row;
-        }
-            
-        return $rows;
     }
 
     public static function findProposalById(int $id) 

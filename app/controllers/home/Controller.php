@@ -2,20 +2,20 @@
 
 namespace App\Controllers;
 include_once __DIR__ . "/../Controller.php";
-include_once __DIR__ . "/../../models/proposals/Model.php";
+include_once __DIR__ . "/../../models/proposals/User.php";
 
 use App\Controller;
-use App\Models\Proposal;
+use App\Models\User;
 
 class HomeController extends Controller
 {
     public function index()
     {
         parent::redirectIfNotAuth();
-        $proposals = Proposal::findAllProposals();
+        $clusterLeaders = User::findAllClusterLeaders();
         
         parent::render("index", [
-            "proposals"=>$proposals
+            "clusterLeaders"=>$clusterLeaders
         ]);    
     }
 
