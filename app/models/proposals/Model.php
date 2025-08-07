@@ -4,7 +4,6 @@ namespace App\Models;
 include_once __DIR__ . "/../../core/Dbh.php";
 
 use App\Dbh;
-use Exception;
 
 class Proposal extends Dbh {
     private string $post_author;
@@ -62,23 +61,19 @@ class Proposal extends Dbh {
         UPDATE proposals
         INNER JOIN users ON proposals.post_author = users.email
         SET proposals.status = ?
-        WHERE proposals.post_id = ?
-        AND users.cluster_leader = ?
-        LIMIT 1;
+        WHERE proposals.post_id = ?;
     ";
 
-
-    public function __construct (
-        string $post_author, 
-        string $stock_ticker, 
-        string $stock_name, 
+    public function __construct(
+        string $post_author,
+        string $stock_ticker,
+        string $stock_name,
         string $subject_line,
-        string $thesis, 
-        string $bid_price, 
-        string $target_price, 
+        string $thesis,
+        string $bid_price,
+        string $target_price,
         string $proposal_file
-    ) 
-    {
+    ) {
         $this->post_author = $post_author;
         $this->stock_ticker = $stock_ticker;
         $this->stock_name = $stock_name;
@@ -89,98 +84,41 @@ class Proposal extends Dbh {
         $this->proposal_file = $proposal_file;
     }
 
-    public function createProposal() 
-    {
-        try {
-            parent::connect();
-            $stmt = parent::$mysqli->prepare(self::$insertProposalQuery);
-            $stmt->bind_param(
-                'sssssssss',
-                $this->post_author,
-                $this->stock_ticker,
-                $this->stock_name,
-                $this->subject_line,
-                $this->thesis,
-                $this->bid_price,
-                $this->target_price,
-                $this->proposal_file,
-                $this->status
-            );
-            
-            $result = $stmt->execute();
-            $stmt->close();
-
-            return $result;
-        } catch (Exception $error) {
-            return $error->getMessage();
-        }
-
+    public function insert(): void {
+        $stmt = $this->connect()->prepare(self::$insertProposalQuery);
+        $stmt->execute([
+            $this->post_author,
+            $this->stock_ticker,
+            $this->stock_name,
+            $this->subject_line,
+            $this->thesis,
+            $this->bid_price,
+            $this->target_price,
+            $this->proposal_file,
+            $this->status
+        ]);
     }
 
-    public static function findAllProposals() 
-    {
-        try {
-            parent::connect();
-            $stmt = parent::$mysqli->prepare(self::$getAllProposalQuery);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            $stmt->close();
-
-            $rows = [];
-            while ($row = $result->fetch_assoc()) {
-                $rows[] = $row;
-            }
-            
-            return $rows;
-        } catch (Exception $error) {
-            return $error->getMessage();
-        }
-    }
-
-    public static function findProposalById(int $id) 
-    {
-        try {
-            parent::connect();
-            $stmt = parent::$mysqli->prepare(self::$getProposalByIdQuery);
-            $stmt->bind_param(
-                "i",
-                $id
-            );
-            $stmt->execute();
-            $result = $stmt->get_result();
-            $getProposalInfo = $result->fetch_assoc();
-            $stmt->close();
-            return $getProposalInfo;
-        } catch(Exception $error) {
-            return ["error"=> $error->getMessage()];
-        }
-    }
-
-    public static function findProposalByClusterLeader($clusterLeaderEmail) 
-    {
-        parent::connect();
-
-        $stmt = parent::$mysqli->prepare(self::$findProposalByClusterLeaderQuery);
-        $stmt->bind_param("s", $clusterLeaderEmail);
+    public static function getAll(): array {
+        $stmt = (new self('', '', '', '', '', '', '', ''))->connect()->prepare(self::$getAllProposalQuery);
         $stmt->execute();
-        $result = $stmt->get_result();
-        $proposals = $result->fetch_all(MYSQLI_ASSOC);
-        $stmt->close();
-        return $proposals;
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    public static function updateProposalStatus($postId, $clusterLeaderEmail, $status) 
-    {
-        try {
-            parent::connect();
-            $stmt = parent::$mysqli->prepare(self::$updateProposalStatusQuery);
-            $stmt->bind_param("sis", $status, $postId, $clusterLeaderEmail);
-            $result = $stmt->execute();
-            $stmt->close();
-            return $result;
-        } catch(Exception $error) {
-            return $error->getMessage();
-        }
+    public static function getById(string $id): array {
+        $stmt = (new self('', '', '', '', '', '', '', ''))->connect()->prepare(self::$getProposalByIdQuery);
+        $stmt->execute([$id]);
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
 
+    public static function getByClusterLeader(string $email): array {
+        $stmt = (new self('', '', '', '', '', '', '', ''))->connect()->prepare(self::$findProposalByClusterLeaderQuery);
+        $stmt->execute([$email]);
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public static function updateStatus(string $status, string $post_id): void {
+        $stmt = (new self('', '', '', '', '', '', '', ''))->connect()->prepare(self::$updateProposalStatusQuery);
+        $stmt->execute([$status, $post_id]);
     }
 }
