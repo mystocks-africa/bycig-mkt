@@ -12,10 +12,10 @@ function handleDeleteHolding(id) {
             }
         })
         .then(() => {
-                window.location.href = '/redirect?message=Holding deleted successfully&message_type=success';
+            window.location.href = '/redirect?message=Holding deleted successfully&message_type=success';
         })
         .catch(error => {
-            alert(error.message)
+            window.location.href = `/redirect?message=${encodeURIComponent(error.message)}&message_type=error`;
         });
     }
 }

@@ -10,11 +10,10 @@ function handleDeleteProposal(postId) {
             method: 'DELETE',
         })
         .then(() => {
-            alert('Proposal deleted successfully.');
-            location.reload();
+            window.location.href = '/redirect?message=Proposal deleted successfully&message_type=success';
         })
         .catch((error) => {
-            alert(error.message);
+            window.location.href = `/redirect?message=${encodeURIComponent(error.message)}&message_type=error`;
         });
     }
 }
@@ -45,10 +44,9 @@ function handleUpdateStatus(postId, clusterLeaderEmail, status) {
         method: 'PUT',
     })
     .then(() => {
-        alert('Proposal status updated successfully.');
-        location.reload();
+        window.location.href = '/redirect?message=Proposal deleted successfully&message_type=success';
     })
     .catch(error => {
-        alert(error.message);
+        window.location.href = `/redirect?message=${encodeURIComponent(error.message)}&message_type=error`;
     });
 }
