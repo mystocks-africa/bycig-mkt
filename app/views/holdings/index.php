@@ -6,7 +6,12 @@
     <title>Holdings</title>
     <link rel="stylesheet" href="/static/css/index.css">
 </head>
-<body style="margin-top:10px;">
+<body>
+    <div class="hero-section">
+      <h1>Holdings</h1>
+      <p>All associated assets for this portfolio.</p>
+    </div>
+
     <div id="grid-container">
         <?php if (!empty($holdings)): ?>
             <?php foreach ($holdings as $holding): ?>
