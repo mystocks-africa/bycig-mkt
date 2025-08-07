@@ -4,7 +4,6 @@ namespace App\Models;
 include_once __DIR__ . "/../../core/Dbh.php";
 
 use App\Dbh;
-use Exception;
 
 class Proposal extends Dbh {
     private string $post_author;
@@ -103,41 +102,33 @@ class Proposal extends Dbh {
 
     public static function findAllProposals() 
     {
-        try {
-            parent::connect();
-            $stmt = parent::$mysqli->prepare(self::$getAllProposalQuery);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            $stmt->close();
+        parent::connect();
+        $stmt = parent::$mysqli->prepare(self::$getAllProposalQuery);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $stmt->close();
 
-            $rows = [];
-            while ($row = $result->fetch_assoc()) {
-                $rows[] = $row;
-            }
-            
-            return $rows;
-        } catch (Exception $error) {
-            return $error->getMessage();
+        $rows = [];
+        while ($row = $result->fetch_assoc()) {
+            $rows[] = $row;
         }
+            
+        return $rows;
     }
 
     public static function findProposalById(int $id) 
     {
-        try {
-            parent::connect();
-            $stmt = parent::$mysqli->prepare(self::$getProposalByIdQuery);
-            $stmt->bind_param(
-                "i",
-                $id
-            );
-            $stmt->execute();
-            $result = $stmt->get_result();
-            $getProposalInfo = $result->fetch_assoc();
-            $stmt->close();
-            return $getProposalInfo;
-        } catch(Exception $error) {
-            return ["error"=> $error->getMessage()];
-        }
+        parent::connect();
+        $stmt = parent::$mysqli->prepare(self::$getProposalByIdQuery);
+        $stmt->bind_param(
+            "i",
+            $id
+        );
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $getProposalInfo = $result->fetch_assoc();
+        $stmt->close();
+        return $getProposalInfo;
     }
 
     public static function findProposalByClusterLeader($clusterLeaderEmail) 
@@ -155,15 +146,11 @@ class Proposal extends Dbh {
 
     public static function updateProposalStatus($postId, $clusterLeaderEmail, $status) 
     {
-        try {
-            parent::connect();
-            $stmt = parent::$mysqli->prepare(self::$updateProposalStatusQuery);
-            $stmt->bind_param("sis", $status, $postId, $clusterLeaderEmail);
-            $result = $stmt->execute();
-            $stmt->close();
-            return $result;
-        } catch(Exception $error) {
-            return $error->getMessage();
-        }
+        parent::connect();
+        $stmt = parent::$mysqli->prepare(self::$updateProposalStatusQuery);
+        $stmt->bind_param("sis", $status, $postId, $clusterLeaderEmail);
+        $result = $stmt->execute();
+        $stmt->close();
+        return $result;
     }
 }
