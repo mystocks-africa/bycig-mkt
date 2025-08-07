@@ -24,6 +24,9 @@
                     <p>Investor: <?= $investor ?></p> 
                     <p>Stock Name: <?= $stockName ?></p> 
                     <p>Stock Ticker: <?= $stockTicker ?></p> 
+                    <?php if ($holding["investor"] == $session['email']): ?>
+                        <button>Delete</button>
+                    <?php endif ?>
                 </div>
             <?php endforeach; ?>
         <?php else: ?>

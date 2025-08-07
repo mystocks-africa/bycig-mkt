@@ -11,11 +11,13 @@ class HoldingsController extends Controller
 {
     public function index() 
     {
+        $session = parent::redirectIfNotAuth(returnSession: true);
         $clusterLeaderEmail = filter_input(INPUT_GET, "cluster_leader_email", FILTER_SANITIZE_EMAIL);
 
         $holdings = Holding::findAllHoldings($clusterLeaderEmail);
         parent::render("/holdings/index", [
-            "holdings"=> $holdings
+            "holdings"=> $holdings,
+            "session"=> $session
         ]);
     }
 
