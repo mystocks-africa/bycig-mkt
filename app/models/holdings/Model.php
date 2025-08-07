@@ -7,5 +7,44 @@ use App\Dbh;
 
 class Holdings extends Dbh 
 {
+    private string $investor;
+    private string $stock_ticker;
+    private string $stock_name;
+    private string $bid_price;
+    private string $target_price;
+    private string $proposal_file;
 
+    private string $insertHoldingQuery = "
+        INSERT INTO holdings 
+        (investor, stock_ticker, stock_name, bid_price, target_price, proposal_file) 
+        VALUES (?, ?, ?, ?, ?, ?)
+    ";
+
+    public function __construct(string $investor, string $stock_ticker, string $stock_name, string $bid_price, string $target_price, string $proposal_file)
+    {
+        $this->investor = $investor;
+        $this->stock_ticker = $stock_ticker;
+        $this->stock_name = $stock_name;
+        $this->bid_price = $bid_price;
+        $this->target_price = $target_price;
+        $this->proposal_file = $proposal_file;
+    }
+
+    public function createHolding()
+    {
+        parent::connect();
+
+        $stmt = parent::$mysqli->prepare($this->insertHoldingQuery);
+        $stmt->bind_param(
+            "sssiis",
+            $this->investor,
+            $this->stock_ticker,
+            $this->stock_name,
+            $this->bid_price,
+            $this->target_price,
+            $this->proposal_file
+        );
+        $stmt->execute();
+        $stmt->close();
+    }
 }
