@@ -50,18 +50,13 @@
 
                         <?php if ($status == "pending"): ?>
                             <div class="side-by-side-btns">
-                                <form action="/admin/update-proposal-status" method="post">
+                                <form action="/admin/handle-proposal-status" method="post">
                                     <input type="hidden" name="post_id" value="<?= $postId ?>">
                                     <input type="hidden" name="cluster_leader_email" value="<?= $clusterLeaderEmail ?>">
-                                    <input type="hidden" name="status" value="accept">
-                                    <button type="submit">Accept</button>
-                                </form>
-
-                                <form action="/admin/update-proposal-status" method="post">
-                                    <input type="hidden" name="post_id" value="<?= $postId ?>">
-                                    <input type="hidden" name="cluster_leader_email" value="<?= $clusterLeaderEmail ?>">
-                                    <input type="hidden" name="status" value="decline">
-                                    <button type="submit">Decline</button>
+                                    <div class="side-by-side-btns">
+                                        <button type="submit" name="action" value="accept">Accept</button>
+                                        <button type="submit" name="action" value="decline">Decline</button>
+                                    </div>
                                 </form>
                             </div>
 

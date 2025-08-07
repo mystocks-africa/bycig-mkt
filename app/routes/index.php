@@ -38,6 +38,6 @@ $router->post('/proposals/submit', ProposalController::class,'submitPost');
 $router->get('/admin', AdminController::class, 'index');
 
 // Admin post methods 
-$router->post('/admin/update-proposal-status', AdminController::class,'updateProposalStatusPost');
+$router->post('/admin/handle-proposal-status', AdminController::class,'handleProposalStatusPost');
 
 $router->dispatch();

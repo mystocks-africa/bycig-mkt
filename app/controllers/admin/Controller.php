@@ -3,9 +3,11 @@
 namespace App\Controllers;
 include_once __DIR__ . "/Controller.php";
 include_once __DIR__ . "/../../models/proposals/Model.php";
+include_once __DIR__ . "/../../models/holdings/Model.php";
 
 use App\Controller;
 use App\Models\Proposal;
+use App\Models\Holding;
 use Exception;
 
 class AdminController extends Controller 
@@ -20,7 +22,7 @@ class AdminController extends Controller
         ]);
     }
 
-    public function updateProposalStatusPost() 
+    public function handleProposalStatusPost() 
     {
         try {
             $postId = filter_input(INPUT_POST, 'post_id', FILTER_SANITIZE_NUMBER_INT);
@@ -32,10 +34,26 @@ class AdminController extends Controller
                 throw new Exception($msg);
             }
 
-            Proposal::updateProposalStatus($postId, $clusterLeaderEmail, $status); 
+            Proposal::updateProposalStatus($postId, $clusterLeaderEmail, $status);
+
+            // Keep proposal even when a new holding w/ proposal info is created
+            // Cluster leader has to delete it themselves in admin portal 
+
+            if ($status == 'accept') {
+                $proposal = Proposal::findProposalById($postId);
+                $holding = new Holding(
+                    $proposal['email'],
+                    $proposal['stock_ticker'],
+                    $proposal['stock_name'],
+                    $proposal['bid_price'],
+                    $proposal['target_price'],
+                    $proposal['proposal_file'],
+                );
+                $holding->createHolding();
+            }
 
             $msg = 'Successfully updated status of proposal';
-            //parent::redirectToResult($msg, 'success');
+            parent::redirectToResult($msg, 'success');
         } catch (Exception $error) {
             parent::redirectToResult($error->getMessage(), 'error');
         }
