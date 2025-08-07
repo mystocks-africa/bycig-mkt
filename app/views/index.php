@@ -19,12 +19,12 @@
         <?php if (!empty($clusterLeaders)): ?>
             <?php foreach ($clusterLeaders as $clusterLeader): ?>
                 <?php
-                    $name = $clusterLeader["full_name"];  
-                    $email = $clusterLeader["email"];
+                    $clusterLeaderName = $clusterLeader["full_name"];  
+                    $clusterLeaderEmail = $clusterLeader["email"];
                 ?>
-                <a href="/holdings/details?email=<?= $email ?>" class="card" style="text-decoration: none; color: black;">
-                    <h3 class="truncate"><?= $name ?>'s Portfolio</h3>
-                    <p><strong>Email:</strong> <span class="truncate"><?= $email ?></span></p>
+                <a href="/holdings?cluster_leader_email=<?= $clusterLeaderEmail ?>" class="card" style="text-decoration: none; color: black;">
+                    <h3 class="truncate"><?= $clusterLeaderName ?>'s Portfolio</h3>
+                    <p><strong>Email:</strong> <span class="truncate"><?= $clusterLeaderEmail ?></span></p>
                 </a>
             <?php endforeach; ?>
         <?php else: ?>
