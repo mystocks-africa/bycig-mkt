@@ -39,15 +39,9 @@ class Proposal extends Dbh {
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
     ";
 
-    private static string $updateProposalStatusQuery = "
-        UPDATE wp_2_proposals
-        SET status = ?
-        WHERE post_id = ? AND cluster_leader_id = ?
-        LIMIT 1;
-    ";
-
     private static string $findProposalByClusterLeaderQuery = "
         SELECT 
+            proposals.post_id,
             proposals.post_author, 
             proposals.stock_ticker, 
             proposals.stock_name, 
@@ -56,11 +50,21 @@ class Proposal extends Dbh {
             proposals.bid_price, 
             proposals.target_price, 
             proposals.proposal_file, 
-            proposals.status
+            proposals.status,
+            authors.cluster_leader
         FROM proposals 
         INNER JOIN users AS authors 
             ON proposals.post_author = authors.email
         WHERE authors.cluster_leader = ?;
+    ";
+
+    private static string $updateProposalStatusQuery = "
+        UPDATE proposals
+        INNER JOIN users ON proposals.post_author = users.email
+        SET proposals.status = ?
+        WHERE proposals.post_id = ?
+        AND users.cluster_leader = ?
+        LIMIT 1;
     ";
 
 
@@ -165,11 +169,12 @@ class Proposal extends Dbh {
         return $proposals;
     }
 
-    public static function updateProposalStatus() 
+    public static function updateProposalStatus($postId, $clusterLeaderEmail, $status) 
     {
         try {
-            $stmt = self::$mysqli->prepare(self::$updateProposalStatusQuery);
-            $stmt->bind_param("sii", $status, $proposal_id, $cluster_leader_id);
+            parent::connect();
+            $stmt = parent::$mysqli->prepare(self::$updateProposalStatusQuery);
+            $stmt->bind_param("sis", $status, $postId, $clusterLeaderEmail);
             $result = $stmt->execute();
             $stmt->close();
             return $result;

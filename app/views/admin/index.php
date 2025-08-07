@@ -17,6 +17,8 @@
         <?php if (!empty($proposals)): ?>
             <?php foreach ($proposals as $index => $proposal): ?>
                 <?php
+                    $postId = $proposal['post_id'];
+                    $clusterLeaderEmail = $proposal['cluster_leader'];
                     $subject = $proposal['subject_line'];
                     $email = $proposal['post_author'];
                     $ticker = $proposal['stock_ticker'];
@@ -48,8 +50,19 @@
 
                         <?php if ($status == "pending"): ?>
                             <div class="side-by-side-btns">
-                                <button>Accept</button>
-                                <button>Decline</button>
+                                <form action="/admin/update-proposal-status" method="post">
+                                    <input type="hidden" name="post_id" value="<?= $postId ?>">
+                                    <input type="hidden" name="cluster_email_leader" value="<?= $clusterLeaderEmail ?>">
+                                    <input type="hidden" name="status" value="accept">
+                                    <button type="submit">Accept</button>
+                                </form>
+
+                                <form action="/admin/update-proposal-status" method="post">
+                                    <input type="hidden" name="post_id" value="<?= $postId ?>">
+                                    <input type="hidden" name="cluster_email_leader" value="<?= $clusterLeaderEmail ?>">
+                                    <input type="hidden" name="status" value="decline">
+                                    <button type="submit">Decline</button>
+                                </form>
                             </div>
 
                         <?php elseif ($status == "decline"): ?>
