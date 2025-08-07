@@ -5,7 +5,8 @@ include_once __DIR__ . "/../../core/Dbh.php";
 
 use App\Dbh;
 
-class Proposal extends Dbh {
+class Proposal extends Dbh 
+{
     private string $post_author;
     private string $stock_ticker;
     private string $stock_name;
