@@ -27,7 +27,7 @@
                 </div>
             <?php endforeach; ?>
         <?php else: ?>
-            <p>No proposals found.</p>
+            <p>No holdings found.</p>
         <?php endif; ?>
     </div>
 </body>
