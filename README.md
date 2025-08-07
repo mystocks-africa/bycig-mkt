@@ -1,37 +1,40 @@
-# BYCIG Infrastructure Optimization - Proposal Submission Software
+# BYCIG MKT
 
+**BYCIG MKT** is a paper-trading stock exchange platform designed to help investors and learners explore the world of finance in a risk-free environment. It simulates real-world market conditions, allowing users to practice investing, trading, and portfolio management using virtual currency.
 
-### ✅ Custom PHP files hosted on a Hostinger Apache server
+## 🚀 Features
 
-- Embedded **form submission logic** tailored to BYCIG’s specific data validation and business rules.
+* 📈 **Paper Trading**: Simulate buying and selling stocks with no real money involved
+* 🧠 **Educational Focus**: Learn how markets work without the risk
+* 📊 **Portfolio Management**: Track your investments and monitor performance
+* 🔒 **Secure Authentication** (if applicable)
+* ⚙️ **Admin Dashboard** (if applicable)
 
-### ✅ Efficient MySQL Communication
+## 📚 Why Use BYCIG MKT?
 
-- Designed and implemented **optimized MySQL queries** for fast and scalable data operations using mysqli PHP driver.
-### ✅ ReactPHP Integration
+* Great for **students**, **educators**, and **finance enthusiasts**
+* Provides a safe space to **test strategies** and **analyze market behavior**
+* Helps build **confidence** before entering real markets
 
-- Integrated **ReactPHP**, a non-blocking I/O library, to overcome PHP’s synchronous limitations.
-- Enabled asynchronous execution of independent tasks (e.g., logging, analytics, or auxiliary scripts) while I/O bound operations processed in the background.
-- Implemented in CRON jobs where a slow API requests are required to populate data (I/O bound and blocking tasks) to ensure maximum use of resources. 
-- Achieved **concurrency similar to Python's `asyncio` or JavaScript's `async/await`**, without changing the underlying language.
+## 🛠 Tech Stack
 
-### ✅ Architecture & Design
+* **Frontend**: HTML, CSS, JavaScript
+* **Backend**: PHP, Memcached
+* **Database**: MySQL
+  
+## 📝 Usage
 
-- Created a **modular and scalable architecture** for the solution.
-- Documented the system using **UML-based diagrams**, designed via **Mermaid.js**, for visual clarity and future maintainability (available at `/software-designs`
+1. Register for an account
+2. Get virtual cash to start trading
+3. View available stocks and place trades
+4. Monitor your portfolio’s performance
+5. Compete with friends or just learn solo!
 
----
+## ✅ Contributing
 
-## Tools & Technologies Used
+Contributions are welcome!
+Feel free to fork the repo and submit a pull request.
 
-- **PHP**
-- **ReactPHP** – Event loop and asynchronous task handling
-- **MySQL** – Optimized relational queries
-- **Mermaid.js** – UML-based software architecture diagrams
-- **HTML/CSS/JavaScript** – For form rendering and frontend interaction
+## 📄 License
 
----
-
-## Conclusion
-
-This project served as a foundational experience in improving real-world fintech infrastructure through **asynchronous design**, **clean architectural patterns**, and **cost-efficient engineering**. It not only solved a direct business need but also introduced modern software design concepts into a legacy environment like WordPress.
+[MIT](LICENSE)
