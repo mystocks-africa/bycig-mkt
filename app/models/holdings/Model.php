@@ -62,10 +62,15 @@ class Holding extends Dbh
     }
 
     // Each cluster leader has their own portfolio and investors associated to them can contribute to it
-    public static function findAllHoldings($clusterLeader)
+    public static function findAllHoldings($clusterLeaderEmail)
     {
         parent::connect();
 
         $stmt = parent::$mysqli->prepare(self::$findAllHoldingsQuery);
+        $stmt->bind_param("s", $clusterLeaderEmail);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $result->fetch_all(MYSQLI_ASSOC);
+        return $result;
     }
 }
