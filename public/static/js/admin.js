@@ -29,8 +29,8 @@ function handleUpdateStatus(postId, clusterLeaderEmail, status) {
         return;
     }
 
-    if (typeof status !== 'string' || !['approved', 'rejected'].includes(status)) {
-        alert("Invalid status. Must be 'approved', 'rejected', or 'pending'.");
+    if (typeof status !== 'string' || !['accept', 'decline'].includes(status)) {
+        alert("Invalid status. Must be 'accept' or 'decline'.");
         return;
     }
 
