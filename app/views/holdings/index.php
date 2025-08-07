@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Holdings</title>
     <link rel="stylesheet" href="/static/css/index.css">
+    <script src="/static/js/holdings.js"></script>
 </head>
 <body>
     <div class="hero-section">
@@ -25,8 +26,7 @@
                     <p>Stock Name: <?= $stockName ?></p> 
                     <p>Stock Ticker: <?= $stockTicker ?></p> 
                     <?php if ($holding["investor"] == $session['email']): ?>
-                        <button>Delete</button>
-                    <?php endif ?>
+ s                    <?php endif ?>
                 </div>
             <?php endforeach; ?>
         <?php else: ?>
