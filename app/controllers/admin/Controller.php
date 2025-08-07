@@ -4,7 +4,6 @@ namespace App\Controllers;
 include_once __DIR__ . "/Controller.php";
 include_once __DIR__ . "/../../models/proposals/Model.php";
 include_once __DIR__ . "/../../models/holdings/Model.php";
-
 use App\Controller;
 use App\Models\Proposal;
 use App\Models\Holding;
@@ -57,6 +56,18 @@ class AdminController extends Controller
         } catch (Exception $error) {
             parent::redirectToResult($error->getMessage(), 'error');
         }
+    }
 
+    public function deleteProposal()
+    {
+        try {
+            $postId = filter_input(INPUT_POST, 'post_id', FILTER_SANITIZE_NUMBER_INT);
+            $session = parent::redirectIfNotClusterLeader();
+
+            Proposal::deleteProposal($postId, $session['email']);
+            parent::redirectToResult('Deleted proposal successfully', 'success');
+        } catch(Exception $error) {
+            parent::redirectToResult($error->getMessage(), 'error');
+        }
     }
 }

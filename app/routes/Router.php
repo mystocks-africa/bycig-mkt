@@ -25,6 +25,11 @@ class Router
         $this->addRoute($route, $controller, $action, "POST");
     }
 
+    public function delete($route, $controller, $action)
+    {
+        $this->addRoute($route, $controller, $action, `DELETE`);
+    }
+
     public function dispatch()
     {
         $uri = strtok($_SERVER['REQUEST_URI'], '?');

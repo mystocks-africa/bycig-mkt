@@ -66,6 +66,15 @@ class Proposal extends Dbh
         AND users.cluster_leader = ?;
     ";
 
+    private static string $deleteProposalQuery = "
+        DELETE proposals 
+        FROM proposals
+        INNER JOIN users ON proposals.post_author = users.email
+        WHERE proposals.post_id = ?
+        AND users.cluster_leader = ?;
+    ";
+
+    
     public function __construct(
         string $post_author,
         string $stock_ticker,
@@ -144,6 +153,16 @@ class Proposal extends Dbh
         $proposals = $result->fetch_all(MYSQLI_ASSOC);
         $stmt->close();
         return $proposals;
+    }
+
+    public static function deleteProposal( $postId, $clusterLeaderEmail )
+    {
+        parent::connect();
+
+        $stmt = parent::$mysqli->prepare(self::$deleteProposalQuery);
+        $stmt->bind_param("is", $postId, $clusterLeaderEmail);
+        $stmt->execute();
+        $stmt->close();
     }
 
     public static function updateProposalStatus($postId, $clusterLeaderEmail, $status) 
