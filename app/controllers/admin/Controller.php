@@ -21,6 +21,8 @@ class AdminController extends Controller
         ]);
     }
 
+
+    // Sending JSON in these 2 routes because fetch api in js is dealing w/ them
     public function handleProposalStatusPost() 
     {
         try {
@@ -50,9 +52,14 @@ class AdminController extends Controller
                 $holding->createHolding();
             }
 
-            parent::redirectToResult('Successfully updated status of proposal', 'success');
+            echo json_encode([
+                'status'=> 'success',
+            ]);
         } catch (Exception $error) {
-            parent::redirectToResult($error->getMessage(), 'error');
+            echo json_encode([
+                'status'=> 'error',
+                'error'=> $error->getMessage(),
+            ]);
         }
     }
 
@@ -69,7 +76,10 @@ class AdminController extends Controller
                 'status'=> 'success'
             ]);
         } catch(Exception $error) {
-            parent::redirectToResult($error->getMessage(), 'error');
+            echo json_encode([
+                'status'=> 'error',
+                'error'=> $error->getMessage(),
+            ]);        
         }
     }
 }
