@@ -1,4 +1,9 @@
 function handleDeleteHolding(id) {
+    if (typeof id !== 'number' || id <= 0) {
+        alert("Invalid post ID.");
+        return;
+    }
+
     if (confirm("Are you sure you want to delete this holding?")) {
         fetch(`/holdings/delete?post_id=${id}`, {
             method: 'DELETE',
