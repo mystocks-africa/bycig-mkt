@@ -181,6 +181,5 @@ class Proposal extends Dbh {
         } catch(Exception $error) {
             return $error->getMessage();
         }
-
     }
 }

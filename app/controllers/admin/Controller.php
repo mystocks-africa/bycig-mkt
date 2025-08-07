@@ -23,8 +23,8 @@ class AdminController extends Controller
     public function updateProposalStatusPost() 
     {
         try {
-            $postId = filter_input(INPUT_POST, 'post_id', FILTER_SANITIZE_SPECIAL_CHARS);
-            $clusterLeaderEmail = filter_input(INPUT_POST, 'cluster_leader_email', FILTER_SANITIZE_EMAIL);
+            $postId = filter_input(INPUT_POST, 'post_id', FILTER_SANITIZE_NUMBER_INT);
+            $clusterLeaderEmail = filter_input(INPUT_POST, 'cluster_leader_email', FILTER_SANITIZE_SPECIAL_CHARS);
             $status = filter_input(INPUT_POST, 'status', FILTER_SANITIZE_SPECIAL_CHARS);
 
             if ($status != 'accept' && $status != 'decline') {
@@ -35,7 +35,7 @@ class AdminController extends Controller
             Proposal::updateProposalStatus($postId, $clusterLeaderEmail, $status); 
 
             $msg = 'Successfully updated status of proposal';
-            parent::redirectToResult($msg, 'success');
+            //parent::redirectToResult($msg, 'success');
         } catch (Exception $error) {
             parent::redirectToResult($error->getMessage(), 'error');
         }
