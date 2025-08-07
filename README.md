@@ -1,4 +1,14 @@
-# BYCIG MKT
+<div align="center">
+  <img src="/public/assets/favicon.ico" width="20%" alt="BYCIG MKT" />
+</div>
+<hr>
+<div align="center" style="line-height: 1;">
+  <a href="https://platform.bycig.org"><img alt="Platform"
+    src="https://img.shields.io/badge/🚀%20Live%20Demo-Platform-2F80ED?color=2F80ED&logoColor=white"/></a>
+  <a href="LICENSE-CODE"><img alt="Code License"
+    src="https://img.shields.io/badge/Code%20License-MIT%202.0-00BFFF?color=00BFFF"/></a>
+  <br>
+</div>
 
 **BYCIG MKT** is a paper-trading stock exchange platform designed to help investors and learners explore the world of finance in a risk-free environment. It simulates real-world market conditions, allowing users to practice investing, trading, and portfolio management using virtual currency.
 
