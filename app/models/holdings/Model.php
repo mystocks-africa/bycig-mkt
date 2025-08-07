@@ -19,6 +19,19 @@ class Holding extends Dbh
         (investor, stock_ticker, stock_name, bid_price, target_price, proposal_file) 
         VALUES (?, ?, ?, ?, ?, ?)
     ";
+    
+    private static string $findAllHoldingsQuery = "
+        SELECT
+            holdings.stock_ticker,
+            holdings.stock_name,
+            holdings.bid_price,
+            holdings.target_price,
+            holdings.proposal_file
+        FROM holdings
+        INNER JOIN users
+            ON holdings.investor = users.email
+        WHERE users.cluster_leader = ?
+    ";
 
     public function __construct(string $investor, string $stock_ticker, string $stock_name, string $bid_price, string $target_price, string $proposal_file)
     {
@@ -46,5 +59,13 @@ class Holding extends Dbh
         );
         $stmt->execute();
         $stmt->close();
+    }
+
+    // Each cluster leader has their own portfolio and investors associated to them can contribute to it
+    public static function findAllHoldings($clusterLeader)
+    {
+        parent::connect();
+
+        $stmt = parent::$mysqli->prepare(self::$findAllHoldingsQuery);
     }
 }
