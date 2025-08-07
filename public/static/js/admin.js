@@ -1,6 +1,11 @@
 // HTML form does not support DELETE or PUT methods directly.
 
 function handleDeleteProposal(postId) {
+    if (!postId) {
+        alert('Post ID is required to delete a proposal.');
+        return;
+    }
+    
     if (confirm("Are you sure you want to delete this proposal? This action cannot be undone.")) {
         fetch(`/admin/delete-proposal?post_id=${postId}`, {
             method: 'DELETE',
