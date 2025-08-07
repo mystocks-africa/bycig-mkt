@@ -18,4 +18,11 @@ class HoldingsController extends Controller
             "holdings"=> $holdings
         ]);
     }
+
+    public function deleteHolding()
+    {
+        $id = filter_input(INPUT_GET, "id", FILTER_SANITIZE_NUMBER_INT);
+
+        Holding::deleteHolding($id);
+    }
 }

@@ -30,7 +30,8 @@ class ProposalController extends Controller {
         return $result ? $filename : false;
     }
 
-    private function deleteFromFTP($fileName)
+    // public because it is needed in admin controller
+    public function deleteFromFTP($fileName)
     {
         $ftp_conn = ftp_connect($this->env["FTP_SERVER"]) or throw new Exception("Failed to connect");
         

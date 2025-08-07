@@ -4,9 +4,12 @@ namespace App\Controllers;
 include_once __DIR__ . "/Controller.php";
 include_once __DIR__ . "/../../models/proposals/Model.php";
 include_once __DIR__ . "/../../models/holdings/Model.php";
+include_once __DIR__ . "/../../controllers/proposal/Controller.php";
+
 use App\Controller;
 use App\Models\Proposal;
 use App\Models\Holding;
+use App\Controllers\ProposalController;
 use Exception;
 
 class AdminController extends Controller 
@@ -66,9 +69,14 @@ class AdminController extends Controller
     public function deleteProposal()
     {
         $session = parent::redirectIfNotClusterLeader();
-
         try {
             $postId = filter_input(INPUT_GET, 'post_id', FILTER_SANITIZE_NUMBER_INT);
+            $proposal = Proposal::findProposalById($postId);
+            
+            if (empty($proposal)) {
+                throw new Exception("Proposal is not found. You are deleting something that doesn't exist");
+            }
+
             Proposal::deleteProposal($postId, $session['email']);
             parent::redirectToResult('Deleted proposal successfully', 'success');
 

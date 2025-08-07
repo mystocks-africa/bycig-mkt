@@ -31,6 +31,10 @@ class Holding extends Dbh
         WHERE users.cluster_leader = ?
     ";
 
+    private static string $deleteHoldingQuery = "
+    
+    ";
+
     public function __construct(string $investor, string $stock_ticker, string $stock_name, string $bid_price, string $target_price, string $proposal_file)
     {
         $this->investor = $investor;
@@ -71,5 +75,13 @@ class Holding extends Dbh
         $holdings = $result->fetch_all(MYSQLI_ASSOC);
 
         return $holdings;
+    }
+
+    public static function deleteHolding() 
+    {
+        parent::connect();
+        $stmt = parent::$mysqli->prepare(self::$deleteHoldingQuery);
+        $stmt->bind_param("s", $clusterLeaderEmail);
+        $stmt->execute();
     }
 }
