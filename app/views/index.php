@@ -12,7 +12,7 @@
 
     <div class="hero-section">
       <h1 id="greeting"></h1>
-      <p>Start by submitting a new proposal or exploring existing ones.</p>
+      <p>Start by submitting a new proposal or exploring investments.</p>
     </div>
 
     <div id="grid-container">
