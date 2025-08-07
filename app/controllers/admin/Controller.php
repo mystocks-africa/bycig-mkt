@@ -4,12 +4,10 @@ namespace App\Controllers;
 include_once __DIR__ . "/Controller.php";
 include_once __DIR__ . "/../../models/proposals/Model.php";
 include_once __DIR__ . "/../../models/holdings/Model.php";
-include_once __DIR__ . "/../../controllers/proposal/Controller.php";
 
 use App\Controller;
 use App\Models\Proposal;
 use App\Models\Holding;
-use App\Controllers\ProposalController;
 use Exception;
 
 class AdminController extends Controller 
