@@ -5,7 +5,7 @@ function handleDeleteHolding(id) {
     }
 
     if (confirm("Are you sure you want to delete this holding?")) {
-        fetch(`/holdings/delete?post_id=${id}`, {
+        fetch(`/holdings/delete?id=${id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
