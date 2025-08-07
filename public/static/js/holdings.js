@@ -11,14 +11,11 @@ function handleDeleteHolding(id) {
                 'Content-Type': 'application/json'
             }
         })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
+        .then(() => {
                 window.location.href = '/redirect?message=Holding deleted successfully&message_type=success';
-            } else {
-                alert("Error deleting holding: " + data.message);
-            }
         })
-        .catch(error => console.error('Error:', error));
+        .catch(error => {
+            alert(error.message)
+        });
     }
 }
