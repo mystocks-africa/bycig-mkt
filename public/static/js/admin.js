@@ -22,26 +22,36 @@ function handleDeleteProposal(postId) {
 }
 
 function handleUpdateStatus(postId, clusterLeaderEmail, status) {
-    const formData = new FormData();
-    formData.append('post_id', postId);
-    formData.append('cluster_leader_email', clusterLeaderEmail);
-    formData.append('status', status);
+    if (!postId || !clusterLeaderEmail || !status) {
+        alert('Missing required data to update status.');
+        return;
+    }
 
-    fetch('/admin/handle-proposal-status', {
+    const params = new URLSearchParams({
+        post_id: postId,
+        cluster_leader_email: clusterLeaderEmail,
+        status: status
+    });
+
+    fetch(`/admin/handle-proposal-status?${params.toString()}`, {
         method: 'PUT',
-        body: formData,
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Server responded with ${response.status}`);
+        }
+        return response.json();
+    })
     .then(data => {
         if (data.success) {
             alert('Proposal status updated successfully.');
             location.reload();
         } else {
-            alert('Error updating proposal status: ' + data.message);
+            alert('Error updating proposal status: ' + (data.message || 'Unknown error'));
         }
     })
-    .catch((error) => {
-        console.error('Error:', error);
+    .catch(error => {
+        console.error('Request failed:', error);
         alert('An error occurred while updating the proposal status.');
     });
 }

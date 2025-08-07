@@ -24,9 +24,9 @@ class AdminController extends Controller
     public function handleProposalStatusPost() 
     {
         try {
-            $postId = filter_input(INPUT_POST, 'post_id', FILTER_SANITIZE_NUMBER_INT);
-            $clusterLeaderEmail = filter_input(INPUT_POST, 'cluster_leader_email', FILTER_SANITIZE_SPECIAL_CHARS);
-            $status = filter_input(INPUT_POST, 'status', FILTER_SANITIZE_SPECIAL_CHARS);
+            $postId = filter_input(INPUT_GET, 'post_id', FILTER_SANITIZE_NUMBER_INT);
+            $clusterLeaderEmail = filter_input(INPUT_GET, 'cluster_leader_email', FILTER_SANITIZE_SPECIAL_CHARS);
+            $status = filter_input(INPUT_GET, 'status', FILTER_SANITIZE_SPECIAL_CHARS);
 
             if ($status != 'accept' && $status != 'decline') {
                 throw new Exception('Status is not properly formatted');
