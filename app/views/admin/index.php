@@ -6,6 +6,7 @@
     <title>Admin Portal</title>
     <link rel="stylesheet" href="/static/css/index.css">
     <script src="/static/js/modal.js"></script>
+    <script src="/static/js/admin.js"></script>
 </head>
 <body>
     <div class="hero-section">
@@ -60,9 +61,8 @@
                                 </form>
                             </div>
 
-                        <?php elseif ($status == "decline"): ?>
-                            <p>This proposal has been declined.</p>
-                            <button>Delete proposal</button>
+                        <?php else: ?>
+                            <button onclick="handleDeleteProposal()">Delete proposal</button>
                         <?php endif ?>
                     </div>
                 </div>
