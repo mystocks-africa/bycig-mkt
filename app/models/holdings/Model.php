@@ -24,9 +24,7 @@ class Holding extends Dbh
         SELECT
             holdings.stock_ticker,
             holdings.stock_name,
-            holdings.bid_price,
-            holdings.target_price,
-            holdings.proposal_file
+            holdings.investor
         FROM holdings
         INNER JOIN users
             ON holdings.investor = users.email
@@ -70,7 +68,8 @@ class Holding extends Dbh
         $stmt->bind_param("s", $clusterLeaderEmail);
         $stmt->execute();
         $result = $stmt->get_result();
-        $result->fetch_all(MYSQLI_ASSOC);
-        return $result;
+        $holdings = $result->fetch_all(MYSQLI_ASSOC);
+
+        return $holdings;
     }
 }
