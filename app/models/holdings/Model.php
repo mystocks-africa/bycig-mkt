@@ -22,6 +22,7 @@ class Holding extends Dbh
     
     private static string $findAllHoldingsQuery = "
         SELECT
+            holdings.id,
             holdings.stock_ticker,
             holdings.stock_name,
             holdings.investor

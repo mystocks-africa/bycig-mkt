@@ -17,6 +17,7 @@
         <?php if (!empty($holdings)): ?>
             <?php foreach ($holdings as $holding): ?>
                 <?php
+                    $postId = $holding["id"];
                     $investor = $holding["investor"];
                     $stockName = $holding["stock_name"];
                     $stockTicker = $holding["stock_ticker"];  
@@ -26,7 +27,8 @@
                     <p>Stock Name: <?= $stockName ?></p> 
                     <p>Stock Ticker: <?= $stockTicker ?></p> 
                     <?php if ($holding["investor"] == $session['email']): ?>
- s                    <?php endif ?>
+                        <button onclick="handleDeleteHolding(<?= $postId ?>)">Delete</button>
+                    <?php endif ?>
                 </div>
             <?php endforeach; ?>
         <?php else: ?>
