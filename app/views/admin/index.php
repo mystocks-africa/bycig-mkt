@@ -54,8 +54,8 @@
                                     <input type="hidden" name="post_id" value="<?= $postId ?>">
                                     <input type="hidden" name="cluster_leader_email" value="<?= $clusterLeaderEmail ?>">
                                     <div class="side-by-side-btns">
-                                        <button type="submit" name="action" value="accept">Accept</button>
-                                        <button type="submit" name="action" value="decline">Decline</button>
+                                        <button type="submit" name="status" value="accept">Accept</button>
+                                        <button type="submit" name="status" value="decline">Decline</button>
                                     </div>
                                 </form>
                             </div>

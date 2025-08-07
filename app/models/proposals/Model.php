@@ -62,7 +62,8 @@ class Proposal extends Dbh
         UPDATE proposals
         INNER JOIN users ON proposals.post_author = users.email
         SET proposals.status = ?
-        WHERE proposals.post_id = ?;
+        WHERE proposals.post_id = ? 
+        AND users.cluster_leader = ?;
     ";
 
     public function __construct(
