@@ -61,7 +61,7 @@ class ProposalController extends Controller {
 
         $fileName = $this->uploadToFTP($proposalFile);
 
-        if (!$stockTicker || !$stockName || !$subjectLine || !$thesis || !$bidPrice || !$targetPrice || !$fileName) {
+        if (!$stockTicker || !$stockName || !$subjectLine || !$thesis || !$bidPrice || !$targetPrice || !$fileName ) {
             parent::redirectToResult("Error in form input", "error");
             exit();
         }

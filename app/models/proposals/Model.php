@@ -85,8 +85,9 @@ class Proposal extends Dbh {
         $this->proposal_file = $proposal_file;
     }
 
-    public function insert(): void {
-        $stmt = $this->connect()->prepare(self::$insertProposalQuery);
+    public function createProposal(): void {
+        parent::connect();
+        $stmt = parent::$mysqli->prepare(self::$insertProposalQuery);
         $stmt->execute([
             $this->post_author,
             $this->stock_ticker,

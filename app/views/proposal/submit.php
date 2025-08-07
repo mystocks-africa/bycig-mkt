@@ -8,24 +8,8 @@
 </head>
 <body class="submit-proposal-body">
     <form method="post" enctype="multipart/form-data" action="/proposals/submit" novalidate>
-        <label for="leaderSelect">Choose your Cluster Leader:</label>
-        <select id="leaderSelect" name="cluster_leader_id" required>
-            <option value="" disabled selected>Select your leader</option>
-            <?php if (!empty($emails) && is_array($emails)): ?>
-                <?php foreach ($emails as $email): ?>
-                    <?php $safeEmail = htmlspecialchars($email, ENT_QUOTES, 'UTF-8'); ?>
-                    <option value="<?= $safeEmail ?>"><?= $safeEmail ?></option>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <option disabled>No cluster leaders available</option>
-            <?php endif; ?>
-        </select>
-
-        <br><br>
-
         <label for="customStock">Your Stock Ticker:</label>
-        <input type="text" id="customStock" name="stock_ticker" placeholder="e.g. AAPL, TSLA" maxlength="10">
-
+        <input type="text" name="stock_ticker" placeholder="e.g. AAPL, TSLA" maxlength="10">
         <br><br>
 
         <label for="stock_name">Stock Name:</label><br>

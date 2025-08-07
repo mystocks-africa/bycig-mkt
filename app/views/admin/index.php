@@ -46,7 +46,7 @@
                         <p><strong>Bid Price:</strong> $<?= $bid ?></p>
                         <p><strong>Target Price:</strong> $<?= $target ?></p>
                         <p><strong>Status:</strong> <?= $status ?></p>
-                        <p><strong>Status:</strong> <?= $proposalFile ?></p>
+                        <p class="underline-text"><strong>File:</strong> <a href="https://bycig.org/<?= $proposalFile ?>"><?= $proposalFile ?></a></p>
 
                         <?php if ($status == "pending"): ?>
                             <div class="side-by-side-btns">

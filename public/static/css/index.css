@@ -25,6 +25,15 @@ body, html {
   padding: 60px 20px;
 }
 
+.submit-proposal-body {
+    margin-top: 200px;
+}
+
+.underline-text {
+  text-decoration: underline;
+  color: var(--text-main);
+}
+
 .header {
   font-size: 4.5rem;
   font-weight:bolder;
