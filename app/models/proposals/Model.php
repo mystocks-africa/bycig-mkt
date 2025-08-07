@@ -4,7 +4,6 @@ namespace App\Models;
 include_once __DIR__ . "/../../core/Dbh.php";
 
 use App\Dbh;
-use Exception;
 
 class Proposal extends Dbh {
     private string $post_author;
@@ -62,23 +61,19 @@ class Proposal extends Dbh {
         UPDATE proposals
         INNER JOIN users ON proposals.post_author = users.email
         SET proposals.status = ?
-        WHERE proposals.post_id = ?
-        AND users.cluster_leader = ?
-        LIMIT 1;
+        WHERE proposals.post_id = ?;
     ";
 
-
-    public function __construct (
-        string $post_author, 
-        string $stock_ticker, 
-        string $stock_name, 
+    public function __construct(
+        string $post_author,
+        string $stock_ticker,
+        string $stock_name,
         string $subject_line,
-        string $thesis, 
-        string $bid_price, 
-        string $target_price, 
+        string $thesis,
+        string $bid_price,
+        string $target_price,
         string $proposal_file
-    ) 
-    {
+    ) {
         $this->post_author = $post_author;
         $this->stock_ticker = $stock_ticker;
         $this->stock_name = $stock_name;
@@ -89,32 +84,19 @@ class Proposal extends Dbh {
         $this->proposal_file = $proposal_file;
     }
 
-    public function createProposal() 
-    {
-        try {
-            parent::connect();
-            $stmt = parent::$mysqli->prepare(self::$insertProposalQuery);
-            $stmt->bind_param(
-                'sssssssss',
-                $this->post_author,
-                $this->stock_ticker,
-                $this->stock_name,
-                $this->subject_line,
-                $this->thesis,
-                $this->bid_price,
-                $this->target_price,
-                $this->proposal_file,
-                $this->status
-            );
-            
-            $result = $stmt->execute();
-            $stmt->close();
-
-            return $result;
-        } catch (Exception $error) {
-            return $error->getMessage();
-        }
-
+    public function insert(): void {
+        $stmt = $this->connect()->prepare(self::$insertProposalQuery);
+        $stmt->execute([
+            $this->post_author,
+            $this->stock_ticker,
+            $this->stock_name,
+            $this->subject_line,
+            $this->thesis,
+            $this->bid_price,
+            $this->target_price,
+            $this->proposal_file,
+            $this->status
+        ]);
     }
 
     public static function findAllProposals() 
