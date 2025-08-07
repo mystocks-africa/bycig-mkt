@@ -2,12 +2,8 @@
 
 function handleDeleteProposal(postId) {
     if (confirm("Are you sure you want to delete this proposal? This action cannot be undone.")) {
-        const formData = new FormData();
-        formData.append('post_id', postId);
-
-        fetch('/admin/delete-proposal', {
+        fetch(`/admin/delete-proposal?post_id=${postId}`, {
             method: 'DELETE',
-            body: formData,
         })
         .then(response => response.json())
         .then(data => {

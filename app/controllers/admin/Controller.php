@@ -58,12 +58,16 @@ class AdminController extends Controller
 
     public function deleteProposal()
     {
-        try {
-            $postId = filter_input(INPUT_POST, 'post_id', FILTER_SANITIZE_NUMBER_INT);
-            $session = parent::redirectIfNotClusterLeader();
+        $session = parent::redirectIfNotClusterLeader();
 
+        try {
+            $postId = filter_input(INPUT_GET, 'post_id', FILTER_SANITIZE_NUMBER_INT);
             Proposal::deleteProposal($postId, $session['email']);
             parent::redirectToResult('Deleted proposal successfully', 'success');
+
+            echo json_encode([
+                'status'=> 'success'
+            ]);
         } catch(Exception $error) {
             parent::redirectToResult($error->getMessage(), 'error');
         }
