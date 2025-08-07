@@ -45,6 +45,6 @@ $router->put('/admin/handle-proposal-status', AdminController::class,'handleProp
 $router->delete('/admin/delete-proposal', AdminController::class, 'deleteProposal');
 
 // Holdings get methods
-$router->get('/holdings/details', HoldingsController::class, 'details');
+$router->get('/holdings', HoldingsController::class, 'index');
 
 $router->dispatch();

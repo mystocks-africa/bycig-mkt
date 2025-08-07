@@ -9,12 +9,12 @@ use App\Models\Holding;
 
 class HoldingsController extends Controller
 {
-    public function details() 
+    public function index() 
     {
         $clusterLeaderEmail = filter_input(INPUT_GET, "cluster_leader_email", FILTER_SANITIZE_EMAIL);
 
         $holdings = Holding::findAllHoldings($clusterLeaderEmail);
-        parent::render("/holdings/details", [
+        parent::render("/holdings/index", [
             "holdings"=> $holdings
         ]);
     }
