@@ -52,8 +52,8 @@
                         <div style="margin-top: 40px;">
                             <?php if ($status == "pending"): ?>
                                 <div class="side-by-side-btns">
-                                    <button onclick="handleUpdateStatus(<?= $postId ?>, <?= $clusterLeaderEmail ?>, 'accept')">Accept</button>
-                                    <button onclick="handleUpdateStatus(<?= $postId ?>, <?= $clusterLeaderEmail ?>, 'decline')">Decline</button>
+                                    <button onclick="handleUpdateStatus(<?= $postId ?>, '<?= $clusterLeaderEmail ?>', 'accept')">Accept</button>
+                                    <button onclick="handleUpdateStatus(<?= $postId ?>, '<?= $clusterLeaderEmail ?>', 'decline')">Decline</button>
                                 </div>
 
                             <?php else: ?>
