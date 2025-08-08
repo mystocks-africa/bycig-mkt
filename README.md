@@ -45,6 +45,21 @@
 Contributions are welcome!
 Feel free to fork the repo and submit a pull request.
 
+## 🖥️ Setup
+
+For development purposes, this project uses Docker. Docker ensures that all environment configurations are created properly by creating isolated images through Linux which allows developers to focus on things that actually matter. 
+
+There are multiple services within this project, so we need to run multiple containers. For seamless integration, we have implemented the `docker-compose.yml` file. To use it, run the following cmds:
+
+```bash
+docker-compose up --build
+```
+
+To stop all containers, run the following
+
+```bash
+docker-compose down
+```
 ## 📄 License
 
 [MIT](LICENSE)
