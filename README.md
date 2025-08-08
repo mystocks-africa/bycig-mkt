@@ -45,7 +45,7 @@
 Contributions are welcome!
 Feel free to fork the repo and submit a pull request.
 
-## Setup developer environment
+## 🖥️ Setup
 
 For development purposes, this project uses Docker. Docker ensures that all environment configurations are created properly by creating isolated images through Linux which allows developers to focus on things that actually matter. 
 
