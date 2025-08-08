@@ -34,6 +34,10 @@ class User extends Dbh
         LIMIT 1;
     ";
 
+    private static string $updatePasswordQuery = "
+
+    ";
+
     public function __construct(string $email, string $pwd, string $clusterLeader, string $fullName)
     {
         $this->email = $email;
@@ -90,5 +94,18 @@ class User extends Dbh
         $clusterLeaders = $result->fetch_all(MYSQLI_ASSOC);
         $stmt->close();
         return $clusterLeaders;
+    }
+
+    public static function updatePassword($email, $newPassword)
+    {
+        parent::connect();
+        $stmt = parent::$mysqli->prepare(self::$updatePasswordQuery);
+        $stmt->bind_params(
+            "ss",
+            $email,
+            $newPassword
+        );
+        $stmt->execute();
+        $stmt->close();
     }
 }
