@@ -34,7 +34,7 @@ class User extends Dbh
         LIMIT 1;
     ";
 
-    private static string $updatePasswordQuery = "
+    private static string $updatePwdQuery = "
 
     ";
 
@@ -96,14 +96,14 @@ class User extends Dbh
         return $clusterLeaders;
     }
 
-    public static function updatePassword($email, $newPassword)
+    public static function updatePwd($email, $newPwd)
     {
         parent::connect();
-        $stmt = parent::$mysqli->prepare(self::$updatePasswordQuery);
+        $stmt = parent::$mysqli->prepare(self::$updatePwdQuery);
         $stmt->bind_params(
             "ss",
             $email,
-            $newPassword
+            $newPwd
         );
         $stmt->execute();
         $stmt->close();

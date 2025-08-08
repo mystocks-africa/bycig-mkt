@@ -116,4 +116,12 @@ class AuthController extends Controller
         $this->clearSessionCookie();
         parent::redirectToResult("Signed out successfully!", "success");
     }
+
+    public function updatePassword()
+    {
+        $session = parent::redirectIfNotAuth(returnSession: true);
+        $newPwd = filter_input(INPUT_POST, 'new_pwd', FILTER_SANITIZE_SPECIAL_CHARS);
+        $hashedPwd = password_hash($newPwd);
+        User::updatePwd($session['email'], $hashedPwd);
+    }
 }
