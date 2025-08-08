@@ -29,7 +29,7 @@ COPY start.sh .
 RUN chmod +x start.sh
 
 # Expose PHP dev server port
-EXPOSE 8000
+EXPOSE 9999
 
 # Start script runs both memcached and PHP
 CMD ["./start.sh"]
