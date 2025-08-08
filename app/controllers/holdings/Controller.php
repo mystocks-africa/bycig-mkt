@@ -5,7 +5,7 @@ include_once __DIR__ . "/../Controller.php";
 include_once __DIR__ . "/../../models/holdings/Model.php";
 
 use App\Controller;
-use App\Models\Holding;
+use App\Models\HoldingModel;
 
 class HoldingsController extends Controller
 {
@@ -14,10 +14,10 @@ class HoldingsController extends Controller
         $session = parent::redirectIfNotAuth(returnSession: true);
         $clusterLeaderEmail = filter_input(INPUT_GET, "cluster_leader_email", FILTER_SANITIZE_EMAIL);
 
-        $holdings = Holding::findAllHoldings($clusterLeaderEmail);
+        $holdings = HoldingModel::findAllHoldings($clusterLeaderEmail);
         parent::render("/holdings/index", [
-            "holdings"=> $holdings,
-            "session"=> $session
+            "holdings" => $holdings,
+            "session" => $session
         ]);
     }
 
@@ -27,6 +27,6 @@ class HoldingsController extends Controller
         $id = filter_input(INPUT_GET, "id", FILTER_SANITIZE_NUMBER_INT);
 
         // Query for email as well so only the owner can delete
-        Holding::deleteHolding($id, $session['email']);
+        HoldingModel::deleteHolding($id, $session['email']);
     }
 }
