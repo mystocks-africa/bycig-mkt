@@ -4,11 +4,11 @@ services:
   php:
     build:
       context: .
-      dockerfile: docker/php/Dockerfile
+      dockerfile: docker/php-memcached/Dockerfile
     container_name: php
     restart: unless-stopped
     ports:
-      - "8000:8000"
+      - "9999:9999"
     volumes:
       - ./public:/app/public
 
