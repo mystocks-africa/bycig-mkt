@@ -35,7 +35,9 @@ class User extends Dbh
     ";
 
     private static string $updatePwdQuery = "
-
+        UPDATE users
+        SET pwd = ?
+        WHERE email = ?
     ";
 
     public function __construct(string $email, string $pwd, string $clusterLeader, string $fullName)
@@ -102,8 +104,8 @@ class User extends Dbh
         $stmt = parent::$mysqli->prepare(self::$updatePwdQuery);
         $stmt->bind_params(
             "ss",
-            $email,
-            $newPwd
+            $newPwd,
+            $email
         );
         $stmt->execute();
         $stmt->close();
