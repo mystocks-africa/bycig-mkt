@@ -15,9 +15,9 @@ class ComposerStaticInit070dc4214a3c4a8ad4296ddaae042428
         array (
             'Hemit99123\\ProposalBycigSoftware\\' => 33,
         ),
-        'F' => 
+        'A' => 
         array (
-            'Firebase\\JWT\\' => 13,
+            'App\\' => 4,
         ),
     );
 
@@ -28,11 +28,11 @@ class ComposerStaticInit070dc4214a3c4a8ad4296ddaae042428
         ),
         'Hemit99123\\ProposalBycigSoftware\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/src',
+            0 => __DIR__ . '/../..' . '/App',
         ),
-        'Firebase\\JWT\\' => 
+        'App\\' => 
         array (
-            0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
+            0 => __DIR__ . '/../..' . '/app',
         ),
     );
 
