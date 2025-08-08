@@ -5,7 +5,7 @@ include_once __DIR__ . "/../../core/Dbh.php";
 
 use App\Dbh;
 
-class Holding extends Dbh 
+class HoldingModel extends Dbh 
 {
     private string $investor;
     private string $stock_ticker;

@@ -5,7 +5,7 @@ include_once __DIR__ . "/../../core/Dbh.php";
 
 use App\Dbh;
 
-class User extends Dbh
+class UserModel extends Dbh
 {
     private string $email;
     private string $pwd;

@@ -6,7 +6,7 @@ include_once __DIR__ . "/../../models/proposals/Model.php";
 include_once __DIR__ . "/../../../utils/env.php";
 
 use App\Controller;
-use App\Models\Proposal;
+use App\Models\ProposalModel;
 use Exception;
 
 class ProposalController extends Controller {
@@ -48,11 +48,9 @@ class ProposalController extends Controller {
         ftp_close($ftp_conn);
     }
 
-
     public function submit() 
     {
         parent::redirectIfNotAuth();
-
         parent::render("proposal/submit");
     }
 
@@ -60,37 +58,43 @@ class ProposalController extends Controller {
     {
         try {
             $session = parent::redirectIfNotAuth(true);
-            
 
             $stockTicker = filter_input(INPUT_POST, 'stock_ticker', FILTER_SANITIZE_SPECIAL_CHARS);
             $stockName = filter_input(INPUT_POST, 'stock_name', FILTER_SANITIZE_SPECIAL_CHARS);
+            $bidPrice = filter_input(INPUT_POST, 'bid_price', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            $targetPrice = filter_input(INPUT_POST, 'target_price', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
             $subjectLine = filter_input(INPUT_POST, 'subject_line', FILTER_SANITIZE_SPECIAL_CHARS);
             $thesis = filter_input(INPUT_POST, 'thesis', FILTER_SANITIZE_SPECIAL_CHARS);
-            $bidPrice = filter_input(INPUT_POST, 'bid_price', FILTER_VALIDATE_FLOAT);
-            $targetPrice = filter_input(INPUT_POST, 'target_price', FILTER_VALIDATE_FLOAT);
-            $proposalFile = $_FILES["proposal_file"] ?? null;
 
-            $fileName = $this->uploadToFTP($proposalFile);
+            $file = $_FILES["proposal_file"];
 
-            if (!$stockTicker || !$stockName || !$subjectLine || !$thesis || !$bidPrice || !$targetPrice || !$fileName ) {
-                parent::redirectToResult("Error in form input", "error");
-                exit();
+            if (!isset($file) || $file["error"] !== UPLOAD_ERR_OK) {
+                throw new Exception("File upload error.");
             }
 
-            $proposal = new Proposal($session["email"], $stockTicker, $stockName, $subjectLine, $thesis, $bidPrice, $targetPrice, $fileName);
+            $filePath = $this->uploadToFTP($file);
+            if (!$filePath) {
+                throw new Exception("Failed to upload proposal file to server.");
+            }
+
+            $proposal = new ProposalModel(
+                $session["email"],
+                $stockTicker,
+                $stockName,
+                $bidPrice,
+                $targetPrice,
+                $filePath
+            );
+
+            $proposal->setSubjectLine($subjectLine);
+            $proposal->setThesis($thesis);
+            $proposal->setClusterLeaderEmail($session["cluster_leader"]);
+
             $proposal->createProposal();
 
-            if ($proposal && $proposal instanceof Exception) {
-                parent::redirectToResult("Error in submitting proposal", "error");
-                exit();
-            }
-
-            parent::redirectToResult("Success in submitting proposal", "success");
+            parent::redirectToResult("Proposal has been submitted!", "success");
         } catch (Exception $error) {
-            // Delete the file if there was an error to avoid orphaned files
-            $this->deleteFromFTP($fileName);
-            
-            parent::redirectToResult($error->getMessage(),"error");
+            parent::redirectToResult("Something went wrong: " . $error->getMessage(), "error");
         }
     }
 }

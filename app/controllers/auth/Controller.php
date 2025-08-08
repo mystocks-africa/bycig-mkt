@@ -7,7 +7,7 @@ include_once __DIR__ . "/../../models/user/Model.php";
 include_once __DIR__ . "/../../core/Memcachedh.php";
 
 use App\Controller;
-use App\Models\User;
+use App\Models\UserModel;
 use App\Core\MemcachedH;
 use Exception;
 
@@ -17,11 +17,11 @@ class AuthController extends Controller
     {
         try {
             setcookie('session_id', $session_id, [
-                'expires' => time() + (10* 365 * 24 * 60 * 60), // 10 years in seconds
+                'expires' => time() + (10 * 365 * 24 * 60 * 60), // 10 years in seconds
                 'path' => '/',
                 'httponly' => true,
             ]);
-        } catch(Exception $error) {
+        } catch (Exception $error) {
             return parent::redirectToResult($error->getMessage(), "error");
         }
     }
@@ -35,7 +35,7 @@ class AuthController extends Controller
                 'path' => '/',
                 'httponly' => true,
             ]);        
-        } catch(Exception $error) {
+        } catch (Exception $error) {
             return parent::redirectToResult($error->getMessage(), "error");
         }
     }
@@ -50,7 +50,7 @@ class AuthController extends Controller
     public function signUp()
     {
         parent::redirectIfAuth();
-        $clusterLeaders = User::findAllClusterLeaders();
+        $clusterLeaders = UserModel::findAllClusterLeaders();
 
         // O(n)/linear time complexity is fine here because cluster leaders length will always be small
         $clusterLeaderEmails = [];
@@ -64,9 +64,10 @@ class AuthController extends Controller
         }
 
         parent::render('/auth/signup', [
-            'clusterLeaderEmails'=> $clusterLeaderEmails
+            'clusterLeaderEmails' => $clusterLeaderEmails
         ]);
     }
+
     public function signInPost() 
     {
         parent::redirectIfAuth();
@@ -74,7 +75,7 @@ class AuthController extends Controller
         $email = trim(filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL));
         $pwd = trim(filter_input(INPUT_POST, 'password', FILTER_SANITIZE_SPECIAL_CHARS));
 
-        $user = User::findByEmail($email);
+        $user = UserModel::findByEmail($email);
 
         if (isset($user) && password_verify($pwd, $user["pwd"])) {
             $memcachedH = new MemcachedH();
@@ -98,13 +99,13 @@ class AuthController extends Controller
 
             $hashPwd = password_hash($pwd, PASSWORD_DEFAULT);
 
-            $user = new User($email, $hashPwd, $clusterLeader, $fullName);
+            $user = new UserModel($email, $hashPwd, $clusterLeader, $fullName);
             $user->createUser();
 
             parent::redirectToResult("User has been created. You may sign in now.", "success");
         } catch (Exception $error) {
             $msg = "There has been an error in signing up.";
-            parent::redirectToResult( $msg, "error");
+            parent::redirectToResult($msg, "error");
         }
     }
     
