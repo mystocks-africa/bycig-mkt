@@ -1,23 +1,34 @@
 <?php
 
 namespace App\Controllers;
-include_once __DIR__ . "/Controller.php";
+include_once __DIR__ . "/../../core/auth/Checker.php";
+include_once __DIR__ . "/../../core/controller-helper/Controller.php";
 include_once __DIR__ . "/../../models/proposals/Model.php";
 include_once __DIR__ . "/../../models/holdings/Model.php";
 
-use App\Controller;
+use App\Core\AuthChecker;
+use App\Core\ControllerHelper;
 use App\Models\ProposalModel;
 use App\Models\HoldingModel;
 use Exception;
 
-class AdminController extends Controller 
+class AdminController 
 {
+    private $authChecker;
+    private $controllerHelper;
+
+    public function __construct()
+    {
+        $this->authChecker = new Checker();
+        $this->controllerHelper = new ControllerHelper();
+    }
+
     public function index()
     {
-        $session = parent::redirectIfNotClusterLeader();
+        $session = $this->authChecker->redirectIfNotClusterLeader();
 
         $proposals = ProposalModel::findProposalByClusterLeader($session['email']);
-        parent::render("admin/index", [
+        $this->controllerHelper->render("admin/index", [
             'proposals' => $proposals
         ]);
     }
@@ -25,6 +36,8 @@ class AdminController extends Controller
     // Sending JSON in these 2 routes because fetch api in js is dealing w/ them
     public function handleProposalStatusPost() 
     {
+        $this->authChecker->redirectIfNotAuth();
+
         try {
             $postId = filter_input(INPUT_GET, 'post_id', FILTER_SANITIZE_NUMBER_INT);
             $clusterLeaderEmail = filter_input(INPUT_GET, 'cluster_leader_email', FILTER_SANITIZE_SPECIAL_CHARS);
