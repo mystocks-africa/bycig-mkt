@@ -32,7 +32,7 @@ class Session
         }
 
         $session_id_cookie = $_COOKIE["session_id"];
-        $session = $this->memcached->getKeyValjue($session_id_cookie);
+        $session = $this->memcached->getKeyValue($session_id_cookie);
 
         if (!$session) {
             // Clear the session cookie so that the navbar UI is updated
@@ -59,4 +59,5 @@ class Session
         $session_id = $_COOKIE['session_id'];
         $this->memcached->deleteKeyValue($session_id);
     }
+
 }
