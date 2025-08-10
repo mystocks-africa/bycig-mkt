@@ -1,22 +1,27 @@
 <?php
 
 namespace App\Controllers;
-include_once __DIR__ . "/../Controller.php";
-include_once __DIR__ . "/../../models/proposals/Model.php";
+include_once __DIR__ . "/../../core/auth/Checker.php";
+include_once __DIR__ . "/../../core/controller-helper/Controller.php";
 include_once __DIR__ . "/../../../utils/env.php";
 
-use App\Controller;
+use App\Core\Auth\Checker;
+use App\Core\ControllerHelper;
 use App\Models\ProposalModel;
 use Exception;
 
-class ProposalController extends Controller {
+class ProposalController {
 
     private $env;
+    private $authChecker;
+    private $controllerHelper;
 
     public function __construct() 
     {
         global $env;
         $this->env = $env; 
+        $this->authChecker = new Checker();
+        $this->controllerHelper = new ControllerHelper();
     }
 
     private function uploadToFTP($file) 
@@ -50,14 +55,14 @@ class ProposalController extends Controller {
 
     public function submit() 
     {
-        parent::redirectIfNotAuth();
-        parent::render("proposal/submit");
+        $this->authChecker->redirectIfNotAuth();
+        $this->controllerHelper->render("proposal/submit");
     }
 
     public function submitPost() 
     {
         try {
-            $session = parent::redirectIfNotAuth(true);
+            $session = $this->authChecker->redirectIfNotAuth(true);
 
             $stockTicker = filter_input(INPUT_POST, 'stock_ticker', FILTER_SANITIZE_SPECIAL_CHARS);
             $stockName = filter_input(INPUT_POST, 'stock_name', FILTER_SANITIZE_SPECIAL_CHARS);
@@ -92,9 +97,9 @@ class ProposalController extends Controller {
 
             $proposal->createProposal();
 
-            parent::redirectToResult("Proposal has been submitted!", "success");
+            $this->controllerHelper->redirectToResult("Proposal has been submitted!", "success");
         } catch (Exception $error) {
-            parent::redirectToResult("Something went wrong: " . $error->getMessage(), "error");
+            $this->controllerHelper->redirectToResult("Something went wrong: " . $error->getMessage(), "error");
         }
     }
 }
