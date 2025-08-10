@@ -12,7 +12,7 @@ class Session
 
     public function __construct()
     {
-        $this->memcached = new Memcachedh;
+        $this->memcached = new Memcachedh();
     }
 
     public function setSession(string $email, string $role) 
@@ -61,3 +61,4 @@ class Session
     }
 
 }
+
