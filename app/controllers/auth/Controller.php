@@ -2,17 +2,28 @@
 
 namespace App\Controllers;
 
-include_once __DIR__ . "/Controller.php";
+include_once __DIR__ . "/../../core/auth/Checker.php";
+include_once __DIR__ . "/../../core/controller-helper/Controller.php";
 include_once __DIR__ . "/../../models/user/Model.php";
 include_once __DIR__ . "/../../core/Memcachedh.php";
 
-use App\Controller;
+use App\Core\Auth\Checker;
+use App\Core\Auth\ControllerHelper;
 use App\Models\UserModel;
 use App\Core\MemcachedH;
 use Exception;
 
-class AuthController extends Controller
+class AuthController
 {   
+    private $authChecker;
+    private $controllerHelper;
+
+    public function __construct()
+    {
+        $this->authChecker = new Checker();
+        $this->controllerHelper = new ControllerHelper();
+    }
+
     private function assignSessionCookie($session_id) 
     {
         try {
@@ -22,7 +33,7 @@ class AuthController extends Controller
                 'httponly' => true,
             ]);
         } catch (Exception $error) {
-            return parent::redirectToResult($error->getMessage(), "error");
+            return $this->controllerHelper->redirectToResult($error->getMessage(), "error");
         }
     }
 
@@ -36,20 +47,20 @@ class AuthController extends Controller
                 'httponly' => true,
             ]);        
         } catch (Exception $error) {
-            return parent::redirectToResult($error->getMessage(), "error");
+            return $this->controllerHelper->redirectToResult($error->getMessage(), "error");
         }
     }
 
     // Render views
     public function signIn()
     {
-        parent::redirectIfAuth();
-        parent::render('/auth/signin');
+        $this->authChecker->redirectIfNotAuth();
+        $this->controllerHelper->render('/auth/signin');
     }
 
     public function signUp()
     {
-        parent::redirectIfAuth();
+        $this->authChecker->redirectIfNotAuth();
         $clusterLeaders = UserModel::findAllClusterLeaders();
 
         // O(n)/linear time complexity is fine here because cluster leaders length will always be small
@@ -63,14 +74,14 @@ class AuthController extends Controller
             }
         }
 
-        parent::render('/auth/signup', [
+        $this->controllerHelper->render('/auth/signup', [
             'clusterLeaderEmails' => $clusterLeaderEmails
         ]);
     }
 
     public function signInPost() 
     {
-        parent::redirectIfAuth();
+        $this->authChecker->redirectIfNotAuth();
 
         $email = trim(filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL));
         $pwd = trim(filter_input(INPUT_POST, 'password', FILTER_SANITIZE_SPECIAL_CHARS));
@@ -81,15 +92,15 @@ class AuthController extends Controller
             $memcachedH = new MemcachedH();
             $sessionId = $memcachedH->setSession($user["email"], $user["role"]);
             $this->assignSessionCookie($sessionId);
-            parent::redirectToResult("Successfully logged in! Welcome!", "success");
+            $this->controllerHelper->redirectToResult("Successfully logged in! Welcome!", "success");
         } else {
-            parent::redirectToResult("Problem with logging in. Try again.", "error");
+            $this->controllerHelper->redirectToResult("Problem with logging in. Try again.", "error");
         } 
     }
 
     public function signUpPost() 
     {
-        parent::redirectIfAuth();
+        $this->authChecker->redirectIfNotAuth();
 
         try {
             $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
@@ -102,19 +113,27 @@ class AuthController extends Controller
             $user = new UserModel($email, $hashPwd, $clusterLeader, $fullName);
             $user->createUser();
 
-            parent::redirectToResult("User has been created. You may sign in now.", "success");
+            $this->controllerHelper->redirectToResult("User has been created. You may sign in now.", "success");
         } catch (Exception $error) {
             $msg = "There has been an error in signing up.";
-            parent::redirectToResult($msg, "error");
+            $this->controllerHelper->redirectToResult($msg, "error");
         }
     }
     
     public function signOutPost() 
     {
-        parent::redirectIfNotAuth();
+        $this->controllerHelper->redirectIfNotAuth();
         $memcachedH = new MemcachedH();
         $memcachedH->clearSession();
         $this->clearSessionCookie();
-        parent::redirectToResult("Signed out successfully!", "success");
+        $this->controllerHelper->redirectToResult("Signed out successfully!", "success");
+    }
+
+    public function updatePassword()
+    {
+        $session = $this->controllerHelper->redirectIfNotAuth(returnSession: true);
+        $newPwd = filter_input(INPUT_POST, 'new_pwd', FILTER_SANITIZE_SPECIAL_CHARS);
+        $hashedPwd = password_hash($newPwd);
+        User::updatePwd($session['email'], $hashedPwd);
     }
 }

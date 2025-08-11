@@ -1,31 +1,41 @@
 <?php
 
 namespace App\Controllers;
-include_once __DIR__ . "/../Controller.php";
+include_once __DIR__ . "/../../core/auth/Checker.php";
+include_once __DIR__ . "/../../core/controller-helper/Controller.php";
 include_once __DIR__ . "/../../models/user/Model.php";
 
-use App\Controller;
+use App\Core\Auth\Checker;
+use App\ControllerHelper;
 use App\Models\UserModel;
 
 class HomeController extends Controller
 {
+    private $authChecker;
+    private $controllerHelper;
+
+    public function __construct()
+    {
+        $this->authChecker = new Checker();
+        $this->controllerHelper = new ControllerHelper;
+    }
+
     public function index()
     { 
-        parent::redirectIfNotAuth();
+        $this->authChecker->redirectIfNotAuth();
         $clusterLeaders = UserModel::findAllClusterLeaders();
         
-        parent::render("index", [
+        $this->controllerHelper->render("index", [
             "clusterLeaders" => $clusterLeaders
         ]);    
     }
 
     public function favicon()
     {
-        parent::redirectIfNotAuth();
-        parent::render('favicon');
+        $this->controllerHelper->render('favicon');
     }
 
     public function redirect() {
-        parent::render('redirect');
+        $this->controllerHelper->render('redirect');
     }
 }

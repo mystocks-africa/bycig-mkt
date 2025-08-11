@@ -34,6 +34,12 @@ class UserModel extends Dbh
         LIMIT 1;
     ";
 
+    private static string $updatePwdQuery = "
+        UPDATE users
+        SET pwd = ?
+        WHERE email = ?
+    ";
+
     public function __construct(string $email, string $pwd, string $clusterLeader, string $fullName)
     {
         $this->email = $email;
@@ -90,5 +96,18 @@ class UserModel extends Dbh
         $clusterLeaders = $result->fetch_all(MYSQLI_ASSOC);
         $stmt->close();
         return $clusterLeaders;
+    }
+
+    public static function updatePwd($email, $newPwd)
+    {
+        parent::connect();
+        $stmt = parent::$mysqli->prepare(self::$updatePwdQuery);
+        $stmt->bind_params(
+            "ss",
+            $newPwd,
+            $email
+        );
+        $stmt->execute();
+        $stmt->close();
     }
 }
