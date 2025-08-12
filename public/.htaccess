@@ -15,16 +15,16 @@ RewriteRule ^ index.php [QSA,L]
     ExpiresActive On
 
     # CSS caching
-    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType text/css "access plus 2 weeks"
 
     # JavaScript caching
-    ExpiresByType application/javascript "access plus 1 month"
-    ExpiresByType text/javascript "access plus 1 month"
+    ExpiresByType application/javascript "access plus 2 weeks"
+    ExpiresByType text/javascript "access plus 2 weeks"
 </IfModule>
 
 <IfModule mod_headers.c>
     # Cache-Control headers for CSS/JS
     <FilesMatch "\.(css|js)$">
-        Header set Cache-Control "public, max-age=2592000"  # 30 days
+        Header set Cache-Control "public, max-age=1209600"  # 14 days in seconds
     </FilesMatch>
 </IfModule>
