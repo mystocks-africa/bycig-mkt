@@ -7,3 +7,24 @@ RewriteRule ^ - [L]
 
 # Otherwise, redirect all to index.php
 RewriteRule ^ index.php [QSA,L]
+
+# -------------------------
+# Caching for CSS and JS
+# -------------------------
+<IfModule mod_expires.c>
+    ExpiresActive On
+
+    # CSS caching
+    ExpiresByType text/css "access plus 1 month"
+
+    # JavaScript caching
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType text/javascript "access plus 1 month"
+</IfModule>
+
+<IfModule mod_headers.c>
+    # Cache-Control headers for CSS/JS
+    <FilesMatch "\.(css|js)$">
+        Header set Cache-Control "public, max-age=2592000"  # 30 days
+    </FilesMatch>
+</IfModule>
