@@ -1,7 +1,8 @@
 <?php
 namespace App\Core;
 
-class Cookie {
+class Cookie 
+{
     public static function assignSessionCookie($session_id) 
     {
         setcookie('session_id', $session_id, [

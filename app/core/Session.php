@@ -8,7 +8,8 @@ include_once __DIR__ . "/../core/templates/MemcachedTemplate.php";
 use App\Core\Templates\MemcachedTemplate;
 use App\Core\Cookie;
 
-class Session extends MemcachedTemplate {
+class Session extends MemcachedTemplate 
+{
     public static function getSession() {
         $memcached = parent::getMemcached();
 
