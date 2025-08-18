@@ -7,7 +7,7 @@
 </head>
 <body>
     <h2>Forgot your password?</h2>
-    <form action="/forgot-pwd" method="POST">
+    <form action="/auth/forgot-pwd" method="POST">
         <label for="email">Email:</label>
         <input type="email" id="email" name="email" required placeholder="Enter your email">
         <br><br>
