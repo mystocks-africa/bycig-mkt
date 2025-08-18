@@ -4,13 +4,19 @@ namespace App\Controllers;
 
 include_once __DIR__ . "/../../core/Controller.php";
 include_once __DIR__ . "/../../core/Cookie.php";
+include_once __DIR__ . "/../../core/VerificationCode.php";
+include_once __DIR__ . "/../../core/HTMLMessages.php";
+include_once __DIR__ . "/../../core/Mailer.php";
 include_once __DIR__ . "/../../models/user/Model.php";
 
 use App\Core\Controller;
 use App\Core\Session;
+use App\Core\VerificationCode;
 use App\Models\User;
 use App\Core\Cookie;
 use Exception;
+use App\Core\Mailer;
+use HTMLMessages;
 
 class AuthController
 {   
@@ -39,6 +45,16 @@ class AuthController
         Controller::render('/auth/signup', [
             'clusterLeaderEmails'=> $clusterLeaderEmails
         ]);
+    }
+
+    public function forgotPwd()
+    {
+        Controller::render("auth/forgot-pwd");
+    }
+
+    public function updatePwd() 
+    {
+        Controller::render("auth/update-pwd");
     }
 
     public function processSignIn() 
@@ -86,5 +102,36 @@ class AuthController
         Controller::redirectIfNotAuth();
         Cookie::clearSessionCookie();
         Controller::redirectToResult("Signed out successfully!", "success");
+    }
+
+    public function processForgotPwd() 
+    {
+        Controller::redirectIfAuth();
+        
+        $email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_EMAIL);
+
+        $code = VerificationCode::generateCode($email);
+        $message = HTMLMessages::getForgottenPassword($code);
+        Mailer::send($email, $message);
+        Controller::redirectToResult("Sent the code to your email", "success");
+    }
+
+    public function processUpdatePwd() 
+    {
+        Controller::redirectIfAuth();
+
+        $email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_EMAIL);
+        $code = filter_input(INPUT_POST, "code", FILTER_SANITIZE_SPECIAL_CHARS);
+        $newPwd = filter_input(INPUT_POST, "pwd", FILTER_SANITIZE_EMAIL);
+        
+        if (VerificationCode::verifyCode($email, $code) === true) {
+            $hashNewPwd = password_hash($newPwd, PASSWORD_DEFAULT);
+            User::updatePwd($hashNewPwd, $email);
+            Controller::redirectToResult("Updated your password!", "success");
+        }
+
+        else {
+            Controller::redirectToResult("Verification has failed", "error");
+        }
     }
 }

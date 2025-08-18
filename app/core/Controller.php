@@ -30,11 +30,16 @@ class Controller
         }
     }
 
-        public static function redirectIfAuth() {
+        public static function redirectIfAuth($returnSession = false) {
         $session = Session::getSession(); // getSession already removes Memcached
+        
         if ($session) {
             header("Location: /auth/signout");
             exit();
+        }
+
+        if ($returnSession) {
+            return $session;
         }
     }
 
