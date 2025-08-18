@@ -41,7 +41,7 @@ class AuthController
         ]);
     }
 
-    public function signInPost() 
+    public function processSignIn() 
     {
         Controller::redirectIfAuth();
 
@@ -59,7 +59,7 @@ class AuthController
         } 
     }
 
-    public function signUpPost() 
+    public function processSignUp() 
     {
         Controller::redirectIfAuth();
 
@@ -81,7 +81,7 @@ class AuthController
         }
     }
     
-    public function signOutPost() 
+    public function processSignOut() 
     {
         Controller::redirectIfNotAuth();
         Cookie::clearSessionCookie();

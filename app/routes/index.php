@@ -25,9 +25,9 @@ $router->get('/auth/signup', AuthController::class,'signUp');
 $router->get('/auth/signin', AuthController::class, 'signIn');
 
 // Authentication post methods
-$router->post('/auth/signin', AuthController::class,'signInPost');
-$router->post("/auth/signup", AuthController::class, 'signUpPost');
-$router->post('/auth/signout', AuthController::class,'signOutPost');
+$router->post('/auth/signin', AuthController::class,'processSignIn');
+$router->post("/auth/signup", AuthController::class, 'processSignUp');
+$router->post('/auth/signout', AuthController::class,'processSignOut');
 
 // Proposal get methods
 $router->get('/proposals/submit', ProposalController::class,'submit');
