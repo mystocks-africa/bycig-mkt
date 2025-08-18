@@ -19,5 +19,7 @@ class VerificationCode extends MemcachedTemplate
         $memcached->set($email, $code, $expiration);
 
         parent::removeMemcached($memcached);
+
+        return $code;
     }
 }
