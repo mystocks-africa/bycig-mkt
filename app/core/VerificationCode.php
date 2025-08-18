@@ -19,4 +19,9 @@ class VerificationCode extends MemcachedTemplate
 
         return $code;
     }
+
+    public static function getCode($email, $code) {
+        $memcached = parent::getMemcached();
+        return $memcached->get($email, $code) ?? null;
+    }
 }
