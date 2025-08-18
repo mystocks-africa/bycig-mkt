@@ -37,7 +37,7 @@ class HTMLMessages
                 <p class='code'>{$code}</p>
                 <p>Press this link to proceed further:</p>
                 <a href='{$resetLink}' class='link'>Reset Password</a>
-                <p>If you did not request this, please ignore this email.</p>
+                <p>The code will expire in 5 minutes, request a new one if this happens. If you did not request this, please ignore this email.</p>
             </div>
         </body>
         </html>
