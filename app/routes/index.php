@@ -24,12 +24,14 @@ $router->get('/redirect', HomeController::class, 'redirect');
 $router->get('/auth/signup', AuthController::class,'signUp');
 $router->get('/auth/signin', AuthController::class, 'signIn');
 $router->get('/auth/forgot-pwd', AuthController::class,'forgotPwd');
+$router->get('/auth/update-pwd', AuthController::class,'updatePwd');
 
 // Authentication post methods
 $router->post('/auth/signin', AuthController::class,'processSignIn');
 $router->post("/auth/signup", AuthController::class, 'processSignUp');
 $router->post('/auth/signout', AuthController::class,'processSignOut');
 $router->post('/auth/forgot-pwd', AuthController::class,'processForgotPwd');
+$router->post('/auth/update-pwd', AuthController::class,'processUpdatePwd');
 
 // Proposal get methods
 $router->get('/proposals/submit', ProposalController::class,'submit');
