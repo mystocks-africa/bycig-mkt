@@ -26,10 +26,10 @@ class HTMLMessages
         </head>
         <body>
             <div class='container'>
-                <h2>Password Reset</h2>
+                <h2>Password Reset (NEVER SHARE WITH ANYONE)</h2>
                 <p>You requested to reset your password. Use the verification code below to proceed:</p>
                 <p class='code'>{$code}</p>
-                <p>Or click the button below to go directly to the password reset page:</p>
+                <p>Press this link to proceed further:</p>
                 <a href='{$resetLink}'>Reset Password</a>
                 <p>If you did not request this, please ignore this email.</p>
             </div>
