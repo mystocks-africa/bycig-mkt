@@ -34,6 +34,13 @@ class User extends DbTemplate
         LIMIT 1;
     ";
 
+    private static string $updatePwdQuery = "
+        UPDATE users
+        SET pwd = ?
+        WHERE email = ?
+    ";
+
+
     public function __construct(string $email, string $pwd, string $clusterLeader, string $fullName)
     {
         $this->email = $email;
@@ -90,5 +97,12 @@ class User extends DbTemplate
         $clusterLeaders = $result->fetch_all(MYSQLI_ASSOC);
         $stmt->close();
         return $clusterLeaders;
+    }
+
+    public static function updatePwd($newPwd, $email) 
+    {
+        parent::connect();
+        $stmt = parent::$mysqli->prepare(self::$updatePwdQuery);
+        $stmt->bind_param("ss", $newPwd, $email);
     }
 }
