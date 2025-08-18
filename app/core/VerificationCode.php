@@ -23,8 +23,10 @@ class VerificationCode extends MemcachedTemplate
     public static function verifyCode($email, $code) {
         $memcached = parent::getMemcached();
         $storedCode = $memcached->get($email);
-
-        return $storedCode === $code;
+        $memcached->delete($email);
+        parent::removeMemcached($memcached);
+        
+        return $storedCode == $code; // == disregards type but not the actual value within it
     }
 
 }

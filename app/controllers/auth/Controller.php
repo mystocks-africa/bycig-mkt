@@ -118,15 +118,16 @@ class AuthController
 
     public function processUpdatePwd() 
     {
-        $session = Controller::redirectIfAuth(returnSession:true);
+        Controller::redirectIfAuth();
 
-        $email = filter_input(INPUT_GET, "email", FILTER_SANITIZE_EMAIL);
-        $code = filter_input(INPUT_GET, "code", FILTER_SANITIZE_SPECIAL_CHARS);
-        $newPwd = filter_input(INPUT_GET, "pwd", FILTER_SANITIZE_EMAIL);
-
-        if (VerificationCode::verifyCode($email, $code)) {
+        $email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_EMAIL);
+        $code = filter_input(INPUT_POST, "code", FILTER_SANITIZE_SPECIAL_CHARS);
+        $newPwd = filter_input(INPUT_POST, "pwd", FILTER_SANITIZE_EMAIL);
+        
+        if (VerificationCode::verifyCode($email, $code) === true) {
             $hashNewPwd = password_hash($newPwd, PASSWORD_DEFAULT);
-            User::updatePwd($hashNewPwd, $session["email"]);
+            User::updatePwd($hashNewPwd, $email);
+            Controller::redirectToResult("Updated your password!", "success");
         }
 
         else {
