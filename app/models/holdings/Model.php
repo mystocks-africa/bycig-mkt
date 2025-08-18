@@ -1,11 +1,11 @@
 <?php
 
 namespace App\Models;
-include_once __DIR__ . "/../../core/Dbh.php";
+include_once __DIR__ . "/../../core/DbTemplate.php";
 
-use App\Dbh;
+use App\DbTemplate;
 
-class Holding extends Dbh 
+class Holding extends DbTemplate 
 {
     private string $investor;
     private string $stock_ticker;

@@ -5,7 +5,7 @@ include __DIR__ . "/../../utils/env.php";
 
 use Exception;
 
-class Dbh {
+class DbTemplate {
     protected static \mysqli $mysqli;
 
     protected static function connect() 

@@ -1,11 +1,11 @@
 <?php
 
 namespace App\Models;
-include_once __DIR__ . "/../../core/Dbh.php";
+include_once __DIR__ . "/../../core/DbTemplate.php";
 
-use App\Dbh;
+use App\DbTemplate;
 
-class User extends Dbh
+class User extends DbTemplate
 {
     private string $email;
     private string $pwd;
