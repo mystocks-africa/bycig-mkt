@@ -23,11 +23,13 @@ $router->get('/redirect', HomeController::class, 'redirect');
 // Authentication get methods 
 $router->get('/auth/signup', AuthController::class,'signUp');
 $router->get('/auth/signin', AuthController::class, 'signIn');
+$router->get('/auth/forgot-pwd', AuthController::class,'forgotPwd');
 
 // Authentication post methods
 $router->post('/auth/signin', AuthController::class,'processSignIn');
 $router->post("/auth/signup", AuthController::class, 'processSignUp');
 $router->post('/auth/signout', AuthController::class,'processSignOut');
+$router->post('/auth/forgot-pwd', AuthController::class,'processForgotPwd');
 
 // Proposal get methods
 $router->get('/proposals/submit', ProposalController::class,'submit');
