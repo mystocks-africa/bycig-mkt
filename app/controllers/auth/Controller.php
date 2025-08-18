@@ -125,7 +125,8 @@ class AuthController
         $newPwd = filter_input(INPUT_GET, "pwd", FILTER_SANITIZE_EMAIL);
 
         if (VerificationCode::verifyCode($email, $code)) {
-            User::updatePwd($newPwd, $session["email"]);
+            $hashNewPwd = password_hash($newPwd, PASSWORD_DEFAULT);
+            User::updatePwd($hashNewPwd, $session["email"]);
         }
 
         else {
