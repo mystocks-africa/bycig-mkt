@@ -27,6 +27,10 @@
                 <li>
                     <a href="/auth/signup">Sign up</a>
                 </li>
+
+                <li>
+                    <a href="/auth/forgot-pwd">Forgot password?</a>
+                </li>
             <?php endif; ?>
         </ul>
 
