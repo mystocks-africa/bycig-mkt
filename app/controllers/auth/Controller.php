@@ -5,12 +5,15 @@ namespace App\Controllers;
 include_once __DIR__ . "/../../core/Controller.php";
 include_once __DIR__ . "/../../core/Cookie.php";
 include_once __DIR__ . "/../../models/user/Model.php";
+include_once __DIR__ . "/../../core/VerificationCode.php";
 
 use App\Core\Controller;
 use App\Core\Session;
+use App\Core\VerificationCode;
 use App\Models\User;
 use App\Core\Cookie;
 use Exception;
+use Mailer;
 
 class AuthController
 {   
@@ -39,6 +42,11 @@ class AuthController
         Controller::render('/auth/signup', [
             'clusterLeaderEmails'=> $clusterLeaderEmails
         ]);
+    }
+
+    public function forgotPwd()
+    {
+        Controller::render("auth/forgot-pwd");
     }
 
     public function processSignIn() 
@@ -86,5 +94,16 @@ class AuthController
         Controller::redirectIfNotAuth();
         Cookie::clearSessionCookie();
         Controller::redirectToResult("Signed out successfully!", "success");
+    }
+
+    public function processForgotPwd() 
+    {
+        Controller::redirectIfAuth();
+        
+        $email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_EMAIL);
+
+        $code = VerificationCode::generateCode($email);
+        Mailer::send($email, $code);
+        Controller::redirectToResult("Sent the code to your email", "success");
     }
 }
