@@ -4,8 +4,9 @@ namespace App\Controllers;
 
 include_once __DIR__ . "/../../core/Controller.php";
 include_once __DIR__ . "/../../core/Cookie.php";
-include_once __DIR__ . "/../../models/user/Model.php";
 include_once __DIR__ . "/../../core/VerificationCode.php";
+include_once __DIR__ . "/../../core/Mailer.php";
+include_once __DIR__ . "/../../models/user/Model.php";
 
 use App\Core\Controller;
 use App\Core\Session;
@@ -13,7 +14,7 @@ use App\Core\VerificationCode;
 use App\Models\User;
 use App\Core\Cookie;
 use Exception;
-use Mailer;
+use App\Core\Mailer;
 
 class AuthController
 {   

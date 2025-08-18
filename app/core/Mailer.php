@@ -1,10 +1,12 @@
 <?php
+
+namespace App\Core;
+
 require_once __DIR__ . "/../../vendor/autoload.php";
 include_once __DIR__ . "/../../utils/env.php";
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-use App\Core\Session;
 
 class Mailer
 {
