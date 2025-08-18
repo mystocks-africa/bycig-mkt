@@ -2,45 +2,34 @@
 
 namespace App\Core;
 
-require_once __DIR__ . "/../../vendor/autoload.php";
+require __DIR__ . '/../../vendor/autoload.php';
 include_once __DIR__ . "/../../utils/env.php";
 
 use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
 
 class Mailer
 {
     public static function send($email, $code) 
     {
-        global $env; // use the associative array from env.php
+        global $env;
 
-        try {
-            $mail = new PHPMailer(true);
+        $mail = new PHPMailer();
+        $mail->SMTPDebug = 2; // Remove this after testing
 
-            // Server settings
-            $mail->isSMTP();
-            $mail->Host       = $env["SMTP_HOST"];
-            $mail->SMTPAuth   = true;
-            $mail->Username   = $env["SMTP_USERNAME"];
-            $mail->Password   = $env["SMTP_PASSWORD"];
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-            $mail->Port       = $env["SMTP_PORT"];
+        // Gmail SMTP configuration
+        $mail->isSMTP();
+        $mail->Host = $env["SMTP_HOST"];
+        $mail->SMTPAuth = true;
+        $mail->Username = $env["SMTP_USERNAME"];
+        $mail->Password = $env["SMTP_PASSWORD"];
+        $mail->SMTPSecure = 'tls'; // Use TLS for port 587
+        $mail->Port = $env["SMTP_PORT"];
 
-            // Sender
-            $mail->setFrom($env["SMTP_USERNAME"], $env["SMTP_FROM_NAME"] ?? 'Your App Name');
+        $mail->setFrom($env["SMTP_USERNAME"], 'BYCIG MKT');
+        $mail->addAddress($email); // Use the parameter
+        $mail->Subject = 'Verification Code - BYCIG MKT';
+        $mail->Body = 'Your verification code is ' . $code;
 
-            // Recipient
-            $mail->addAddress( $email);
-
-            // Content
-            $mail->isHTML(true);
-            $mail->Subject =  'Password Reset Code';
-            $mail->Body    = "Your password reset code is: <b>{$code}</b>";
-            $mail->AltBody = strip_tags($mail->Body);
-
-            $mail->send();
-        } catch (Exception $e) {
-            error_log("Mailer Error: " . $e->getMessage());
-        }
+        $mail->send();
     }
 }
