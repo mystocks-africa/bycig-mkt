@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Forgot your password?</title>
+    <link rel="stylesheet" href="/static/css/index.css">
 </head>
 <body>
     <h2>Forgot your password?</h2>
