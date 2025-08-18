@@ -50,6 +50,11 @@ class AuthController
         Controller::render("auth/forgot-pwd");
     }
 
+    public function updatePwd() 
+    {
+        Controller::render("auth/update-pwd");
+    }
+
     public function processSignIn() 
     {
         Controller::redirectIfAuth();
@@ -106,5 +111,16 @@ class AuthController
         $code = VerificationCode::generateCode($email);
         Mailer::send($email, $code);
         Controller::redirectToResult("Sent the code to your email", "success");
+    }
+
+    public function processUpdatePwd() 
+    {
+        Controller::redirectIfAuth();
+
+        $email = filter_input(INPUT_GET, "email", FILTER_SANITIZE_EMAIL);
+        $code = filter_input(INPUT_GET, "code", FILTER_SANITIZE_SPECIAL_CHARS);
+        $newPassword = filter_input(INPUT_GET, "password", FILTER_SANITIZE_EMAIL);
+
+        
     }
 }
