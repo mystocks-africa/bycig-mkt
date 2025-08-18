@@ -1,27 +1,27 @@
 <?php
 
 namespace App\Controllers;
-include_once __DIR__ . "/Controller.php";
+
+include_once __DIR__ . "/../../core/Controller.php";
 include_once __DIR__ . "/../../models/proposals/Model.php";
 include_once __DIR__ . "/../../models/holdings/Model.php";
 
-use App\Controller;
+use App\Core\Controller;
 use App\Models\Proposal;
 use App\Models\Holding;
 use Exception;
 
-class AdminController extends Controller 
+class AdminController 
 {
     public function index()
     {
-        $session = parent::redirectIfNotClusterLeader();
+        $session = Controller::redirectIfNotClusterLeader();
 
         $proposals = Proposal::findProposalByClusterLeader($session['email']);
-        parent::render("admin/index", [
+        Controller::render("admin/index", [
             'proposals' => $proposals
         ]);
     }
-
 
     // Sending JSON in these 2 routes because fetch api in js is dealing w/ them
     public function handleProposalStatusPost() 
@@ -66,7 +66,7 @@ class AdminController extends Controller
 
     public function deleteProposal()
     {
-        $session = parent::redirectIfNotClusterLeader();
+        $session = Controller::redirectIfNotClusterLeader();
         try {
             $postId = filter_input(INPUT_GET, 'post_id', FILTER_SANITIZE_NUMBER_INT);
             $proposal = Proposal::findProposalById($postId);
@@ -76,7 +76,7 @@ class AdminController extends Controller
             }
 
             Proposal::deleteProposal($postId, $session['email']);
-            parent::redirectToResult('Deleted proposal successfully', 'success');
+            Controller::redirectToResult('Deleted proposal successfully', 'success');
 
             echo json_encode([
                 'status'=> 'success'

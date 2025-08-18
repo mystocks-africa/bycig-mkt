@@ -1,31 +1,32 @@
 <?php
 
 namespace App\Controllers;
-include_once __DIR__ . "/../Controller.php";
+
+include_once __DIR__ . "/../../core/Controller.php";
 include_once __DIR__ . "/../../models/user/Model.php";
 
-use App\Controller;
+use App\Core\Controller;
 use App\Models\User;
 
-class HomeController extends Controller
+class HomeController
 {
     public function index()
     { 
-        parent::redirectIfNotAuth();
+        Controller::redirectIfNotAuth();
         $clusterLeaders = User::findAllClusterLeaders();
         
-        parent::render("index", [
+        Controller::render("index", [
             "clusterLeaders"=>$clusterLeaders
         ]);    
     }
 
     public function favicon()
     {
-        parent::redirectIfNotAuth();
-        parent::render('favicon');
+        Controller::redirectIfNotAuth();
+        Controller::render('favicon');
     }
 
     public function redirect() {
-        parent::render('redirect');
+        Controller::render('redirect');
     }
 }

@@ -1,13 +1,15 @@
 <?php
 
 namespace App\Controllers;
-include_once __DIR__ . "/../Controller.php";
 
-use App\Controller;
+include_once __DIR__ . "/../../core/Controller.php";
 
-class NotFoundController extends Controller {
+use App\Core\Controller;
+
+class NotFoundController
+{
     public function index() 
     {
-        parent::render("not-found");
+        Controller::render("not-found");
     }
 }

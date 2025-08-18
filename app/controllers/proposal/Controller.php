@@ -1,16 +1,17 @@
 <?php
 
 namespace App\Controllers;
-include_once __DIR__ . "/../Controller.php";
+
+include_once __DIR__ . "/../../core/Controller.php";
 include_once __DIR__ . "/../../models/proposals/Model.php";
 include_once __DIR__ . "/../../../utils/env.php";
 
-use App\Controller;
+use App\Core\Controller;
 use App\Models\Proposal;
 use Exception;
 
-class ProposalController extends Controller {
-
+class ProposalController
+{
     private $env;
 
     public function __construct() 
@@ -48,20 +49,17 @@ class ProposalController extends Controller {
         ftp_close($ftp_conn);
     }
 
-
     public function submit() 
     {
-        parent::redirectIfNotAuth();
-
-        parent::render("proposal/submit");
+        Controller::redirectIfNotAuth();
+        Controller::render("proposal/submit");
     }
 
     public function submitPost() 
     {
         try {
-            $session = parent::redirectIfNotAuth(true);
+            $session = Controller::redirectIfNotAuth(true);
             
-
             $stockTicker = filter_input(INPUT_POST, 'stock_ticker', FILTER_SANITIZE_SPECIAL_CHARS);
             $stockName = filter_input(INPUT_POST, 'stock_name', FILTER_SANITIZE_SPECIAL_CHARS);
             $subjectLine = filter_input(INPUT_POST, 'subject_line', FILTER_SANITIZE_SPECIAL_CHARS);
@@ -73,7 +71,7 @@ class ProposalController extends Controller {
             $fileName = $this->uploadToFTP($proposalFile);
 
             if (!$stockTicker || !$stockName || !$subjectLine || !$thesis || !$bidPrice || !$targetPrice || !$fileName ) {
-                parent::redirectToResult("Error in form input", "error");
+                Controller::redirectToResult("Error in form input", "error");
                 exit();
             }
 
@@ -81,16 +79,18 @@ class ProposalController extends Controller {
             $proposal->createProposal();
 
             if ($proposal && $proposal instanceof Exception) {
-                parent::redirectToResult("Error in submitting proposal", "error");
+                Controller::redirectToResult("Error in submitting proposal", "error");
                 exit();
             }
 
-            parent::redirectToResult("Success in submitting proposal", "success");
+            Controller::redirectToResult("Success in submitting proposal", "success");
         } catch (Exception $error) {
             // Delete the file if there was an error to avoid orphaned files
-            $this->deleteFromFTP($fileName);
+            if (isset($fileName)) {
+                $this->deleteFromFTP($fileName);
+            }
             
-            parent::redirectToResult($error->getMessage(),"error");
+            Controller::redirectToResult($error->getMessage(), "error");
         }
     }
 }
