@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Core;
-include_once "/Session.php";
+include_once __DIR__ . "/Session.php";
 
 use Exception;
 use App\Core\Session;
@@ -31,7 +31,7 @@ class Controller
     }
 
         public static function redirectIfAuth() {
-        $session = self::getSession(); // getSession already removes Memcached
+        $session = Session::getSession(); // getSession already removes Memcached
         if ($session) {
             header("Location: /auth/signout");
             exit();

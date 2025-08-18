@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Core\Templates;
+use Memcached;
 
 class MemcachedTemplate {
     protected static function getMemcached() {

@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Models;
-include_once __DIR__ . "/../../core/DbTemplate.php";
+include_once __DIR__ . "/../../core/templates/DbTemplate.php";
 
 use App\DbTemplate;
 

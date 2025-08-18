@@ -4,9 +4,7 @@ namespace App\Controllers;
 
 include_once __DIR__ . "/../../core/Controller.php";
 include_once __DIR__ . "/../../core/Cookie.php";
-include_once __DIR__ . "/../../core/Memcachedh.php";
 include_once __DIR__ . "/../../models/user/Model.php";
-include_once __DIR__ . "/../../core/Auth.php";
 
 use App\Core\Controller;
 use App\Models\User;
