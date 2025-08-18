@@ -14,7 +14,6 @@ class Mailer
         global $env;
 
         $mail = new PHPMailer();
-        $mail->SMTPDebug = 2; // Remove this after testing
 
         // Gmail SMTP configuration
         $mail->isSMTP();
