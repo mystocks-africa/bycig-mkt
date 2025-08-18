@@ -104,5 +104,7 @@ class User extends DbTemplate
         parent::connect();
         $stmt = parent::$mysqli->prepare(self::$updatePwdQuery);
         $stmt->bind_param("ss", $newPwd, $email);
+        $stmt->execute();
+        $stmt->close();
     }
 }
