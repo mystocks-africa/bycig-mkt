@@ -5,6 +5,7 @@ namespace App\Controllers;
 include_once __DIR__ . "/../../core/Controller.php";
 include_once __DIR__ . "/../../core/Cookie.php";
 include_once __DIR__ . "/../../core/VerificationCode.php";
+include_once __DIR__ . "/../../core/HTMLMessages.php";
 include_once __DIR__ . "/../../core/Mailer.php";
 include_once __DIR__ . "/../../models/user/Model.php";
 
@@ -15,6 +16,7 @@ use App\Models\User;
 use App\Core\Cookie;
 use Exception;
 use App\Core\Mailer;
+use HTMLMessages;
 
 class AuthController
 {   
@@ -109,7 +111,8 @@ class AuthController
         $email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_EMAIL);
 
         $code = VerificationCode::generateCode($email);
-        Mailer::send($email, $code);
+        $message = HTMLMessages::getForgottenPassword($code);
+        Mailer::send($email, $message);
         Controller::redirectToResult("Sent the code to your email", "success");
     }
 

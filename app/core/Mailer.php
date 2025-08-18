@@ -9,11 +9,14 @@ use PHPMailer\PHPMailer\PHPMailer;
 
 class Mailer
 {
-    public static function send($email, $code) 
+    public static function send($email, $message) 
     {
         global $env;
 
         $mail = new PHPMailer();
+
+        // Enable HTML emails
+        $mail->isHTML(true);
 
         // Gmail SMTP configuration
         $mail->isSMTP();
@@ -25,9 +28,9 @@ class Mailer
         $mail->Port = $env["SMTP_PORT"];
 
         $mail->setFrom($env["SMTP_USERNAME"], 'BYCIG MKT');
-        $mail->addAddress($email); // Use the parameter
+        $mail->addAddress($email);
         $mail->Subject = 'Verification Code - BYCIG MKT';
-        $mail->Body = 'Your verification code is ' . $code;
+        $mail->Body = $message;
 
         $mail->send();
     }
