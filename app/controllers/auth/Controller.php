@@ -7,9 +7,9 @@ include_once __DIR__ . "/../../core/Cookie.php";
 include_once __DIR__ . "/../../models/user/Model.php";
 
 use App\Core\Controller;
+use App\Core\Session;
 use App\Models\User;
 use App\Core\Cookie;
-use App\Core\Auth;
 use Exception;
 
 class AuthController
@@ -51,7 +51,7 @@ class AuthController
         $user = User::findByEmail($email);
 
         if (isset($user) && password_verify($pwd, $user["pwd"])) {
-            $sessionId  = Auth::setSession($user["email"], $user["role"]);
+            $sessionId  = Session::setSession($user["email"], $user["role"]);
             Cookie::assignSessionCookie($sessionId);
             Controller::redirectToResult("Successfully logged in! Welcome!", "success");
         } else {
