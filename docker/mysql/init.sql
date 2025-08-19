@@ -1,4 +1,4 @@
-CREATE TABLE holdings (
+CREATE TABLE IF NOT EXISTS holdings (
     id INT(11) NOT NULL AUTO_INCREMENT,
     investor VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
     stock_ticker VARCHAR(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -10,7 +10,7 @@ CREATE TABLE holdings (
     PRIMARY KEY (id)
 );
 
-CREATE TABLE proposals (
+CREATE TABLE IF NOT EXISTS proposals (
     post_id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
     post_author VARCHAR(225) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
     stock_ticker VARCHAR(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -24,7 +24,7 @@ CREATE TABLE proposals (
     PRIMARY KEY (post_id)
 );
 
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
     email VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
     pwd TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
     cluster_leader VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL,
