@@ -39,10 +39,29 @@
 4. Monitor your portfolio’s performance
 5. Compete with friends or just learn solo!
 
+## 🖥️ Setup
+
+For development purposes, this project uses Docker. Docker ensures that all environment configurations are created properly by creating isolated images through Linux which allows developers to focus on things that actually matter. 
+
+There are multiple services within this project, so we need to run multiple containers. For seamless integration, we have implemented the `docker-compose.yml` file. To use it, run the following cmds:
+
+```bash
+docker-compose up --build
+```
+
+To stop all containers, run the following
+
+```bash
+docker-compose down
+```
+
 ## ✅ Contributing
 
 Contributions are welcome!
+<br>
 Feel free to fork the repo and submit a pull request.
+<br>
+Do remember, all work completed as a community engineer is purely volunteer, and it is only employees of MyStocks Africa who are entitled to payment. You may use the experience in your CV/Resume for future employment however.
 
 ## 📄 License
 
