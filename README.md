@@ -57,11 +57,10 @@ docker-compose down
 
 ## ✅ Contributing
 
-Contributions are welcome!
-<br>
-Feel free to fork the repo and submit a pull request.
-<br>
-Do remember, all work completed as a community engineer is purely volunteer, and it is only employees of MyStocks Africa who are entitled to payment. You may use the experience in your CV/Resume for future employment however.
+* Contributions are welcome!
+* Feel free to fork the repo and submit a pull request.
+* **Note!** all work completed as a community engineer is purely volunteer, and it is only employees of MyStocks Africa who are entitled to payment.
+* You may use the experience in your CV/Resume for future employment however.
 
 ## 📄 License
 
