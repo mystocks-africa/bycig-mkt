@@ -11,6 +11,8 @@
 </div>
 
 **BYCIG MKT** is a paper-trading stock exchange platform designed to help investors and learners explore the world of finance in a risk-free environment. It simulates real-world market conditions, allowing users to practice investing, trading, and portfolio management using virtual currency.
+<br>
+This application has been developed in collaboration with the student-led non-profit BYCIG as part of our initiative to help increase financial literacy among youth.
 
 ## 🚀 Features
 
