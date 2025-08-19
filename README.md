@@ -17,8 +17,7 @@
 * 📈 **Paper Trading**: Simulate buying and selling stocks with no real money involved
 * 🧠 **Educational Focus**: Learn how markets work without the risk
 * 📊 **Portfolio Management**: Track your investments and monitor performance
-* 🔒 **Secure Authentication** (if applicable)
-* ⚙️ **Admin Dashboard** (if applicable)
+* 🔒 **Secure Authentication** 
 
 ## 📚 Why Use BYCIG MKT?
 
