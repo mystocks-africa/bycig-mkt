@@ -13,7 +13,8 @@ class Session extends RedisTemplate
     public static function getSession() {
         $redis = parent::getRedis();
 
-        $session_id_cookie = $_COOKIE["session_id"];
+        $session_id_cookie = $_COOKIE["session_id"] ?? "";
+
         $session = $redis->get($session_id_cookie);
 
         if (!$session) {
@@ -32,9 +33,11 @@ class Session extends RedisTemplate
     {       
         $redis = parent::getredis();
 
-        $EXPIRATION_DAYS = 60*60*24*30;
+        $EXPIRATION_DAYS = 60*60*24*30; // 30 days in seconds
         $sessionId = bin2hex(random_bytes(32));
-        $redis->set($sessionId, "$email, $role", $EXPIRATION_DAYS);
+        
+        // Use setex() instead of set() with TTL
+        $redis->setex($sessionId, $EXPIRATION_DAYS, "$email, $role");
         
         return $sessionId;
     }

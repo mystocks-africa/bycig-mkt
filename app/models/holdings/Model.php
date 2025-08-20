@@ -51,41 +51,36 @@ class Holding extends DbTemplate
 
     public function createHolding()
     {
-        parent::connect();
+        $pdo = parent::getConnection();
 
-        $stmt = parent::$mysqli->prepare($this->insertHoldingQuery);
-        $stmt->bind_param(
-            "sssiis",
+        $stmt = $pdo->prepare($this->insertHoldingQuery);
+        $stmt->execute([
             $this->investor,
             $this->stock_ticker,
             $this->stock_name,
             $this->bid_price,
             $this->target_price,
             $this->proposal_file
-        );
-        $stmt->execute();
-        $stmt->close();
+        ]);
     }
 
     // Each cluster leader has their own portfolio and investors associated to them can contribute to it
     public static function findAllHoldings($clusterLeaderEmail)
     {
-        parent::connect();
+        $pdo = parent::getConnection();
 
-        $stmt = parent::$mysqli->prepare(self::$findAllHoldingsQuery);
-        $stmt->bind_param("s", $clusterLeaderEmail);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $holdings = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt = $pdo->prepare(self::$findAllHoldingsQuery);
+        $stmt->execute([$clusterLeaderEmail]);
+        $holdings = $stmt->fetchAll();
 
         return $holdings;
     }
 
     public static function deleteHolding($id, $email) 
     {
-        parent::connect();
-        $stmt = parent::$mysqli->prepare(self::$deleteHoldingQuery);
-        $stmt->bind_param("is", $id, $email);
-        $stmt->execute();
+        $pdo = parent::getConnection();
+
+        $stmt = $pdo->prepare(self::$deleteHoldingQuery);
+        $stmt->execute([$id, $email]);
     }
 }

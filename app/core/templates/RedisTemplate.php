@@ -10,7 +10,11 @@ class RedisTemplate {
     protected static function getRedis() {
         global $env;
 
-        $redis = new Client($env["REDIS_URI"]);
+        $redis = new Client([
+                    'scheme' => 'tcp',
+                    'host'   => 'redis', 
+                    'port'   => 6379,
+                ]);
 
         return $redis;
     }

@@ -8,23 +8,25 @@ use App\Core\Templates\RedisTemplate;
 class VerificationCode extends RedisTemplate
 {
     public static function generateCode($email) {
-        $memcached = parent::getRedis();
+        $redis = parent::getRedis();
 
         $code = rand(10000,99999);
 
         $expiration = 5 * 60; // 5 minutes in seconds
-        $memcached->set($email, $code, $expiration);
-
+        
+        // Use setex() instead of set() with TTL
+        $redis->setex($email, $expiration, $code);
 
         return $code;
     }
 
     public static function verifyCode($email, $code) {
-        $memcached = parent::getRedis();
-        $storedCode = $memcached->get($email);
-        $memcached->delete($email);
+        $redis = parent::getRedis();
+        $storedCode = $redis->get($email);
+        
+        // Use del() instead of delete() - Redis command is DEL
+        $redis->del($email);
         
         return $storedCode == $code; // == disregards type but not the actual value within it
     }
-
 }
