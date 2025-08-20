@@ -1,18 +1,17 @@
 <?php
 
 namespace App;
+include_once __DIR__ . "/../../../utils/env.php";
 
 class DbTemplate {
-
+    
     protected static function getConnection(): \PDO
-    {
-        $host = "mysql";
-        $user = "app_user";
-        $pass = "app_pass";
-        $db   = "app_db";
-        $port = 3306;
+    {    
+        global $env;
 
-        $dsn = "mysql:host={$host};port={$port};dbname={$db};charset=utf8mb4";
+        $dsn = $env["SQL_DSN"];
+        $user = $env["SQL_USER"];
+        $pass = $env["SQL_PASS"];
         
         try {
             $pdo = new \PDO($dsn, $user, $pass, [
