@@ -1,6 +1,6 @@
 <?php
-
 namespace App\Core;
+
 include_once __DIR__ . "/Session.php";
 
 use Exception;

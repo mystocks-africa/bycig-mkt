@@ -89,8 +89,9 @@ class Proposal extends DbTemplate
     }
 
     public function createProposal(): void {
-        parent::connect();
-        $stmt = parent::$mysqli->prepare(self::$insertProposalQuery);
+        $pdo = parent::getConnection();
+
+        $stmt = $pdo->prepare(self::$insertProposalQuery);
         $stmt->execute([
             $this->post_author,
             $this->stock_ticker,
@@ -106,49 +107,41 @@ class Proposal extends DbTemplate
 
     public static function findProposalById(int $id) 
     {
-        parent::connect();
-        $stmt = parent::$mysqli->prepare(self::$getProposalByIdQuery);
-        $stmt->bind_param(
-            "i",
-            $id
-        );
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $getProposalInfo = $result->fetch_assoc();
-        $stmt->close();
+        $pdo = parent::getConnection();
+
+        $stmt = $pdo->prepare(self::$getProposalByIdQuery);
+        $stmt->execute([$id]);
+        $getProposalInfo = $stmt->fetch();
+        
         return $getProposalInfo;
     }
 
     public static function findProposalByClusterLeader($clusterLeaderEmail) 
     {
-        parent::connect();
+        $pdo = parent::getConnection();
 
-        $stmt = parent::$mysqli->prepare(self::$findProposalByClusterLeaderQuery);
-        $stmt->bind_param("s", $clusterLeaderEmail);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $proposals = $result->fetch_all(MYSQLI_ASSOC);
-        $stmt->close();
+        $stmt = $pdo->prepare(self::$findProposalByClusterLeaderQuery);
+        $stmt->execute([$clusterLeaderEmail]);
+        $proposals = $stmt->fetchAll();
+        
         return $proposals;
     }
 
-    public static function deleteProposal( $postId, $clusterLeaderEmail )
+    public static function deleteProposal($postId, $clusterLeaderEmail)
     {
-        parent::connect();
+        $pdo = parent::getConnection();
 
-        $stmt = parent::$mysqli->prepare(self::$deleteProposalQuery);
-        $stmt->bind_param("is", $postId, $clusterLeaderEmail);
-        $stmt->execute();
-        $stmt->close();
+        $stmt = $pdo->prepare(self::$deleteProposalQuery);
+        $stmt->execute([$postId, $clusterLeaderEmail]);
     }
 
     public static function updateProposalStatus($postId, $clusterLeaderEmail, $status) 
     {
-        parent::connect();
-        $stmt = parent::$mysqli->prepare(self::$updateProposalStatusQuery);
-        $stmt->bind_param("sis", $status, $postId, $clusterLeaderEmail);
-        $result = $stmt->execute();
-        $stmt->close();
+        $pdo = parent::getConnection();
+
+        $stmt = $pdo->prepare(self::$updateProposalStatusQuery);
+        $result = $stmt->execute([$status, $postId, $clusterLeaderEmail]);
+        
         return $result;
     }
 }

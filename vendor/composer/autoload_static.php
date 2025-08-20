@@ -9,6 +9,8 @@ class ComposerStaticInit070dc4214a3c4a8ad4296ddaae042428
     public static $prefixLengthsPsr4 = array (
         'P' => 
         array (
+            'Psr\\Http\\Message\\' => 17,
+            'Predis\\' => 7,
             'PHPMailer\\PHPMailer\\' => 20,
         ),
         'H' => 
@@ -19,20 +21,36 @@ class ComposerStaticInit070dc4214a3c4a8ad4296ddaae042428
         array (
             'Firebase\\JWT\\' => 13,
         ),
+        'A' => 
+        array (
+            'App\\' => 4,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
+        'Psr\\Http\\Message\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/http-message/src',
+        ),
+        'Predis\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/predis/predis/src',
+        ),
         'PHPMailer\\PHPMailer\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
         ),
         'Hemit99123\\ProposalBycigSoftware\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/src',
+            0 => __DIR__ . '/../..' . '/App',
         ),
         'Firebase\\JWT\\' => 
         array (
             0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
+        ),
+        'App\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/app',
         ),
     );
 

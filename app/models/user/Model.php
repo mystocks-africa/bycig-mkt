@@ -40,7 +40,6 @@ class User extends DbTemplate
         WHERE email = ?
     ";
 
-
     public function __construct(string $email, string $pwd, string $clusterLeader, string $fullName)
     {
         $this->email = $email;
@@ -51,60 +50,50 @@ class User extends DbTemplate
 
     public function createUser()
     {
-        parent::connect();
+        $pdo = parent::getConnection();
 
         if ($this->clusterLeader) {
-            $stmt = parent::$mysqli->prepare($this->userInsertQuery);
-            $stmt->bind_param(
-                "ssss",
+            $stmt = $pdo->prepare($this->userInsertQuery);
+            $stmt->execute([
                 $this->email,
                 $this->pwd,
                 $this->clusterLeader,
                 $this->fullName
-            );
+            ]);
         } else {
-            $stmt = parent::$mysqli->prepare($this->userInsertNoLeaderQuery);
-            $stmt->bind_param(
-                "sss",
+            $stmt = $pdo->prepare($this->userInsertNoLeaderQuery);
+            $stmt->execute([
                 $this->email,
                 $this->pwd,
                 $this->fullName
-            );
+            ]);
         }
-
-        $stmt->execute();
-        $stmt->close();
     }
 
     public static function findByEmail(string $email)
     {
-        parent::connect();
-        $stmt = parent::$mysqli->prepare(self::$findUserQuery);
-        $stmt->bind_param("s", $email);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $user = $result->fetch_assoc();
-        $stmt->close();
+        $pdo = parent::getConnection();
+        $stmt = $pdo->prepare(self::$findUserQuery);
+        $stmt->execute([$email]);
+        $user = $stmt->fetch();
+        
         return $user;
     }
 
     public static function findAllClusterLeaders()
     {
-        parent::connect();
-        $stmt = parent::$mysqli->prepare(self::$findClusterLeaderQuery);
+        $pdo = parent::getConnection();
+        $stmt = $pdo->prepare(self::$findClusterLeaderQuery);
         $stmt->execute();
-        $result = $stmt->get_result();
-        $clusterLeaders = $result->fetch_all(MYSQLI_ASSOC);
-        $stmt->close();
+        $clusterLeaders = $stmt->fetchAll();
+        
         return $clusterLeaders;
     }
 
     public static function updatePwd($newPwd, $email) 
     {
-        parent::connect();
-        $stmt = parent::$mysqli->prepare(self::$updatePwdQuery);
-        $stmt->bind_param("ss", $newPwd, $email);
-        $stmt->execute();
-        $stmt->close();
+        $pdo = parent::getConnection();
+        $stmt = $pdo->prepare(self::$updatePwdQuery);
+        $stmt->execute([$newPwd, $email]);
     }
 }

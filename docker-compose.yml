@@ -1,17 +1,6 @@
 version: '3.8'
 
 services:
-  php:
-    build:
-      context: .
-      dockerfile: docker/php-memcached/Dockerfile
-    container_name: php
-    restart: unless-stopped
-    ports:
-      - "9999:9999"
-    volumes:
-      - ./public:/app/public
-
   mysql:
     image: mysql:8.0
     container_name: mysql
@@ -40,5 +29,29 @@ services:
       PMA_USER: root
       PMA_PASSWORD: rootpass
 
+  redis:
+    image: redis:7
+    container_name: redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+
+  php:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: php
+    restart: unless-stopped
+    ports:
+      - "9999:9999"
+    volumes:
+      - .:/app
+    depends_on:
+      - redis
+      - mysql
+
 volumes:
   mysql-data:
+  redis-data:

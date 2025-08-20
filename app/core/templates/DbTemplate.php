@@ -1,41 +1,29 @@
 <?php
 
 namespace App;
-include __DIR__ . "/../../../utils/env.php";
-
-use Exception;
+include_once __DIR__ . "/../../../utils/env.php";
 
 class DbTemplate {
-    protected static \mysqli $mysqli;
-
-    protected static function connect() 
-    {
+    
+    protected static function getConnection(): \PDO
+    {    
         global $env;
 
-        $mysql_uri = $env["MYSQL_URI"] ?? null;
-
-        if (!$mysql_uri) {
-            die("MYSQL_URI not found in .env");
-        }
-
-        $parsed = parse_url($mysql_uri);
-
-        if (!$parsed || !isset($parsed['host'], $parsed['user'], $parsed['pass'], $parsed['path'])) {
-            die("Invalid MYSQL_URI format");
-        }
-
-        $host = $parsed['host'];
-        $port = $parsed['port'] ?? 3306; 
-        $user = $parsed['user'];
-        $pass = $parsed['pass'];
-        $dbname = ltrim($parsed['path'], '/'); 
-
+        $dsn = $env["SQL_DSN"];
+        $user = $env["SQL_USER"];
+        $pass = $env["SQL_PASS"];
+        
         try {
-            self::$mysqli = new \mysqli($host, $user, $pass, $dbname, $port);
-            self::$mysqli->set_charset("utf8mb4");
-        } catch (Exception $error) {
-            echo $error->getMessage();
+            $pdo = new \PDO($dsn, $user, $pass, [
+                \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
+                \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
+                \PDO::ATTR_EMULATE_PREPARES => false
+            ]);
+            
+            return $pdo;
+            
+        } catch (\PDOException $e) {
+            die("Database connection failed: " . $e->getMessage());
         }
-
     }
 }
