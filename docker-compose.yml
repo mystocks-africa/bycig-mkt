@@ -37,7 +37,20 @@ services:
       - "6379:6379"
     volumes:
       - redis-data:/data
-
+  
+  ftp-server:
+        image: garethflowers/ftp-server
+        container_name: my-ftp-server
+        environment:
+            - PUBLIC_IP=0.0.0.0
+            - FTP_PASS=123
+            - FTP_USER=user
+        ports:
+            - "20-21:20-21/tcp"
+            - "40000-40009:40000-40009/tcp" # For passive mode
+        volumes:
+            - ftp-data:/data
+  
   php:
     build:
       context: .
@@ -55,3 +68,4 @@ services:
 volumes:
   mysql-data:
   redis-data:
+  ftp-data:
