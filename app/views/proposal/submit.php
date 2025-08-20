@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/static/css/index.css" >
 </head>
 <body class="submit-proposal-body">
+    <br ><br><br>
     <form method="post" enctype="multipart/form-data" action="/proposals/submit" novalidate>
         <label for="customStock">Your Stock Ticker:</label>
         <input type="text" name="stock_ticker" placeholder="e.g. AAPL, TSLA" maxlength="10">
