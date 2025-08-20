@@ -3,25 +3,18 @@
 namespace App\Core;
 
 include_once __DIR__ . "/../core/Cookie.php";
-include_once __DIR__ . "/../core/templates/MemcachedTemplate.php";
+include_once __DIR__ . "/../core/templates/RedisTemplate.php";
 
-use App\Core\Templates\MemcachedTemplate;
+use App\Core\Templates\RedisTemplate;
 use App\Core\Cookie;
 
-class Session extends MemcachedTemplate 
+class Session extends RedisTemplate 
 {
     public static function getSession() {
-        $memcached = parent::getMemcached();
-
-        if (empty($_COOKIE["session_id"])) {
-            parent::removeMemcached($memcached);
-            return false;
-        }
+        $redis = parent::getRedis();
 
         $session_id_cookie = $_COOKIE["session_id"];
-        $session = $memcached->get($session_id_cookie);
-
-        parent::removeMemcached($memcached);
+        $session = $redis->get($session_id_cookie);
 
         if (!$session) {
             Cookie::clearSessionCookie();
@@ -37,13 +30,12 @@ class Session extends MemcachedTemplate
 
     public static function setSession(string $email, string $role) 
     {       
-        $memcached = parent::getMemcached();
+        $redis = parent::getredis();
 
         $EXPIRATION_DAYS = 60*60*24*30;
         $sessionId = bin2hex(random_bytes(32));
-        $memcached->set($sessionId, "$email, $role", $EXPIRATION_DAYS);
+        $redis->set($sessionId, "$email, $role", $EXPIRATION_DAYS);
         
-        parent::removeMemcached($memcached);
         return $sessionId;
     }
 }
