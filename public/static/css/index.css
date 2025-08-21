@@ -248,5 +248,5 @@ button:disabled {
 
 .tab.active {
     color: #111827; /* darker text */
-    border-bottom: 2px solid #3b82f6; /* blue underline */
+    border-bottom: 2px solid black; /* blue underline */
 }
