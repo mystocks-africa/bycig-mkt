@@ -48,7 +48,6 @@ services:
       - "9999:9999"
     volumes:
       - .:/app
-      - ./ftp-data:/usr/share/nginx/html:ro
     depends_on:
       - redis
       - mysql
