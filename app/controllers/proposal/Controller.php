@@ -5,8 +5,7 @@ namespace App\Controllers;
 include_once __DIR__ . "/../../core/Controller.php";
 include_once __DIR__ . "/../../models/proposals/Entity.php";
 include_once __DIR__ . "/../../models/proposals/Repository.php";
-include_once __DIR__ . "/../../models/user/Entity.php";
-include_once __DIR__ . "/../../models/user/Model.php";
+include_once __DIR__ . "/../../models/user/Repository.php";
 include_once __DIR__ . "/../../core/Session.php";
 include_once __DIR__ . "/../../../utils/env.php";
 
@@ -96,7 +95,7 @@ class ProposalController
                 $targetPrice, 
                 $fileName
             );
-            
+
             $this->proposalRepository->save($proposalEntity);
 
             Controller::redirectToResult("Success in submitting proposal", "success");
