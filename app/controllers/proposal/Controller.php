@@ -3,25 +3,32 @@
 namespace App\Controllers;
 
 include_once __DIR__ . "/../../core/Controller.php";
-include_once __DIR__ . "/../../models/proposals/Model.php";
-include_once __DIR__ . "/../../models/user/Model.php";
+include_once __DIR__ . "/../../models/proposals/Entity.php";
+include_once __DIR__ . "/../../models/proposals/Repository.php";
+include_once __DIR__ . "/../../models/user/Repository.php";
 include_once __DIR__ . "/../../core/Session.php";
 include_once __DIR__ . "/../../../utils/env.php";
 
 use App\Core\Controller;
 use App\Core\Session;
-use App\Models\Proposal;
-use App\Models\User;
+use App\Models\Entity\ProposalEntity;
+use App\Models\Repository\ProposalRepository;
+use App\Models\Repository\UserRepository;
 use Exception;
 
 class ProposalController
 {
     private $env;
+    private ProposalRepository $proposalRepository;
+    private UserRepository $userRepository;
 
     public function __construct() 
     {
         global $env;
+
         $this->env = $env; 
+        $this->proposalRepository = new ProposalRepository();
+        $this->userRepository = new UserRepository();
     }
 
     private function uploadFile($file) 
@@ -72,13 +79,13 @@ class ProposalController
                 exit();
             }
 
-            $user = User::findByEmail(Session::getSession()["email"]);
+            $user = $this->userRepository->findByEmail(Session::getSession()["email"]);
 
             if (!$user["cluster_leader"]) {
                 throw new Exception("You need to link with a cluster leader before completing this operation");
             }
             
-            $proposal = new Proposal(
+            $proposalEntity = new ProposalEntity(
                 $session["email"], 
                 $stockTicker, 
                 $stockName, 
@@ -88,12 +95,8 @@ class ProposalController
                 $targetPrice, 
                 $fileName
             );
-            $proposal->createProposal();
 
-            if ($proposal && $proposal instanceof Exception) {
-                Controller::redirectToResult("Error in submitting proposal", "error");
-                exit();
-            }
+            $this->proposalRepository->save($proposalEntity);
 
             Controller::redirectToResult("Success in submitting proposal", "success");
         } catch (Exception $error) {

@@ -4,14 +4,20 @@ namespace App;
 include_once __DIR__ . "/../../../utils/env.php";
 
 class DbTemplate {
-    
-    protected static function getConnection(): \PDO
-    {    
-        global $env;
 
-        $dsn = $env["SQL_DSN"];
-        $user = $env["SQL_USER"];
-        $pass = $env["SQL_PASS"];
+    private array $env;
+
+    public function __construct()
+    {
+        global $env;
+        $this->env = $env;
+    }
+    
+    public function getConnection(): \PDO
+    {    
+        $dsn = $this->env["SQL_DSN"];
+        $user = $this->env["SQL_USER"];
+        $pass = $this->env["SQL_PASS"];
         
         try {
             $pdo = new \PDO($dsn, $user, $pass, [
