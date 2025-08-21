@@ -3,7 +3,7 @@
         'name' => 'hemit99123/proposal-bycig-software',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '0ce72de500131fcb8966c79cbc1f906696c90169',
+        'reference' => '8b8f7b55562e0ea49e6f64b6e68d9e2acd5314ab',
         'type' => 'n',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -22,7 +22,7 @@
         'hemit99123/proposal-bycig-software' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '0ce72de500131fcb8966c79cbc1f906696c90169',
+            'reference' => '8b8f7b55562e0ea49e6f64b6e68d9e2acd5314ab',
             'type' => 'n',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
