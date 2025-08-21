@@ -16,19 +16,23 @@
     </div>
 
     <div id="grid-container">
-        <?php if (!empty($clusterLeaders)): ?>
-            <?php foreach ($clusterLeaders as $clusterLeader): ?>
+      <?php if (!empty($holdings)): ?>
+            <?php foreach ($holdings as $holding): ?>
                 <?php
-                    $clusterLeaderName = $clusterLeader["full_name"];  
-                    $clusterLeaderEmail = $clusterLeader["email"];
+                    $id = $holding["id"];
+                    $investor = $holding["investor"];
+                    $stockTicker = $holding["stock_ticker"];
+                    $stockName = $holding["stock_name"];
+                    $proposalFile = $holding["proposal_file"];
                 ?>
-                <a href="/holdings?cluster_leader_email=<?= $clusterLeaderEmail ?>" class="card" style="text-decoration: none; color: black;">
-                    <h3 class="truncate"><?= $clusterLeaderName ?>'s Portfolio</h3>
-                    <p><strong>Email:</strong> <span class="truncate"><?= $clusterLeaderEmail ?></span></p>
+                <a key=<?= $id ?> href="/uploads/<?= $proposalFile ?>" class="card" style="text-decoration: none; color: black;">
+                    <h3 class="truncate"><?= $stockName ?></h3>
+                    <p><strong>Stock Ticker:</strong> <?= $stockTicker ?></p>
+                    <p><strong>Investor:</strong> <?= $investor ?></p>
                 </a>
             <?php endforeach; ?>
         <?php else: ?>
-            <p>No proposals found.</p>
+            <p>No holdings found.</p>
         <?php endif; ?>
     </div>
 </body>

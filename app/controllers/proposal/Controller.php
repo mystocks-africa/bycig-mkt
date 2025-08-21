@@ -4,10 +4,14 @@ namespace App\Controllers;
 
 include_once __DIR__ . "/../../core/Controller.php";
 include_once __DIR__ . "/../../models/proposals/Model.php";
+include_once __DIR__ . "/../../models/user/Model.php";
+include_once __DIR__ . "/../../core/Session.php";
 include_once __DIR__ . "/../../../utils/env.php";
 
 use App\Core\Controller;
+use App\Core\Session;
 use App\Models\Proposal;
+use App\Models\User;
 use Exception;
 
 class ProposalController
@@ -68,6 +72,12 @@ class ProposalController
                 exit();
             }
 
+            $user = User::findByEmail(Session::getSession()["email"]);
+
+            if (!$user["cluster_leader"]) {
+                throw new Exception("You need to link with a cluster leader before completing this operation");
+            }
+            
             $proposal = new Proposal(
                 $session["email"], 
                 $stockTicker, 

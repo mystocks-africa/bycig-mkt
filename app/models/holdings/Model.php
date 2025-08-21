@@ -22,14 +22,12 @@ class Holding extends DbTemplate
     
     private static string $findAllHoldingsQuery = "
         SELECT
-            holdings.id,
-            holdings.stock_ticker,
-            holdings.stock_name,
-            holdings.investor
+            id,
+            stock_ticker,
+            stock_name,
+            investor,
+            proposal_file
         FROM holdings
-        INNER JOIN users
-            ON holdings.investor = users.email
-        WHERE users.cluster_leader = ?
     ";
 
     private static string $deleteHoldingQuery = "
@@ -64,13 +62,12 @@ class Holding extends DbTemplate
         ]);
     }
 
-    // Each cluster leader has their own portfolio and investors associated to them can contribute to it
-    public static function findAllHoldings($clusterLeaderEmail)
+    public static function findAllHoldings()
     {
         $pdo = parent::getConnection();
 
         $stmt = $pdo->prepare(self::$findAllHoldingsQuery);
-        $stmt->execute([$clusterLeaderEmail]);
+        $stmt->execute();
         $holdings = $stmt->fetchAll();
 
         return $holdings;
