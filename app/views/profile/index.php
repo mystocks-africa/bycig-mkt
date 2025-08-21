@@ -11,10 +11,14 @@
     <div class="hero-section">
         <h1>User Profile</h1>
         <p>Update your profile or view your holdings</p>
+        <br>
+        <div>
+            <span id="info-tab" class="tab active" onclick="handleToggleScreen('info')">Info</span>
+            <span id="holdings-tab" class="tab" onclick="handleToggleScreen('holdings')">Holdings</span>
+        </div>
     </div>
 
-    <span id="info-tab" class="tab active" onclick="handleToggleScreen('info')">Info</span>
-    <span id="holdings-tab" class="tab" onclick="handleToggleScreen('holdings')">Holdings</span>
+
 
     <div id="user-info">
         Update User Info
