@@ -11,18 +11,6 @@ use Exception;
 
 class HoldingsController 
 {
-    public function index() 
-    {
-        $session = Controller::redirectIfNotAuth(returnSession: true);
-        $clusterLeaderEmail = filter_input(INPUT_GET, "cluster_leader_email", FILTER_SANITIZE_EMAIL);
-
-        $holdings = Holding::findAllHoldings($clusterLeaderEmail);
-        Controller::render("/holdings/index", [
-            "holdings"=> $holdings,
-            "session"=> $session
-        ]);
-    }
-
     public function delete()
     {
         try {
