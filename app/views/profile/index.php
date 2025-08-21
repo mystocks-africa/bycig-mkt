@@ -10,7 +10,7 @@
 <body>
     <div class="hero-section">
         <h1>User Profile</h1>
-        <p>Update your profile or view your holdings</p>
+        <p>Update or view your profile or view your holdings</p>
         <br>
         <div>
             <span id="info-tab" class="tab active" onclick="handleToggleScreen('info')">Info</span>
