@@ -31,7 +31,7 @@ This application has been developed in collaboration with the student-led non-pr
 ## 🛠 Tech Stack
 
 * **Frontend**: HTML, CSS, JavaScript
-* **Backend**: PHP, Memcached
+* **Backend**: PHP, Redis
 * **Database**: MySQL
   
 ## 📝 Usage
