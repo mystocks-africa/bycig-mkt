@@ -65,12 +65,11 @@ class Holding extends DbTemplate
     }
 
     // Each cluster leader has their own portfolio and investors associated to them can contribute to it
-    public static function findAllHoldings($clusterLeaderEmail)
+    public static function findAllHoldings()
     {
         $pdo = parent::getConnection();
 
         $stmt = $pdo->prepare(self::$findAllHoldingsQuery);
-        $stmt->execute([$clusterLeaderEmail]);
         $holdings = $stmt->fetchAll();
 
         return $holdings;
