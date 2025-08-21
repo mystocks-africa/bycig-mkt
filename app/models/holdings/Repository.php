@@ -1,19 +1,15 @@
 <?php
 
-namespace App\Models;
+namespace App\Model\Repo;
 include_once __DIR__ . "/../../core/templates/DbTemplate.php";
+include_once __DIR__ . "/../../models/holdings/Entity.php";
 
 use App\DbTemplate;
+use App\Model\Entity\Holding;
 
 class HoldingRepository
 {
     private DbTemplate $db;
-    private string $investor;
-    private string $stock_ticker;
-    private string $stock_name;
-    private string $bid_price;
-    private string $target_price;
-    private string $proposal_file;
 
     private string $insertHoldingQuery = "
         INSERT INTO holdings 
@@ -38,29 +34,21 @@ class HoldingRepository
         AND investor = ?
     ";
 
-    public function __construct(string $investor, string $stock_ticker, string $stock_name, string $bid_price, string $target_price, string $proposal_file)
-    {
-        $this->investor = $investor;
-        $this->stock_ticker = $stock_ticker;
-        $this->stock_name = $stock_name;
-        $this->bid_price = $bid_price;
-        $this->target_price = $target_price;
-        $this->proposal_file = $proposal_file;
+    public function __construct() {
         $this->db = new DbTemplate();
     }
-
-    public function createHolding(): void
+    public function createHolding(Holding $holding): void
     {
         $pdo = $this->db->getConnection();
 
         $stmt = $pdo->prepare($this->insertHoldingQuery);
         $stmt->execute([
-            $this->investor,
-            $this->stock_ticker,
-            $this->stock_name,
-            $this->bid_price,
-            $this->target_price,
-            $this->proposal_file
+            $holding->investor,
+            $holding->stock_ticker,
+            $holding->stock_name,
+            $holding->bid_price,
+            $holding->target_price, 
+            $holding->proposal_file
         ]);
     }
 
