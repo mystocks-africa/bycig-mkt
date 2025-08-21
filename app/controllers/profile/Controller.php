@@ -20,9 +20,11 @@ class ProfileController
         $session = Controller::redirectIfNotAuth(returnSession:true);
 
         $user = $this->userRepository->findByEmail($session["email"]);
+        $clusterLeaders = $this->userRepository->findAllClusterLeaders();
 
         Controller::render("profile/index", [
-            "user"=>$user
+            "user"=>$user,
+            "clusterLeaders"=>$clusterLeaders
         ]);
     }
 }

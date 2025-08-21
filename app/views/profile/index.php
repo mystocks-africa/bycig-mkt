@@ -18,16 +18,30 @@
         </div>
     </div>
 
+    <?php
+    $fullName = $user['full_name'] ?? '';
+    $email = $user['email'] ?? '';
+    $currentClusterLeader = $user['cluster_leader'] ?? '';
+    ?>
     <div id="user-info">
         <form class="form-section" action="/profile/update" method="POST">
             <label for="full-name">Full Name:</label>
-            <input type="text" id="full-name" name="fullName" placeholder="Enter your full name" required>
+            <input type="text" id="full-name" name="fullName" placeholder="Enter your full name" value="<?= $fullName ?>" required>
 
             <label for="email">Email:</label>
-            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+            <input type="email" id="email" name="email" placeholder="Enter your email" value="<?= $email ?>" required>
 
             <label for="cluster-leader">Cluster Leader:</label>
-            <input type="text" id="cluster-leader" name="clusterLeader" placeholder="Enter cluster leader">
+            <select id="cluster-leader" name="clusterLeader">
+                <option value="" <?= empty($currentClusterLeader) ? 'selected' : '' ?>>None</option>
+                <?php foreach ($clusterLeaders as $leader): 
+                    $leaderEmail = $leader['email'];
+                    $leaderName = $leader['full_name'];
+                    $selected = ($leaderEmail === $currentClusterLeader) ? 'selected' : '';
+                ?>
+                    <option value="<?= $leaderEmail ?>" <?= $selected ?>><?= $leaderName ?></option>
+                <?php endforeach; ?>
+            </select>
 
             <label>Password:</label>
             <p>If you want to update your password, <a href="/auth/forgot-pwd">click here</a>.</p>
@@ -35,6 +49,8 @@
             <button type="submit">Update Profile</button>
         </form>
     </div>
+
+
 
     <div id="user-holdings">
         Holding Section
