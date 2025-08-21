@@ -22,7 +22,7 @@ class ProposalController
 
     private function uploadFile($file) 
     {
-        $uploadDir = __DIR__ . "/../../../uploads/";
+        $uploadDir = __DIR__ . "/../../../public/uploads/";
         if (!is_dir($uploadDir)) {
             mkdir($uploadDir, 0777, true);
         }
@@ -36,7 +36,7 @@ class ProposalController
     // public because it is needed in admin controller
     public function deleteFile($fileName)
     {
-        $fullPath = __DIR__ . "/../../../uploads/" . $fileName;
+        $fullPath = __DIR__ . "/../../../public/uploads/" . $fileName;
         if (file_exists($fullPath)) {
             unlink($fullPath);
         }
