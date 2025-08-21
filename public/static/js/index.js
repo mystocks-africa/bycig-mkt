@@ -13,7 +13,3 @@ document.addEventListener("DOMContentLoaded", function() {
     const greetingElement = document.getElementById("greeting");
     greetingElement.textContent = getTimeGreeting();
 })
-
-function goToSubmitProposal() {
-    window.location.href = '/proposals/submit';
-}
