@@ -40,9 +40,9 @@ class UserRepository
         WHERE email = ?
     ";
 
-    public function __construct(DbTemplate $db)
+    public function __construct()
     {
-        $this->db = $db;
+        $this->db = new DbTemplate();
     }
 
     public function save(UserEntity $user): void
