@@ -28,7 +28,7 @@ class User extends DbTemplate
     ";
 
     private static string $findUserQuery = "
-        SELECT email, pwd, role
+        SELECT email, pwd, role, cluster_leader
         FROM users 
         WHERE email = ?
         LIMIT 1;
