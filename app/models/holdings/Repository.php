@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model\Repository;
+namespace App\Models\Repository;
 include_once __DIR__ . "/../../core/templates/DbTemplate.php";
 include_once __DIR__ . "/Entity.php";
 
@@ -61,7 +61,7 @@ class HoldingRepository
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    public function deleteHolding(int $id, string $email): void
+    public function delete(int $id, string $email): void
     {
         $pdo = $this->db->getConnection();
 
