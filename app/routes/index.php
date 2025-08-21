@@ -4,6 +4,7 @@ include_once __DIR__ . "/../controllers/auth/Controller.php";
 include_once __DIR__ . "/../controllers/proposal/Controller.php";
 include_once __DIR__ . "/../controllers/admin/Controller.php";
 include_once __DIR__ . "/../controllers/holdings/Controller.php";
+include_once __DIR__ . "/../controllers/profile/Controller.php";
 include_once __DIR__ . "/Router.php";
 
 use App\Controllers\AdminController;
@@ -11,6 +12,7 @@ use App\Controllers\AuthController;
 use App\Controllers\HomeController;
 use App\Controllers\ProposalController;
 use App\Controllers\HoldingsController;
+use App\Controllers\ProfileController;
 use App\Router;
 
 $router = new Router();
@@ -50,5 +52,8 @@ $router->delete('/admin/delete-proposal', AdminController::class, 'deleteProposa
 
 // Holdings delete methods
 $router->delete('/holdings/delete', HoldingsController::class, 'delete');
+
+// Profile get methods
+$router->get("/profile", ProfileController::class, 'index');
 
 $router->dispatch();
