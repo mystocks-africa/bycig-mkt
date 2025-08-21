@@ -13,8 +13,8 @@
         <p>Update your profile or view your holdings</p>
     </div>
 
-    <button onclick="handleToggleScreen('info')">Info</button>
-    <button onclick="handleToggleScreen('holdings')">Holdings</button>
+    <span class="tab active" onclick="handleToggleScreen('info')">Info</span>
+    <span class="tab" onclick="handleToggleScreen('holdings')">Holdings</span>
 
     <div id="user-info">
         Update User Info

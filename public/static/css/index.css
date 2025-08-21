@@ -235,3 +235,18 @@ button:disabled {
 #user-holdings {
   display: none;
 }
+
+.tab {
+    display: inline-block;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-weight: 500;
+    color: #6b7280; /* gray-ish text */
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+}
+
+.tab.active {
+    color: #111827; /* darker text */
+    border-bottom: 2px solid #3b82f6; /* blue underline */
+}
