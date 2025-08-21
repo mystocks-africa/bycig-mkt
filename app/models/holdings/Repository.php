@@ -52,7 +52,7 @@ class HoldingRepository
         ]);
     }
 
-    public function findAllHoldings(): array
+    public function findAll(): array
     {
         $pdo = $this->db->getConnection();
 
