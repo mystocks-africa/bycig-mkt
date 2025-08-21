@@ -20,33 +20,26 @@ class ProposalController
         $this->env = $env; 
     }
 
-    private function uploadToFTP($file) 
+    private function uploadFile($file) 
     {
-        $ftp_conn = ftp_connect($this->env["FTP_SERVER"]) or throw new Exception("Failed to connect");
-        ftp_login($ftp_conn, $this->env["FTP_USER"], $this->env["FTP_PASS"]);
-
-        $filename = "uploads/" . bin2hex(random_bytes(5)) . ".pdf";
-        $result = ftp_put($ftp_conn, $filename, $file["tmp_name"], FTP_BINARY);
-        ftp_close($ftp_conn);
-        return $result ? $filename : false;
+        $uploadDir = __DIR__ . "/../../../uploads/";
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0777, true);
+        }
+        
+        $filename = bin2hex(random_bytes(5)) . ".pdf";
+        $fullPath = $uploadDir . $filename;
+        
+        return move_uploaded_file($file["tmp_name"], $fullPath) ? $filename : false;
     }
 
     // public because it is needed in admin controller
-    public function deleteFromFTP($fileName)
+    public function deleteFile($fileName)
     {
-        $ftp_conn = ftp_connect($this->env["FTP_SERVER"]) or throw new Exception("Failed to connect");
-        
-        if (!ftp_login($ftp_conn, $this->env["FTP_USER"], $this->env["FTP_PASS"])) {
-            ftp_close($ftp_conn);
-            throw new Exception("FTP login failed");
+        $fullPath = __DIR__ . "/../../../uploads/" . $fileName;
+        if (file_exists($fullPath)) {
+            unlink($fullPath);
         }
-
-        if (!ftp_delete($ftp_conn, $fileName)) {
-            ftp_close($ftp_conn);
-            throw new Exception("Failed to delete file: $fileName");
-        }
-
-        ftp_close($ftp_conn);
     }
 
     public function submit() 
@@ -68,14 +61,23 @@ class ProposalController
             $targetPrice = filter_input(INPUT_POST, 'target_price', FILTER_VALIDATE_FLOAT);
             $proposalFile = $_FILES["proposal_file"] ?? null;
 
-            $fileName = $this->uploadToFTP($proposalFile);
+            $fileName = $this->uploadFile($proposalFile);
 
             if (!$stockTicker || !$stockName || !$subjectLine || !$thesis || !$bidPrice || !$targetPrice || !$fileName ) {
                 Controller::redirectToResult("Error in form input", "error");
                 exit();
             }
 
-            $proposal = new Proposal($session["email"], $stockTicker, $stockName, $subjectLine, $thesis, $bidPrice, $targetPrice, $fileName);
+            $proposal = new Proposal(
+                $session["email"], 
+                $stockTicker, 
+                $stockName, 
+                $subjectLine, 
+                $thesis, 
+                $bidPrice, 
+                $targetPrice, 
+                $fileName
+            );
             $proposal->createProposal();
 
             if ($proposal && $proposal instanceof Exception) {
@@ -87,7 +89,7 @@ class ProposalController
         } catch (Exception $error) {
             // Delete the file if there was an error to avoid orphaned files
             if (isset($fileName)) {
-                $this->deleteFromFTP($fileName);
+                $this->deleteFile($fileName);
             }
             
             Controller::redirectToResult($error->getMessage(), "error");

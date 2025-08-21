@@ -37,21 +37,6 @@ services:
       - "6379:6379"
     volumes:
       - redis-data:/data
-      
-  ftp:
-    image: stilliard/pure-ftpd:hardened
-    container_name: ftp
-    restart: unless-stopped
-    ports:
-      - "21:21"
-      - "30000-30009:30000-30009" # passive FTP
-    environment:
-      - PUBLICHOST=localhost
-      - FTP_USER_NAME=user
-      - FTP_USER_PASS=123
-      - FTP_USER_HOME=/home/ftp
-    volumes:
-      - ./ftp-data:/home/ftp
 
   php:
     build:
@@ -71,4 +56,3 @@ services:
 volumes:
   mysql-data:
   redis-data:
-  ftp-data:
