@@ -1,12 +1,15 @@
 function handleToggleScreen(screen) {
+    const userInfoElement = document.getElementById('user-info');
+    const userHoldingsElement = document.getElementById('user-holdings');
+
     if (screen === 'info') {
-        document.getElementById('user-info').style.display = 'block';
-        document.getElementById('user-holdings').style.display = 'none';  
+        userInfoElement.style.display = 'block';
+        userHoldingsElement.getElementById('user-holdings').style.display = 'none';  
     }
 
     else if (screen === 'holdings') {
-        document.getElementById('user-holdings').style.display = 'block';
-        document.getElementById('user-info').style.display = 'none';
+        userHoldingsElement.style.display = 'block';
+        userInfoElement.style.display = 'none';
     }
 
     else {
