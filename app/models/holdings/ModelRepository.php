@@ -5,8 +5,9 @@ include_once __DIR__ . "/../../core/templates/DbTemplate.php";
 
 use App\DbTemplate;
 
-class Holding extends DbTemplate 
+class HoldingRepository
 {
+    private DbTemplate $db;
     private string $investor;
     private string $stock_ticker;
     private string $stock_name;
@@ -45,11 +46,12 @@ class Holding extends DbTemplate
         $this->bid_price = $bid_price;
         $this->target_price = $target_price;
         $this->proposal_file = $proposal_file;
+        $this->db = new DbTemplate();
     }
 
-    public function createHolding()
+    public function createHolding(): void
     {
-        $pdo = parent::getConnection();
+        $pdo = $this->db->getConnection();
 
         $stmt = $pdo->prepare($this->insertHoldingQuery);
         $stmt->execute([
@@ -62,22 +64,20 @@ class Holding extends DbTemplate
         ]);
     }
 
-    public function findAllHoldings()
+    public function findAllHoldings(): array
     {
-        $pdo = parent::getConnection();
+        $pdo = $this->db->getConnection();
 
-        $stmt = $pdo->prepare(self::$findAllHoldingsQuery);
+        $stmt = $pdo->prepare($this->findAllHoldingsQuery);
         $stmt->execute();
-        $holdings = $stmt->fetchAll();
-
-        return $holdings;
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    public function deleteHolding($id, $email) 
+    public function deleteHolding(int $id, string $email): void
     {
-        $pdo = parent::getConnection();
+        $pdo = $this->db->getConnection();
 
-        $stmt = $pdo->prepare(self::$deleteHoldingQuery);
+        $stmt = $pdo->prepare($this->deleteHoldingQuery);
         $stmt->execute([$id, $email]);
     }
 }

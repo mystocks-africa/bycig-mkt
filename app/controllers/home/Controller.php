@@ -11,10 +11,15 @@ use App\Models\Holding;
 
 class HomeController
 {
+    private $holding;
+
+    public function __construct() {
+        $this->holding = new Holding();
+    }
     public function index()
     { 
         Controller::redirectIfNotAuth();
-        $holdings = Holding::findAllHoldings();
+        $holdings = $this->holding->findAllHoldings();
         
         Controller::render("index", [
             "holdings"=>$holdings
