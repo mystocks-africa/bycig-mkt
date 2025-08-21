@@ -231,3 +231,7 @@ button:disabled {
   display: flex;
   justify-content: flex-end;
 }
+
+#user-holdings {
+  display: none;
+}

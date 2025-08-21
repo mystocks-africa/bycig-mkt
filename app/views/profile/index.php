@@ -5,11 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile</title>
     <link rel="stylesheet" href="/static/css/index.css" >
+    <script src="/static/js/profile.js"></script>
 </head>
 <body>
     <div class="hero-section">
         <h1>User Profile</h1>
         <p>Update your profile or view your holdings</p>
+    </div>
+
+    <button onclick="handleToggleScreen('info')">Info</button>
+    <button onclick="handleToggleScreen('holdings')">Holdings</button>
+
+    <div id="user-info">
+        Update User Info
+    </div>
+
+    <div id="user-holdings">
+        Holding Section
     </div>
 </body>
 </html>
