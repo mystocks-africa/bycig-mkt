@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model\Entity;
+namespace App\Models\Entity;
 include_once __DIR__ . "/../../core/templates/DbTemplate.php";
 
 use App\DbTemplate;
