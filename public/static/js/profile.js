@@ -4,7 +4,7 @@ function handleToggleScreen(screen) {
 
     if (screen === 'info') {
         userInfoElement.style.display = 'block';
-        userHoldingsElement.getElementById('user-holdings').style.display = 'none';  
+        userHoldingsElement.style.display = 'none';  
     }
 
     else if (screen === 'holdings') {
