@@ -8,6 +8,7 @@ class UserEntity
     public string $pwd;
     public ?string $clusterLeader; // nullable
     public string $fullName;
+    public readonly string $role;
 
     public function __construct(string $email, string $pwd, ?string $clusterLeader, string $fullName)
     {
@@ -15,5 +16,6 @@ class UserEntity
         $this->pwd = $pwd;
         $this->clusterLeader = $clusterLeader;
         $this->fullName = $fullName;
+        $this->role = "user";
     }
 }
