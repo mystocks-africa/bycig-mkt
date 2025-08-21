@@ -11,7 +11,14 @@ class HoldingEntity
     public string $target_price;
     public string $proposal_file;
 
-    public function __construct(string $investor, string $stock_ticker, string $stock_name, string $bid_price, string $target_price, string $proposal_file)
+    public function __construct(
+        string $investor, 
+        string $stock_ticker, 
+        string $stock_name, 
+        string $bid_price, 
+        string $target_price, 
+        string $proposal_file
+    )
     {
         $this->investor = $investor;
         $this->stock_ticker = $stock_ticker;

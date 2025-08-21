@@ -10,7 +10,12 @@ class UserEntity
     public string $fullName;
     public readonly string $role;
 
-    public function __construct(string $email, string $pwd, ?string $clusterLeader, string $fullName)
+    public function __construct(
+        string $email, 
+        string $pwd, 
+        ?string $clusterLeader, 
+        string $fullName
+    )
     {
         $this->email = $email;
         $this->pwd = $pwd;
