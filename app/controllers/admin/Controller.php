@@ -18,6 +18,11 @@ class AdminController
     private HoldingRepository $holdingRepository;
     private ProposalRepository $proposalRepository;
 
+    public function __construct() {
+        $this->holdingRepository = new HoldingRepository();
+        $this->proposalRepository = new ProposalRepository();
+    }
+
     public function index()
     {
         $session = Controller::redirectIfNotClusterLeader();
