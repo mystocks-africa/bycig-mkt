@@ -2,9 +2,10 @@
 
 namespace App\Models\Repository;
 include_once __DIR__ . "/../../core/templates/DbTemplate.php";
-include_once __DIR__ . "/../../models/holdings/Entity.php";
+include_once __DIR__ . "/Entity.php";
 
 use App\DbTemplate;
+use App\Models\Entity\Proposal;
 
 class ProposalRepository 
 {
@@ -64,7 +65,7 @@ class ProposalRepository
         $this->db = new DbTemplate();
     }
 
-    public function save($proposal): void
+    public function save(Proposal $proposal): void
     {
         $pdo = $this->db->getConnection();
         $stmt = $pdo->prepare($this->insertProposalQuery);

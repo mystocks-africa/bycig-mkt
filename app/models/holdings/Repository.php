@@ -2,10 +2,10 @@
 
 namespace App\Model\Repository;
 include_once __DIR__ . "/../../core/templates/DbTemplate.php";
-include_once __DIR__ . "/../../models/holdings/Entity.php";
+include_once __DIR__ . "/Entity.php";
 
 use App\DbTemplate;
-use App\Model\Entity\Holding;
+use App\Models\Entity\Holding;
 
 class HoldingRepository
 {
