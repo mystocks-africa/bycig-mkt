@@ -16,21 +16,18 @@
     </div>
 
     <div id="grid-container">
-        <?php if (!empty($holdings)): ?>
+      <?php if (!empty($holdings)): ?>
             <?php foreach ($holdings as $holding): ?>
                 <?php
+                    $id = $holding["id"];
                     $investor = $holding["investor"];
                     $stockTicker = $holding["stock_ticker"];
                     $stockName = $holding["stock_name"];
-                    $bidPrice = $holding["bid_price"];
-                    $targetPrice = $holding["target_price"];
                     $proposalFile = $holding["proposal_file"];
                 ?>
-                <a href="/proposal-file/<?= $proposalFile ?>" class="card" style="text-decoration: none; color: black;">
+                <a key=<?= $id ?> href="/uploads/<?= $proposalFile ?>" class="card" style="text-decoration: none; color: black;">
                     <h3 class="truncate"><?= $stockName ?> (<?= $stockTicker ?>)</h3>
                     <p><strong>Investor:</strong> <?= $investor ?></p>
-                    <p><strong>Bid Price:</strong> $<?= $bidPrice ?></p>
-                    <p><strong>Target Price:</strong> $<?= $targetPrice ?></p>
                 </a>
             <?php endforeach; ?>
         <?php else: ?>
