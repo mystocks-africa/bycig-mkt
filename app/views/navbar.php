@@ -13,7 +13,7 @@ $loggedIn = isset($_COOKIE["session_id"]);
         <ul class="nav-links">
             <?php if ($loggedIn): ?>
                 <li><a href="/proposals/submit">Create Proposal</a></li>
-                <li><a href="/user/profile">User Profile</a></li>
+                <li><a href="/profile">User Profile</a></li>
                 <li>
                     <form action="/auth/signout" method="POST">
                         <button id="signout-btn" type="submit">Sign out</button>
