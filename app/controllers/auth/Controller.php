@@ -7,12 +7,14 @@ include_once __DIR__ . "/../../core/Cookie.php";
 include_once __DIR__ . "/../../core/VerificationCode.php";
 include_once __DIR__ . "/../../core/HTMLMessages.php";
 include_once __DIR__ . "/../../core/Mailer.php";
-include_once __DIR__ . "/../../models/user/Model.php";
+include_once __DIR__ . "/../../models/user/Entity.php";
+include_once __DIR__ . "/../../models/user/Repository.php";
 
 use App\Core\Controller;
 use App\Core\Session;
 use App\Core\VerificationCode;
-use App\Models\User;
+use App\Models\Entity\UserEntity;
+use App\Models\Repository\UserRepository;
 use App\Core\Cookie;
 use Exception;
 use App\Core\Mailer;
@@ -20,6 +22,12 @@ use HTMLMessages;
 
 class AuthController
 {   
+    private UserRepository $userRepository;
+
+    public function __construct() {
+        $this->userRepository = new UserRepository();    
+    }
+
     public function signIn()
     {
         Controller::redirectIfAuth();
@@ -29,7 +37,7 @@ class AuthController
     public function signUp()
     {
         Controller::redirectIfAuth();
-        $clusterLeaders = User::findAllClusterLeaders();
+        $clusterLeaders = $this->userRepository->findAllClusterLeaders();
 
         // O(n) is fine because cluster leaders will always be small
         $clusterLeaderEmails = [];
@@ -64,7 +72,7 @@ class AuthController
         $email = trim(filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL));
         $pwd   = trim(filter_input(INPUT_POST, 'password', FILTER_SANITIZE_SPECIAL_CHARS));
 
-        $user = User::findByEmail($email);
+        $user = $this->userRepository->findByEmail($email);
 
         if (isset($user) && password_verify($pwd, $user["pwd"])) {
             $sessionId  = Session::setSession($user["email"], $user["role"]);
@@ -87,8 +95,14 @@ class AuthController
 
             $hashPwd = password_hash($pwd, PASSWORD_DEFAULT);
 
-            $user = new User($email, $hashPwd, $clusterLeader, $fullName);
-            $user->createUser();
+            $userEntity = new UserEntity(
+                $email, 
+                $hashPwd, 
+                $clusterLeader, 
+                $fullName
+            );
+
+            $this->userRepository->save($userEntity);
 
             Controller::redirectToResult("User has been created. You may sign in now.", "success");
         } catch (Exception $error) {
@@ -126,7 +140,7 @@ class AuthController
         
         if (VerificationCode::verifyCode($email, $code) === true) {
             $hashNewPwd = password_hash($newPwd, PASSWORD_DEFAULT);
-            User::updatePwd($hashNewPwd, $email);
+            $this->userRepository->updatePwd($hashNewPwd, $email);
             Controller::redirectToResult("Updated your password!", "success");
         }
 
