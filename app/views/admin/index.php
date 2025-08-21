@@ -1,3 +1,7 @@
+<?php
+$baseUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http")
+           . "://" . $_SERVER['HTTP_HOST'];
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -47,7 +51,7 @@
                         <p><strong>Bid Price:</strong> $<?= $bid ?></p>
                         <p><strong>Target Price:</strong> $<?= $target ?></p>
                         <p><strong>Status:</strong> <?= $status ?></p>
-                        <p class="underline-text"><strong>File:</strong> <a href="https://bycig.org/<?= $proposalFile ?>"><?= $proposalFile ?></a></p>
+                        <p class="underline-text"><strong>File:</strong> <a href="<?= $baseUrl . "/uploads/" . $proposalFile ?>"><?= $proposalFile ?></a></p>
 
                         <div style="margin-top: 40px;">
                             <?php if ($status == "pending"): ?>
