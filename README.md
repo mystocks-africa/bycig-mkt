@@ -54,7 +54,7 @@ docker -v
 If your terminal returns an error, simply follow this link and install Docker Desktop, and everything will be configured.
 [Click here!](https://docs.docker.com/get-started/introduction/get-docker-desktop/)
 
-There are multiple services within this project, so we need to run multiple containers. For seamless integration, we have implemented the `docker-compose.yml` file. To use it, run the following cmds:
+There are multiple services within this project, so we need to run multiple containers. For seamless integration, we have used Docker Compose tooling. To use it, run the following cmds:
 
 ```bash
 docker-compose up --build
