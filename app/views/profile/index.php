@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="/static/css/index.css" >
 </head>
 <body>
-    
+    <div class="hero-section">
+        <h1>User Profile</h1>
+        <p>Update your profile or view your holdings</p>
+    </div>
 </body>
 </html>
