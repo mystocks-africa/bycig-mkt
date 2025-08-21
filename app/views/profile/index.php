@@ -18,10 +18,22 @@
         </div>
     </div>
 
-
-
     <div id="user-info">
-        Update User Info
+        <form class="form-section" action="/profile/update" method="POST">
+            <label for="full-name">Full Name:</label>
+            <input type="text" id="full-name" name="fullName" placeholder="Enter your full name" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+
+            <label for="cluster-leader">Cluster Leader:</label>
+            <input type="text" id="cluster-leader" name="clusterLeader" placeholder="Enter cluster leader">
+
+            <label>Password:</label>
+            <p>If you want to update your password, <a href="/auth/forgot-pwd">click here</a>.</p>
+
+            <button type="submit">Update Profile</button>
+        </form>
     </div>
 
     <div id="user-holdings">
