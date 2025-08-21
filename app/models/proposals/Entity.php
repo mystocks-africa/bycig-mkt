@@ -2,7 +2,7 @@
 
 namespace App\Models\Entity;
 
-class Proposal 
+class ProposalEntity
 {
     public string $post_author;
     public string $stock_ticker;

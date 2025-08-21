@@ -2,7 +2,7 @@
 
 namespace App\Models\Entity;
 
-class User 
+class UserEntity
 {
     public string $email;
     public string $pwd;

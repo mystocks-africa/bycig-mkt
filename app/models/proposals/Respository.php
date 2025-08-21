@@ -5,7 +5,7 @@ include_once __DIR__ . "/../../core/templates/DbTemplate.php";
 include_once __DIR__ . "/Entity.php";
 
 use App\DbTemplate;
-use App\Models\Entity\Proposal;
+use App\Models\Entity\ProposalEntity;
 
 class ProposalRepository 
 {
@@ -65,7 +65,7 @@ class ProposalRepository
         $this->db = new DbTemplate();
     }
 
-    public function save(Proposal $proposal): void
+    public function save(ProposalEntity $proposal): void
     {
         $pdo = $this->db->getConnection();
         $stmt = $pdo->prepare($this->insertProposalQuery);

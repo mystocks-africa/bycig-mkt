@@ -6,7 +6,7 @@ include_once __DIR__ . "/Entity.php";
 
 
 use App\DbTemplate;
-use App\Models\Entity\User;
+use App\Models\Entity\UserEntity;
 
 class UserRepository 
 {
@@ -45,7 +45,7 @@ class UserRepository
         $this->db = $db;
     }
 
-    public function save(User $user): void
+    public function save(UserEntity $user): void
     {
         $pdo = $this->db->getConnection();
 
