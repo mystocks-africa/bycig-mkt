@@ -5,7 +5,7 @@ include_once __DIR__ . "/../../core/templates/DbTemplate.php";
 include_once __DIR__ . "/Entity.php";
 
 use App\DbTemplate;
-use App\Models\Entity\Holding;
+use App\Models\Entity\HoldingEntity;
 
 class HoldingRepository
 {
@@ -37,7 +37,7 @@ class HoldingRepository
     public function __construct() {
         $this->db = new DbTemplate();
     }
-    public function createHolding(Holding $holding): void
+    public function save(HoldingEntity $holding): void
     {
         $pdo = $this->db->getConnection();
 

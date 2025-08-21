@@ -3,27 +3,31 @@
 namespace App\Controllers;
 
 include_once __DIR__ . "/../../core/Controller.php";
-include_once __DIR__ . "/../../models/proposals/Model.php";
-include_once __DIR__ . "/../../models/holdings/Model.php";
+include_once __DIR__ . "/../../models/proposals/Repository.php";
+include_once __DIR__ . "/../../models/holdings/Repository.php";
+include_once __DIR__ . "/../../models/holdings/Entity.php";
 
 use App\Core\Controller;
-use App\Models\Proposal;
-use App\Models\Holding;
+use App\Model\Repository\HoldingRepository;
+use App\Models\Entity\HoldingEntity;
+use App\Models\Repository\ProposalRepository;
 use Exception;
 
 class AdminController 
 {
+    private HoldingRepository $holdingRepository;
+    private ProposalRepository $proposalRepository;
+
     public function index()
     {
         $session = Controller::redirectIfNotClusterLeader();
 
-        $proposals = Proposal::findProposalByClusterLeader($session['email']);
+        $proposals = $this->proposalRepository->findByClusterLeader($session['email']);
         Controller::render("admin/index", [
             'proposals' => $proposals
         ]);
     }
 
-    // Sending JSON in these 2 routes because fetch api in js is dealing w/ them
     public function handleProposalStatusPost() 
     {
         try {
@@ -35,22 +39,21 @@ class AdminController
                 throw new Exception('Status is not properly formatted');
             }
 
-            Proposal::updateProposalStatus($postId, $clusterLeaderEmail, $status);
+            $this->proposalRepository->updateStatus($postId, $clusterLeaderEmail, $status);
 
-            // Keep proposal even when a new holding w/ proposal info is created
-            // Cluster leader has to delete it themselves in admin portal 
 
             if ($status == 'accept') {
-                $proposal = Proposal::findProposalById($postId);
-                $holding = new Holding(
+                $proposal = $this->proposalRepository->findById($postId);
+                $holdingEntity = new HoldingEntity(
                     $proposal['email'],
                     $proposal['stock_ticker'],
                     $proposal['stock_name'],
                     $proposal['bid_price'],
                     $proposal['target_price'],
-                    $proposal['proposal_file'],
+                    $proposal['proposal_file']
                 );
-                $holding->createHolding();
+
+                $this->holdingRepository->save($holdingEntity);
             }
 
             echo json_encode([
@@ -69,13 +72,13 @@ class AdminController
         $session = Controller::redirectIfNotClusterLeader();
         try {
             $postId = filter_input(INPUT_GET, 'post_id', FILTER_SANITIZE_NUMBER_INT);
-            $proposal = Proposal::findProposalById($postId);
+            $proposal = $this->proposalRepository->findById($postId);
             
             if (empty($proposal)) {
                 throw new Exception("Proposal is not found. You are deleting something that doesn't exist");
             }
 
-            Proposal::deleteProposal($postId, $session['email']);
+            $this->proposalRepository->delete($postId, $session['email']);
             Controller::redirectToResult('Deleted proposal successfully', 'success');
 
             echo json_encode([

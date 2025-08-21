@@ -1,11 +1,8 @@
 <?php
 
 namespace App\Models\Entity;
-include_once __DIR__ . "/../../core/templates/DbTemplate.php";
 
-use App\DbTemplate;
-
-class Holding extends DbTemplate 
+class HoldingEntity 
 {
     public string $investor;
     public string $stock_ticker;
