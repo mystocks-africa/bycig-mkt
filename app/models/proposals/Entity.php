@@ -12,7 +12,7 @@ class ProposalEntity
     public string $bid_price;
     public string $target_price;
     public string $proposal_file;
-    public string $status;
+    public readonly string $status;
 
     public function __construct(
         string $post_author,
