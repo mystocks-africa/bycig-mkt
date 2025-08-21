@@ -23,7 +23,6 @@ class ProposalEntity
         string $bid_price,
         string $target_price,
         string $proposal_file,
-        string $status = "pending"
     ) {
         $this->post_author = $post_author;
         $this->stock_ticker = $stock_ticker;
@@ -33,6 +32,6 @@ class ProposalEntity
         $this->bid_price = $bid_price;
         $this->target_price = $target_price;
         $this->proposal_file = $proposal_file;
-        $this->status = $status;
+        $this->status = "pending";
     }
 }
