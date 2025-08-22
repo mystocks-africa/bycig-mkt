@@ -22,6 +22,8 @@ class HoldingsController
 
     public function delete()
     {
+        header("Content-Type: application/json");
+
         try {
             $session = Controller::redirectIfNotAuth(returnSession: true);
             $id = filter_input(INPUT_GET, "id", FILTER_SANITIZE_NUMBER_INT);
@@ -33,9 +35,16 @@ class HoldingsController
             
             Files::deleteFile($holding['proposal_file']);
 
-            echo "Successfully deleted!";
+            echo json_encode([
+                "status" => "success",
+                "message" => "Successfully deleted "
+            ]);
+
         } catch(Exception $error) {
-            echo "Error in deleting: " + $error;       
+            echo json_encode([
+                "status" => "error",
+                "message" => "Error in deleting " + $error
+            ]);
         }
     }
 }
