@@ -31,7 +31,7 @@ body, html {
 
 .underline-text {
   text-decoration: underline;
-  color: var(--text-main);
+  color: var(--text-muted);
 }
 
 .header {
@@ -165,7 +165,6 @@ button:disabled {
     padding: 1rem;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     background-color: #fff;
-    cursor: pointer;
 }
 
 #main-btn {
