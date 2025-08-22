@@ -2,11 +2,13 @@
 
 namespace App\Core;
 
+use Exception;
+
 class Files 
 {
     public static function uploadFile($file) 
     {
-        $uploadDir = __DIR__ . "/../../public/uploads";
+        $uploadDir = __DIR__ . "/../../public/uploads/";
         if (!is_dir($uploadDir)) {
             mkdir($uploadDir, 0777, true);
         }
@@ -19,9 +21,13 @@ class Files
 
     public static function deleteFile($fileName)
     {
-        $fullPath = __DIR__ . "/../../public/uploads" . $fileName;
+        $fullPath = __DIR__ . "/../../public/uploads/" . $fileName;
         if (file_exists($fullPath)) {
-            unlink($fullPath);
+            if (!unlink($fullPath)) {
+                echo "Could not delete $fullPath";
+            }
+        } else {
+            throw new Exception("File path is invalid");
         }
     }
 }

@@ -94,11 +94,11 @@ class HoldingRepository
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    public function findById($id): array 
+    public function findById($id): mixed 
     {
         $pdo = $this->db->getConnection();
 
-        $stmt = $pdo->prepare($this->findByEmailQuery);
+        $stmt = $pdo->prepare($this->findByIdQuery);
         $stmt->execute([
             $id
         ]);
