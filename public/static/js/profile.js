@@ -33,3 +33,29 @@ document.addEventListener('DOMContentLoaded', function() {
     handleToggleScreen();
 });
 
+function handleDeleteHolding(id) {
+    if (typeof id !== 'number' || isNaN(id)) {
+        alert('Invalid ID provided for deletion');
+        return;
+    }
+
+    if (confirm("Are you sure you want to delete this holding?")) {
+        fetch(`/holdings/delete?id=${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                document.querySelector(`.card[key="${id}"]`).remove();
+            } else {
+                alert('Error deleting holding');
+            }
+        })
+        .catch(error => {
+            alert('Error deleting holding: ' + error.message);
+        });
+    }
+}   
