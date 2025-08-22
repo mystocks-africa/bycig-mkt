@@ -1,4 +1,5 @@
 function handleToggleScreen(screen) {
+    
     const userInfoElement = document.getElementById('user-info');
     const userHoldingsElement = document.getElementById('user-holdings');
 

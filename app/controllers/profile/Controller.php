@@ -23,20 +23,29 @@ class ProfileController
     {
         $session = Controller::redirectIfNotAuth(returnSession:true);
 
-        $user = $this->userRepository->findByEmail($session["email"]);
+        $activeTab = filter_input(INPUT_GET, "tab", FILTER_SANITIZE_SPECIAL_CHARS);
 
-        if ($user["role"] === "cluster_leader") {
-            $clusterLeaders = null;
-        } else {
-            $clusterLeaders = $this->userRepository->findAllClusterLeaders();
+        if (empty($activeTab) || $activeTab === "info") {
+            $user = $this->userRepository->findByEmail($session["email"]);
+            
+            if ($user["role"] === "cluster_leader") {
+                $clusterLeaders = null;
+            } else {
+                $clusterLeaders = $this->userRepository->findAllClusterLeaders();
+            } 
+            
+            Controller::render("profile/index", [
+                "user"=>$user,
+                "clusterLeaders"=>$clusterLeaders
+            ]);
         } 
 
-        $holdings = $this->holdingRepository->findAll();
-
-        Controller::render("profile/index", [
-            "user"=>$user,
-            "clusterLeaders"=>$clusterLeaders,
-            "holdings"=>$holdings
-        ]);
+        else if ($activeTab === "holdings") {
+            $holdings = $this->holdingRepository->findAll();
+            
+            Controller::render("profile/index", [
+                "user"=>$holdings,
+            ]);
+        }
     }
 }
