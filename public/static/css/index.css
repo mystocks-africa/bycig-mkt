@@ -31,7 +31,7 @@ body, html {
 
 .underline-text {
   text-decoration: underline;
-  color: var(--text-main);
+  color: var(--text-muted);
 }
 
 .header {
@@ -165,7 +165,6 @@ button:disabled {
     padding: 1rem;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     background-color: #fff;
-    cursor: pointer;
 }
 
 #main-btn {
@@ -230,4 +229,30 @@ button:disabled {
 .delete-btn-wrapper {
   display: flex;
   justify-content: flex-end;
+}
+
+#user-holdings {
+  display: none;
+}
+
+.tab {
+    display: inline-block;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-weight: 500;
+    color: #6b7280; /* gray-ish text */
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+}
+
+.tab.active {
+    color: #111827; /* darker text */
+    border-bottom: 2px solid black; /* blue underline */
+}
+
+.small-gray-link {
+  color: var(--text-muted);
+  font-size: 0.875rem; /* 14px */
+  text-decoration: none;
+  margin-bottom: 25px;
 }
