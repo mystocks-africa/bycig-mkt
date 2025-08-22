@@ -80,7 +80,7 @@ class HoldingRepository
         $stmt->execute([
             $email
         ]);
-        return $stmt->fetch(\PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
     public function delete(int $id, string $email): void
