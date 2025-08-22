@@ -41,10 +41,10 @@ class ProfileController
         } 
 
         else if ($activeTab === "holdings") {
-            $holdings = $this->holdingRepository->findAll();
+            $holdings = $this->holdingRepository->findByEmail($session["email"]);
             
             Controller::render("profile/index", [
-                "user"=>$holdings,
+                "holdings"=>$holdings,
             ]);
         }
     }

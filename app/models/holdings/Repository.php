@@ -27,6 +27,17 @@ class HoldingRepository
         FROM holdings
     ";
 
+    private string $findByEmailQuery = "
+        SELECT 
+            id,
+            stock_ticker,
+            stock_name,
+            investor, 
+            proposal_file
+        FROM holdings
+        WHERE investor = ?
+    ";
+
     private string $deleteHoldingQuery = "
         DELETE 
         FROM holdings 
@@ -59,6 +70,17 @@ class HoldingRepository
         $stmt = $pdo->prepare($this->findAllHoldingsQuery);
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public function findByEmail($email): array 
+    {
+        $pdo = $this->db->getConnection();
+
+        $stmt = $pdo->prepare($this->findByEmailQuery);
+        $stmt->execute([
+            $email
+        ]);
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
 
     public function delete(int $id, string $email): void
