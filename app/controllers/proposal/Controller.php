@@ -8,12 +8,14 @@ include_once __DIR__ . "/../../models/proposals/Repository.php";
 include_once __DIR__ . "/../../models/user/Repository.php";
 include_once __DIR__ . "/../../core/Session.php";
 include_once __DIR__ . "/../../../utils/env.php";
+include_once __DIR__ . "/../../core/Files.php";
 
 use App\Core\Controller;
 use App\Core\Session;
 use App\Models\Entity\ProposalEntity;
 use App\Models\Repository\ProposalRepository;
 use App\Models\Repository\UserRepository;
+use App\Core\Files;
 use Exception;
 
 class ProposalController
@@ -29,28 +31,6 @@ class ProposalController
         $this->env = $env; 
         $this->proposalRepository = new ProposalRepository();
         $this->userRepository = new UserRepository();
-    }
-
-    private function uploadFile($file) 
-    {
-        $uploadDir = __DIR__ . "/../../../public/uploads/";
-        if (!is_dir($uploadDir)) {
-            mkdir($uploadDir, 0777, true);
-        }
-        
-        $filename = bin2hex(random_bytes(5)) . ".pdf";
-        $fullPath = $uploadDir . $filename;
-        
-        return move_uploaded_file($file["tmp_name"], $fullPath) ? $filename : false;
-    }
-
-    // public because it is needed in admin controller
-    public function deleteFile($fileName)
-    {
-        $fullPath = __DIR__ . "/../../../public/uploads/" . $fileName;
-        if (file_exists($fullPath)) {
-            unlink($fullPath);
-        }
     }
 
     public function submit() 
@@ -72,7 +52,7 @@ class ProposalController
             $targetPrice = filter_input(INPUT_POST, 'target_price', FILTER_VALIDATE_FLOAT);
             $proposalFile = $_FILES["proposal_file"] ?? null;
 
-            $fileName = $this->uploadFile($proposalFile);
+            $fileName = Files::uploadFile($proposalFile);
 
             if (!$stockTicker || !$stockName || !$subjectLine || !$thesis || !$bidPrice || !$targetPrice || !$fileName ) {
                 Controller::redirectToResult("Error in form input", "error");
@@ -102,7 +82,7 @@ class ProposalController
         } catch (Exception $error) {
             // Delete the file if there was an error to avoid orphaned files
             if (isset($fileName)) {
-                $this->deleteFile($fileName);
+                Files::deleteFile($fileName);
             }
             
             Controller::redirectToResult($error->getMessage(), "error");

@@ -45,6 +45,17 @@ class HoldingRepository
         AND investor = ?
     ";
 
+    private string $findByIdQuery = "
+        SELECT 
+            id,
+            stock_ticker,
+            stock_name,
+            investor,
+            proposal_file
+        FROM holdings
+        WHERE id = ?
+    ";
+
     public function __construct() {
         $this->db = new DbTemplate();
     }
@@ -81,6 +92,17 @@ class HoldingRepository
             $email
         ]);
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public function findById($id): array 
+    {
+        $pdo = $this->db->getConnection();
+
+        $stmt = $pdo->prepare($this->findByEmailQuery);
+        $stmt->execute([
+            $id
+        ]);
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
 
     public function delete(int $id, string $email): void
