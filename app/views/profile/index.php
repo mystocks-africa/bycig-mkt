@@ -31,20 +31,21 @@
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" placeholder="Enter your email" value="<?= $email ?>" required>
 
-            <label for="cluster-leader">Cluster Leader:</label>
-            <select id="cluster-leader" name="clusterLeader">
-                <option value="" <?= empty($currentClusterLeader) ? 'selected' : '' ?>>None</option>
-                <?php foreach ($clusterLeaders as $leader): 
-                    $leaderEmail = $leader['email'];
-                    $leaderName = $leader['full_name'];
-                    $selected = ($leaderEmail === $currentClusterLeader) ? 'selected' : '';
-                ?>
-                    <option value="<?= $leaderEmail ?>" <?= $selected ?>><?= $leaderName ?></option>
-                <?php endforeach; ?>
-            </select>
+            <?php if (isset($clusterLeaders)): ?>
+                <label for="cluster-leader">Cluster Leader:</label>
+                <select id="cluster-leader" name="clusterLeader">
+                    <option value="" <?= empty($currentClusterLeader) ? 'selected' : '' ?>>None</option>
+                    <?php foreach ($clusterLeaders as $leader): 
+                        $leaderEmail = $leader['email'];
+                        $leaderName = $leader['full_name'];
+                        $selected = ($leaderEmail === $currentClusterLeader) ? 'selected' : '';
+                    ?>
+                        <option value="<?= $leaderEmail ?>" <?= $selected ?>><?= $leaderName ?></option>
+                    <?php endforeach; ?>
+                </select>
+            <?php endif; ?>
 
-            <label>Password:</label>
-            <p>If you want to update your password, <a href="/auth/forgot-pwd">click here</a>.</p>
+            <p class="small-gray-link">If you want to update your password, <a href="/auth/forgot-pwd">click here</a>.</p>
 
             <button type="submit">Update Profile</button>
         </form>

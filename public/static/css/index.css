@@ -250,3 +250,10 @@ button:disabled {
     color: #111827; /* darker text */
     border-bottom: 2px solid black; /* blue underline */
 }
+
+.small-gray-link {
+  color: var(--text-muted);
+  font-size: 0.875rem; /* 14px */
+  text-decoration: none;
+  margin-bottom: 25px;
+}
