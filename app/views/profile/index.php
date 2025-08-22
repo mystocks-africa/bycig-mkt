@@ -13,8 +13,8 @@
         <p>Update or view your profile or view your holdings</p>
         <br>
         <div>
-            <span id="info-tab" class="tab active" onclick="handleToggleScreen('info')">Info</span>
-            <span id="holdings-tab" class="tab" onclick="handleToggleScreen('holdings')">Holdings</span>
+            <a id="info-tab" class="tab active" href="/profile?tab=info">Info</a>
+            <a id="holdings-tab" class="tab" href="/profile?tab=holdings">Holdings</a>
         </div>
     </div>
 

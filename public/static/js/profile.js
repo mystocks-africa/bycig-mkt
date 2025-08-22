@@ -1,30 +1,35 @@
-function handleToggleScreen(screen) {
-    // Update URL without reload
-    const url = new URL(window.location);
-    url.searchParams.set('tab', screen);
-    window.history.pushState({}, '', url);
-    
-    const userInfoElement = document.getElementById('user-info');
-    const userHoldingsElement = document.getElementById('user-holdings');
+document.addEventListener('DOMContentLoaded', function() {
+    function handleToggleScreen() {
+        // Update URL without reload
+        const url = new URL(window.location);
+        const tab = url.searchParams.get('tab') ?? "info";
 
-    const infoTabElement = document.getElementById('info-tab');
-    const holdingsTabElement = document.getElementById('holdings-tab');
+        const userInfoElement = document.getElementById('user-info');
+        const userHoldingsElement = document.getElementById('user-holdings');
 
-    if (screen === 'info') {
-        userInfoElement.style.display = 'block';
-        userHoldingsElement.style.display = 'none';
+        const infoTabElement = document.getElementById('info-tab');
+        const holdingsTabElement = document.getElementById('holdings-tab');
 
-        infoTabElement.classList.add('active');
-        holdingsTabElement.classList.remove('active');
-    } 
-    else if (screen === 'holdings') {
-        userHoldingsElement.style.display = 'block';
-        userInfoElement.style.display = 'none';
+        // Default view is info so if no tab is specified, show info
+        if (!tab || tab === 'info') {
+            userInfoElement.style.display = 'block';
+            userHoldingsElement.style.display = 'none';
 
-        holdingsTabElement.classList.add('active');
-        infoTabElement.classList.remove('active');
-    } 
-    else {
-        throw new Error('Invalid screen type');
+            infoTabElement.classList.add('active');
+            holdingsTabElement.classList.remove('active');
+        } 
+        else if (tab === 'holdings') {
+            userHoldingsElement.style.display = 'block';
+            userInfoElement.style.display = 'none';
+
+            holdingsTabElement.classList.add('active');
+            infoTabElement.classList.remove('active');
+        } 
+        else {
+            throw new Error('Invalid screen type');
+        }
     }
-}
+
+    handleToggleScreen();
+});
+
