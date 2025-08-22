@@ -1,4 +1,8 @@
 function handleToggleScreen(screen) {
+    // Update URL without reload
+    const url = new URL(window.location);
+    url.searchParams.set('tab', screen);
+    window.history.pushState({}, '', url);
     
     const userInfoElement = document.getElementById('user-info');
     const userHoldingsElement = document.getElementById('user-holdings');
