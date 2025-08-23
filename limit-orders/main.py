@@ -1,7 +1,9 @@
-supported_stocks = ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA"]
+from classes.FinnhubWebSocket import FinnHubWebSocket
 
-def place_limit_order(): 
-    for stock in supported_stocks:
-        print(f"Placing limit order for {stock}")
+class Main: 
+    def __init__(self):
+        finnHubWebSocket = FinnHubWebSocket()
+        finnHubWebSocket.start()
 
-place_limit_order()
+if __name__ == "__main__":
+    Main()
