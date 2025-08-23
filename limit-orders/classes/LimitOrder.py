@@ -1,8 +1,7 @@
-from websocket import WebSocketApp, enableTrace
-import json
 from os import getenv
 from dotenv import load_dotenv
 import bisect
+from classes.BisectKey import BisectKey
 
 load_dotenv()
 
@@ -11,45 +10,35 @@ FINNHUB_API_KEY = getenv("FINNHUB_API_KEY")
 if not FINNHUB_API_KEY:
     raise ValueError("No API key found. Please set the FINNHUB_API_KEY environment variable.")
 
-supported_stocks = ["BTCUSDT"]
-
-limit_orders = {
-    "1": 150.00,
-    "2": 145.00,
-    "3": 140.00
-}
-
-limit_orders = dict(sorted(limit_orders.items(), key=lambda x: x[1]))
 
 class LimitOrder:
-    def __init__(self, orders, current_price):
-        self.orders = orders
-        self.current_price = current_price
-        # Create sorted lists for binary search
-        self.order_items = list(orders.items())  # [(order_id, price), ...]
-        self.prices = [price for _, price in self.order_items]  # [price1, price2, ...]
+    def __init__(self, limitOrders, current_price):
+        self.limitOrders = limitOrders
+        self.currentPrice = current_price
     
     def findMatchingOrders(self):
         """Find all limit orders that are >= current price using binary search"""
-        if not self.prices:
+        if not self.currentPrice or not self.limitOrders:
             return "No orders available"
         
+        if self.currentPrice < max(self.limitOrders[-1]["price"]):
+            return "Highest limit order is less than current price"
+        
+        bisectKey = BisectKey(self.currentPrice)
         # Find the leftmost position where price >= current_price
-        # bisect_left returns the insertion point for current_price
-        insert_pos = bisect.bisect_left(self.prices, self.current_price)
+        idxRangeStart = bisect.bisect_left(self.limitOrders, bisectKey)
         
-        # All orders from insert_pos onwards have price >= current_price
-        matching_orders = []
+        # All orders from idxRangeStart onwards have price >= current_price
+        matchingOrders = []
         
-        for i in range(insert_pos, len(self.order_items)):
-            order_id, limit_price = self.order_items[i]
-            matching_orders.append({
-                "order_id": order_id,
-                "limit_price": limit_price,
+        for order in self.order_items[idxRangeStart:]:
+            matchingOrders.append({
+                "order_id": order[0],
+                "limit_price": order[1],
                 "current_price": self.current_price
             })
         
-        if not matching_orders:
+        if not matchingOrders:
             return "No matching orders found"
         
-        return matching_orders
+        return matchingOrders
