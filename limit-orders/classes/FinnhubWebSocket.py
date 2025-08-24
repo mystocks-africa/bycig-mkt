@@ -3,6 +3,7 @@ import json
 from os import getenv
 from dotenv import load_dotenv
 from classes.LimitOrder import LimitOrder
+from classes.Response import Response
 
 load_dotenv()
 
@@ -39,7 +40,7 @@ class FinnHubWebSocket:
                     if isinstance(matches, str):
                         print(matches)
                     else:
-                        print(json.dumps(matches, indent=2))
+                        print(json.dumps(Response.decode_bytes(matches), indent=2))
             else:
                 print(f"Message without trade data: {data}")
                 
