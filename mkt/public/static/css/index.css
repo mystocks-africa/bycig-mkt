@@ -41,7 +41,10 @@ body, html {
 /* Form structure */
 form {
   width: 100%;
-  padding: 40px;
+  padding-right: 10px;
+  padding-left: 10px;
+  max-width: 1000px;
+  margin: 0 auto 40px auto;
 }
 
 /* Headings and layout spacing */
