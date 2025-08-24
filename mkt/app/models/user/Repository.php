@@ -13,22 +13,40 @@ class UserRepository
     private DbTemplate $db;
 
     private string $userInsertQuery = "
-        INSERT INTO users (email, pwd, cluster_leader, full_name)
+        INSERT INTO users (
+            email, 
+            pwd, 
+            cluster_leader, 
+            full_name
+        )
         VALUES (?, ?, ?, ?)
     ";
 
     private string $userInsertNoLeaderQuery = "
-        INSERT INTO users (email, pwd, full_name)
+        INSERT INTO users (
+            email, 
+            pwd, 
+            full_name
+        )
         VALUES (?, ?, ?)
     ";
 
     private string $findClusterLeaderQuery = "
-        SELECT email, full_name FROM users
+        SELECT 
+            email, 
+            full_name 
+        FROM users
         WHERE role = 'cluster_leader';
     ";
 
     private string $findUserQuery = "
-        SELECT full_name, email, pwd, role, cluster_leader, balance
+        SELECT 
+            full_name, 
+            email, 
+            pwd, 
+            role, 
+            cluster_leader, 
+            balance
         FROM users 
         WHERE email = ?
         LIMIT 1;
