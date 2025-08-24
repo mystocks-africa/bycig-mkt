@@ -7,7 +7,11 @@
     <link rel="stylesheet" href="/static/css/index.css" >
 </head>
 <body class="submit-proposal-body">
-    <br><br><br>
+    <div class="hero-section">
+        <h1>Submit a proposal</h1>
+        <p>This proposal will be sent to your cluster leader. If they agree to it, a holding will be added and a limit order for 5 days will be placed.</p>
+    <br>
+    </div>
     <form method="post" enctype="multipart/form-data" action="/proposals/submit" novalidate>
         <label for="customStock">Your Stock Ticker:</label>
         <input type="text" name="stock_ticker" placeholder="e.g. AAPL, TSLA" maxlength="10">

@@ -6,6 +6,12 @@
   <link rel="stylesheet" href="/static/css/index.css">
 </head>
 <body>
+  <div class="hero-section">
+    <h1>Sign up</h1>
+    <p>If you don't have an account, register here</p>
+    <br>
+  </div>
+
   <form action="/auth/signup" method="post">
     <label for="full_name">Full Name:</label>
     <input type="text" id="full_name" name="full_name"><br><br>

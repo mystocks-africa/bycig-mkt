@@ -7,7 +7,12 @@
     <link rel="stylesheet" href="/static/css/index.css">
 </head>
 <body>
-    <h2>Update Your Password</h2>
+    <div class="hero-section">
+        <h1>Update your password</h1>
+        <p>Now that you have gotten a verification email, enter the right creditionals to update password</p>
+    <br>
+
+    </div>
     <form action="/auth/update-pwd" method="POST">
         <label for="email">Email:</label>
         <input type="email" id="email" name="email" required placeholder="Enter your email">
