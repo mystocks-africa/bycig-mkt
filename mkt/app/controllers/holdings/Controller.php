@@ -20,15 +20,14 @@ class HoldingsController
         $this->holdingRepository = new HoldingRepository();
     }
 
-    public function delete()
+    public function sellAll()
     {
         try {
             $session = Controller::redirectIfNotAuth(returnSession: true);
             $id = filter_input(INPUT_GET, "id", FILTER_SANITIZE_NUMBER_INT);
 
             $holding = $this->holdingRepository->findById($id);
-
-            // Query for email as well so only the owner can delete
+            
             $this->holdingRepository->delete($id, $session['email']);
             
             Files::deleteFile($holding['proposal_file']);

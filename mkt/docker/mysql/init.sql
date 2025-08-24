@@ -4,7 +4,6 @@ CREATE TABLE IF NOT EXISTS holdings (
     stock_ticker VARCHAR(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
     stock_name VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
     bid_price DECIMAL(10,2) NOT NULL,
-    target_price DECIMAL(10,2) NOT NULL,
     proposal_file VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id)
@@ -18,7 +17,6 @@ CREATE TABLE IF NOT EXISTS proposals (
     subject_line VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
     thesis TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
     bid_price DECIMAL(10,2) NOT NULL,
-    target_price DECIMAL(10,2) NOT NULL,
     proposal_file VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
     status VARCHAR(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'pending',
     PRIMARY KEY (post_id)
