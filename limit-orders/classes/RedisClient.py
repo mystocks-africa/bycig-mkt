@@ -11,13 +11,26 @@ if not REDIS_URL:
 
 class RedisClient:
     def __init__(self):
-        self.client = Redis.from_url(REDIS_URL)
+        try:
+            self.client = Redis.from_url(REDIS_URL)
+        except Exception as e:
+            raise ConnectionError(f"Failed to connect to Redis: {e}")
 
     def setLimitOrder(self, stock, order_id, price):
-        self.client.zadd(stock, order_id, price)
+        try:
+            self.client.zadd(stock, {order_id: price})
+        except Exception as e:
+            print(f"Error setting limit order: {e}")
 
     def getLimitOrder(self, stock, price):
-        return self.client.zrangebyscore(stock, price, '+inf')
+        try:
+            return self.client.zrangebyscore(stock, price, '+inf')
+        except Exception as e:
+            print(f"Error getting limit order: {e}")
+            return None
 
     def deleteLimitOrder(self, stock, order_id):
-        self.client.zrem(stock, order_id)
+        try:
+            self.client.zrem(stock, order_id)
+        except Exception as e:
+            print(f"Error deleting limit order: {e}")
