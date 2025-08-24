@@ -6,7 +6,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/index.css" >
 </head>
-<body class="submit-proposal-body">
+<body>
     <div class="hero-section">
         <h1>Submit a proposal</h1>
         <p>This proposal will be sent to your cluster leader. If they agree to it, a holding will be added and a limit order for 5 days will be placed.</p>
