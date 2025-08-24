@@ -58,6 +58,12 @@ class UserRepository
         WHERE email = ?
     ";
 
+    private string $updateBalanceQuery = "
+        UPDATE users
+        SET balance = ?
+        WHERE email = ?
+    ";
+
     public function __construct()
     {
         $this->db = new DbTemplate();
@@ -106,5 +112,12 @@ class UserRepository
         $pdo = $this->db->getConnection();
         $stmt = $pdo->prepare($this->updatePwdQuery);
         $stmt->execute([$newPwd, $email]);
+    }
+
+    public function updateBalance(int $newBalance, string $email): void 
+    {
+        $pdo = $this->db->getConnection();
+        $stmt = $pdo->prepare($this->updateBalanceQuery);
+        $stmt->execute([$newBalance, $email]);
     }
 }
