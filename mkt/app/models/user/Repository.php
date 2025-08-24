@@ -28,7 +28,7 @@ class UserRepository
     ";
 
     private string $findUserQuery = "
-        SELECT full_name, email, pwd, role, cluster_leader
+        SELECT full_name, email, pwd, role, cluster_leader, balance
         FROM users 
         WHERE email = ?
         LIMIT 1;
