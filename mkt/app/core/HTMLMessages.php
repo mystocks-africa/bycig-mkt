@@ -6,7 +6,7 @@ class HTMLMessages
         // Determine protocol
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https://" : "http://";
         $host = $_SERVER['HTTP_HOST'];
-        $resetLink = $protocol . $host . "/auth/update-pwd?code=$code";
+        $resetLink = "{$protocol}{$host}/auth/update-pwd?code={$code}";
 
         return "
         <!DOCTYPE html>
@@ -20,13 +20,12 @@ class HTMLMessages
                 .container { background-color: #fff; padding: 20px; border-radius: 8px; max-width: 600px; margin: auto; border: 1px solid #000; }
                 h2 { color: #000; }
                 p { font-size: 16px; color: #222; }
-                a { text-decoration: none; color: #ffff; } 
                 .link { 
                     display: inline-block;
                     padding: 12px 24px;
                     font-size: 18px;
                     font-weight: bold;
-                    color: #fff;
+                    color: #fff !important;  /* Force white color */
                     background-color: #000;
                     border: none;
                     border-radius: 4px;

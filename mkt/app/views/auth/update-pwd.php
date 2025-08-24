@@ -18,9 +18,7 @@
         <input type="email" id="email" name="email" required placeholder="Enter your email">
         <br><br>
 
-        <label for="code">Verification Code:</label>
-        <input type="text" id="code" name="code" required placeholder="Enter the code you received">
-        <br><br>
+        <input type="text" id="code" name="code" required value="<?= $code ?>" style="display:none;">
 
         <label for="pwd">New Password:</label>
         <input type="password" id="pwd" name="pwd" required placeholder="Enter your new password">

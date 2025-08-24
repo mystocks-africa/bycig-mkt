@@ -62,7 +62,10 @@ class AuthController
 
     public function updatePwd() 
     {
-        Controller::render("auth/update-pwd");
+        $code = filter_input(INPUT_GET, "code", FILTER_SANITIZE_SPECIAL_CHARS);
+        Controller::render("auth/update-pwd", [
+            "code"=>$code
+        ]);
     }
 
     public function processSignIn() 
@@ -120,7 +123,7 @@ class AuthController
 
     public function processForgotPwd() 
     {
-        Controller::redirectIfAuth();
+        //Controller::redirectIfAuth();
         
         $email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_EMAIL);
 
