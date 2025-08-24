@@ -5,6 +5,8 @@ CREATE TABLE IF NOT EXISTS holdings (
     stock_name VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
     bid_price DECIMAL(10,2) NOT NULL,
     proposal_file VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+    fulfilled BOOLEAN NOT NULL DEFAULT FALSE,
+    bought_price DECIMAL(10,2) NULL DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id)
 );
