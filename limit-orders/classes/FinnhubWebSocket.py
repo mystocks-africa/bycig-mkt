@@ -33,8 +33,7 @@ class FinnHubWebSocket:
                 for trade in data["data"]:
                     symbol = trade.get("s")
                     price = trade.get("p")
-
-                    limit_order = LimitOrder(symbol, price)
+                    limit_order = LimitOrder(symbol, int(price))
                     matches = limit_order.findMatchingOrders()
                         
                     if isinstance(matches, str):

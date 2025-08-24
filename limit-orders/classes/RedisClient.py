@@ -16,12 +16,6 @@ class RedisClient:
         except Exception as e:
             raise ConnectionError(f"Failed to connect to Redis: {e}")
 
-    def setLimitOrder(self, stock, order_id, price):
-        try:
-            self.client.zadd(stock, {order_id: price})
-        except Exception as e:
-            print(f"Error setting limit order: {e}")
-
     def getLimitOrder(self, stock, price):
         try:
             return self.client.zrangebyscore(stock, price, '+inf')
