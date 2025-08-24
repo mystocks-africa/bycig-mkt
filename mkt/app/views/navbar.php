@@ -11,6 +11,7 @@ $loggedIn = isset($_COOKIE["session_id"]);
     <nav>
         <a href="/" class="logo">BYCIG MKT</a>
         <ul class="nav-links">
+            <li><a href="/auth/forgot-pwd">Forgot password?</a></li>
             <?php if ($loggedIn): ?>
                 <li><a href="/proposals/submit">Create Proposal</a></li>
                 <li><a href="/profile">User Profile</a></li>
@@ -22,7 +23,6 @@ $loggedIn = isset($_COOKIE["session_id"]);
             <?php else: ?>
                 <li><a href="/auth/signin">Sign in</a></li>
                 <li><a href="/auth/signup">Sign up</a></li>
-                <li><a href="/auth/forgot-pwd">Forgot password?</a></li>
             <?php endif; ?>
         </ul>
     </nav>
