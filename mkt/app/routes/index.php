@@ -56,4 +56,7 @@ $router->post('/holdings/sell', HoldingsController::class, 'sell');
 // Profile get methods
 $router->get("/profile", ProfileController::class, 'index');
 
+// Profile delete methods
+$router->delete("/profile/delete-user", ProfileController::class, "deleteUser");
+
 $router->dispatch();

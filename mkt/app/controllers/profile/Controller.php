@@ -48,4 +48,10 @@ class ProfileController
             ]);
         }
     }
+
+    public function deleteUser() 
+    {
+        $session = Controller::redirectIfNotAuth(returnSession: true);
+        $this->userRepository->delete($session['email']);
+    }
 }
