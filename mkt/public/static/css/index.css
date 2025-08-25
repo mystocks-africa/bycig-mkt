@@ -233,7 +233,8 @@ button:disabled {
   justify-content: flex-end;
 }
 
-#user-holdings {
+#user-holdings,
+#delete-user {
   display: none;
 }
 

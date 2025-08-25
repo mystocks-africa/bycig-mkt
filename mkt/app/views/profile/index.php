@@ -15,6 +15,7 @@
         <div>
             <a id="info-tab" class="tab active" href="/profile?tab=info">Info</a>
             <a id="holdings-tab" class="tab" href="/profile?tab=holdings">Holdings</a>
+            <a id="delete-user-tab" class="tab" href="/profile?tab=delete-user">Delete</a>
         </div>
     </div>
 
@@ -91,6 +92,10 @@
                 <p>No holdings found.</p>
             <?php endif; ?>
         </div>   
+    </div>
+
+    <div id="delete-user">
+        Delete user screen
     </div>
 </body>
 </html>
