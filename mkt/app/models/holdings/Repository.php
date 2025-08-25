@@ -57,6 +57,11 @@ class HoldingRepository
         WHERE id = ?
     ";
 
+    private string $deleteAllHoldingsQuery = "
+        DELETE FROM holdings 
+        WHERE investor = ?;
+    ";
+
     public function __construct() {
         $this->db = new DbTemplate();
     }
@@ -112,5 +117,16 @@ class HoldingRepository
 
         $stmt = $pdo->prepare($this->deleteHoldingQuery);
         $stmt->execute([$id, $email]);
+    }
+
+    public function deleteAllHoldings(string $email)
+    {
+        $pdo = $this->db->getConnection();
+        $stmt = $pdo->prepare($this->deleteAllHoldingsQuery);
+
+        // The investor field is a foriegn key to user's email (primary key of user)
+        $stmt->execute([
+            $email
+        ]);
     }
 }

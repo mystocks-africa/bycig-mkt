@@ -6,6 +6,7 @@ include_once __DIR__ . "/../../models/user/Repository.php";
 include_once __DIR__ . "/../../models/holdings/Repository.php";
 
 use App\Core\Controller;
+use App\Models\Entity\UserEntity;
 use App\Models\Repository\UserRepository;
 use App\Models\Repository\HoldingRepository;
 
@@ -65,6 +66,28 @@ class ProfileController
     public function deleteUser() 
     {
         $session = Controller::redirectIfNotAuth(returnSession: true);
-        $this->userRepository->delete($session['email']);
+
+        try {
+            $this->userRepository->delete($session['email']);
+            $deleted = true;
+
+            if ($deleted) {
+                try {
+                    $this->holdingRepository->deleteAllHoldings($session['email']);
+                    Controller::redirectToResult("User and holdings deleted successfully.", "success");
+                } catch (\Exception $e) {
+                    // Re-add user if holdings deletion fails to avoid problems
+                    $userEntity = new UserEntity(
+                        $session['email']
+                    );
+                    $this->userRepository->save($session['email']);
+                    Controller::redirectToResult("Failed to delete holdings, both user and holdings were not deleted" . $e->getMessage() . ". User has been re-added.", "warning");
+                }
+            } else {
+                Controller::redirectToResult("Failed to delete user, both user and holdings were not deleted.", "error");
+            }
+        } catch (\Exception $e) {
+            Controller::redirectToResult("Failed to delete user: " . $e->getMessage(), "error");
+        }
     }
 }
