@@ -63,6 +63,7 @@ class ProfileController
         }
     }
 
+    // IMPLEMENT ACID TRANSCATION FOR FAIL-SAFE DELETION
     public function deleteUser() 
     {
         $session = Controller::redirectIfNotAuth(returnSession: true);
