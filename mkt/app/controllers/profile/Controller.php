@@ -4,8 +4,10 @@ namespace App\Controllers;
 include_once __DIR__ . "/../../core/Controller.php";
 include_once __DIR__ . "/../../models/user/Repository.php";
 include_once __DIR__ . "/../../models/holdings/Repository.php";
+include_once __DIR__ . "/../../core/templates/DbTemplate.php";
 
 use App\Core\Controller;
+use App\DbTemplate;
 use App\Models\Entity\UserEntity;
 use App\Models\Repository\UserRepository;
 use App\Models\Repository\HoldingRepository;
@@ -14,10 +16,12 @@ class ProfileController
 {
     private UserRepository $userRepository;
     private HoldingRepository $holdingRepository;
+    private DbTemplate $db;
 
     public function __construct() {
         $this->userRepository = new UserRepository();
         $this->holdingRepository = new HoldingRepository();
+        $this->db = new DbTemplate();
     }
 
     public function index() 
@@ -32,12 +36,12 @@ class ProfileController
         ];
 
         if (empty($activeTab) || $activeTab === "info") {
-            $user = $this->userRepository->findByEmail($session["email"]);
+            $user = $this->userRepository->findByEmail($session["email"], $this->db);
             
             if ($user["role"] === "cluster_leader") {
                 $clusterLeaders = null;
             } else {
-                $clusterLeaders = $this->userRepository->findAllClusterLeaders();
+                $clusterLeaders = $this->userRepository->findAllClusterLeaders($this->db);
             } 
             
             Controller::render("profile/index", [
@@ -47,7 +51,7 @@ class ProfileController
         } 
 
         else if ($activeTab === "holdings") {
-            $holdings = $this->holdingRepository->findByEmail($session["email"]);
+            $holdings = $this->holdingRepository->findByEmail($session["email"], $this->db);
             
             Controller::render("profile/index", [
                 "holdings"=>$holdings,
@@ -69,19 +73,14 @@ class ProfileController
         $session = Controller::redirectIfNotAuth(returnSession: true);
 
         try {
-            $this->userRepository->delete($session['email']);
+            $this->userRepository->delete($session['email'], $this->db);
             $deleted = true;
 
             if ($deleted) {
                 try {
-                    $this->holdingRepository->deleteAllHoldings($session['email']);
+                    $this->holdingRepository->deleteAllHoldings($session['email'], $this->db);
                     Controller::redirectToResult("User and holdings deleted successfully.", "success");
                 } catch (\Exception $e) {
-                    // Re-add user if holdings deletion fails to avoid problems
-                    $userEntity = new UserEntity(
-                        $session['email']
-                    );
-                    $this->userRepository->save($session['email']);
                     Controller::redirectToResult("Failed to delete holdings, both user and holdings were not deleted" . $e->getMessage() . ". User has been re-added.", "warning");
                 }
             } else {
