@@ -84,7 +84,7 @@ function handleDeleteUser() {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                window.location.href = '/goodbye'; // Redirect to a goodbye or home page
+                window.location.href = '/redirect?msg=Account%20deleted%20successfully&msg_type=success';
             } else {
                 alert('Error deleting account');
             }
