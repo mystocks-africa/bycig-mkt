@@ -13,22 +13,40 @@ class UserRepository
     private DbTemplate $db;
 
     private string $userInsertQuery = "
-        INSERT INTO users (email, pwd, cluster_leader, full_name)
+        INSERT INTO users (
+            email, 
+            pwd, 
+            cluster_leader, 
+            full_name
+        )
         VALUES (?, ?, ?, ?)
     ";
 
     private string $userInsertNoLeaderQuery = "
-        INSERT INTO users (email, pwd, full_name)
+        INSERT INTO users (
+            email, 
+            pwd, 
+            full_name
+        )
         VALUES (?, ?, ?)
     ";
 
     private string $findClusterLeaderQuery = "
-        SELECT email, full_name FROM users
+        SELECT 
+            email, 
+            full_name 
+        FROM users
         WHERE role = 'cluster_leader';
     ";
 
     private string $findUserQuery = "
-        SELECT full_name, email, pwd, role, cluster_leader
+        SELECT 
+            full_name, 
+            email, 
+            pwd, 
+            role, 
+            cluster_leader, 
+            balance
         FROM users 
         WHERE email = ?
         LIMIT 1;
@@ -37,6 +55,12 @@ class UserRepository
     private string $updatePwdQuery = "
         UPDATE users
         SET pwd = ?
+        WHERE email = ?
+    ";
+
+    private string $updateBalanceQuery = "
+        UPDATE users
+        SET balance = ?
         WHERE email = ?
     ";
 
@@ -88,5 +112,12 @@ class UserRepository
         $pdo = $this->db->getConnection();
         $stmt = $pdo->prepare($this->updatePwdQuery);
         $stmt->execute([$newPwd, $email]);
+    }
+
+    public function updateBalance(int $newBalance, string $email): void 
+    {
+        $pdo = $this->db->getConnection();
+        $stmt = $pdo->prepare($this->updateBalanceQuery);
+        $stmt->execute([$newBalance, $email]);
     }
 }

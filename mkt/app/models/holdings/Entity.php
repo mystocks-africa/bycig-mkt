@@ -17,7 +17,7 @@ class HoldingEntity
         string $stock_name, 
         string $bid_price, 
         string $target_price, 
-        string $proposal_file
+        string $proposal_file,
     )
     {
         $this->investor = $investor;

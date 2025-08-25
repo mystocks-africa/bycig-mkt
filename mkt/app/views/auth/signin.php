@@ -6,6 +6,11 @@
   <link rel="stylesheet" href="/static/css/index.css">
 </head>
 <body>
+  <div class="hero-section">
+    <h1>Sign in</h1>
+    <p>If you already have an account, use this form to authenticate yourself</p>
+    <br>
+  </div>
   <form action="/auth/signin" method="post">
     <label for="email">Email:</label>
     <input type="email" id="email" name="email"><br><br>

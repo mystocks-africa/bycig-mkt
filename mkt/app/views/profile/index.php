@@ -22,9 +22,13 @@
     $fullName = $user['full_name'] ?? '';
     $email = $user['email'] ?? '';
     $currentClusterLeader = $user['cluster_leader'] ?? '';
+    $balance = $user['balance'] ?? '';
     ?>
     <div id="user-info">
-        <form class="form-section" action="/profile/update" method="POST">
+        <form action="/profile/update" method="POST">
+            <label>Balance:</label>
+            <h2>$<?= $balance ?></h2>
+
             <label for="full-name">Full Name:</label>
             <input type="text" id="full-name" name="fullName" placeholder="Enter your full name" value="<?= $fullName ?>" required>
 

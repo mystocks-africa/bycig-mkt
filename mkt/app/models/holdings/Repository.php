@@ -51,7 +51,8 @@ class HoldingRepository
             stock_ticker,
             stock_name,
             investor,
-            proposal_file
+            proposal_file,
+            bid_price
         FROM holdings
         WHERE id = ?
     ";
