@@ -238,6 +238,58 @@ button:disabled {
   display: none;
 }
 
+#delete-user {
+  min-height: 100vh;
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+#delete-user {
+    text-align: center;
+}
+
+#delete-user .header-divider {
+    width: 100%;
+    max-width: none;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+#delete-user h1 {
+  font-weight: 800;
+    margin-bottom: 16px;
+}
+
+#delete-user .warning-text {
+    color: #555;
+    margin-bottom: 24px;
+}
+
+#delete-user .delete-button {
+    background: #c00;
+    color: #fff;
+    border: none;
+    padding: 12px 32px;
+    border-radius: 6px;
+    font-size: 1.1em;
+    cursor: pointer;
+}
+
+#delete-user .cancel-text {
+    margin-top: 18px;
+    font-size: 0.95em;
+    color: #888;
+}
+
+#delete-user .cancel-text a {
+    color: #0074d9;
+}
+
+
 .tab {
     display: inline-block;
     padding: 10px 20px;

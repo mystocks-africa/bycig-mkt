@@ -95,7 +95,22 @@
     </div>
 
     <div id="delete-user">
-        Delete user screen
+        <div class="header-divider"></div>
+        <h1>Delete Account</h1>
+        <p class="warning-text">
+            Deleting your account is <strong>permanent</strong> and cannot be undone.<br>
+            All your profile data and holdings will be lost.
+        </p>
+        <form action="/profile/delete" method="POST" onsubmit="return confirm('Are you sure you want to delete your account? This action cannot be undone.');">
+            <button type="submit" class="delete-button">
+                Delete My Account
+            </button>
+        </form>
+        <p class="cancel-text">
+            Changed your mind? <a href="/profile?tab=info">Go back to profile</a>
+        </p>
+    </div>
+
     </div>
 </body>
 </html>
