@@ -23,11 +23,17 @@
     $email = $user['email'] ?? '';
     $currentClusterLeader = $user['cluster_leader'] ?? '';
     $balance = $user['balance'] ?? '';
+    $role = $user['role'] ?? '';
     ?>
     <div id="user-info">
         <form action="/profile/update" method="POST">
-            <label>Balance:</label>
-            <h2>$<?= $balance ?></h2>
+            <?php if ($role === "cluster_leader"): ?>
+                <label>Cluster leaders do not have balances.</label>
+                <br>
+            <?php else: ?>
+                <label>Balance:</label>
+                <h2>$<?= $balance ?></h2>
+            <?php endif; ?>
 
             <label for="full-name">Full Name:</label>
             <input type="text" id="full-name" name="fullName" placeholder="Enter your full name" value="<?= $fullName ?>" required>
