@@ -15,9 +15,9 @@ class DbTemplate {
     
     public function getConnection(): \PDO
     {    
-        $dsn = $this->env["SQL_DSN"];
-        $user = $this->env["SQL_USER"];
-        $pass = $this->env["SQL_PASS"];
+        $dsn = $this->env["SQL_DSN"] ?? 'mysql:host=mysql;port=3306;dbname=app_db';
+        $user = $this->env["SQL_USER"] ?? "app_user";
+        $pass = $this->env["SQL_PASS"] ?? "app_pass";
         
         try {
             $pdo = new \PDO($dsn, $user, $pass, [
