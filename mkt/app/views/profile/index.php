@@ -15,6 +15,7 @@
         <div>
             <a id="info-tab" class="tab active" href="/profile?tab=info">Info</a>
             <a id="holdings-tab" class="tab" href="/profile?tab=holdings">Holdings</a>
+            <a id="delete-user-tab" class="tab" href="/profile?tab=delete-user">Delete</a>
         </div>
     </div>
 
@@ -91,6 +92,23 @@
                 <p>No holdings found.</p>
             <?php endif; ?>
         </div>   
+    </div>
+
+    <div id="delete-user">
+        <div class="header-divider"></div>
+        <h1>Delete Account</h1>
+        <p class="warning-text">
+            Deleting your account is <strong>permanent</strong> and cannot be undone.<br>
+            All your profile data and holdings will be lost.
+        </p>
+        <button type="submit" class="delete-button" onclick="handleDeleteUser()">
+                Delete My Account
+        </button>
+        <p class="cancel-text">
+            Changed your mind? <a href="/profile?tab=info">Go back to profile</a>
+        </p>
+    </div>
+
     </div>
 </body>
 </html>

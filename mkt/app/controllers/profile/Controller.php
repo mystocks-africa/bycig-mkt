@@ -25,6 +25,11 @@ class ProfileController
 
         $activeTab = filter_input(INPUT_GET, "tab", FILTER_SANITIZE_SPECIAL_CHARS);
 
+        // Supported tabs that do not need specialized logic 
+        $otherSupportedTabs = [
+            "delete-user"
+        ];
+
         if (empty($activeTab) || $activeTab === "info") {
             $user = $this->userRepository->findByEmail($session["email"]);
             
@@ -46,6 +51,20 @@ class ProfileController
             Controller::render("profile/index", [
                 "holdings"=>$holdings,
             ]);
+        } 
+        
+        else if (in_array($activeTab, $otherSupportedTabs)) {
+            Controller::render("profile/index");
         }
+
+        else {
+            Controller::redirectToResult("Unsupported tab given", "error");
+        }
+    }
+
+    public function deleteUser() 
+    {
+        $session = Controller::redirectIfNotAuth(returnSession: true);
+        $this->userRepository->delete($session['email']);
     }
 }
