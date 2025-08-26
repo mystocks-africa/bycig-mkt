@@ -1,7 +1,7 @@
 <?php
 namespace App\Core;
 
-include_once __DIR__ . "../auth/Session.php";
+include_once __DIR__ . "/../auth/Session.php";
 
 use Exception;
 use App\Core\Session;
@@ -11,7 +11,7 @@ class Controller
     {
         extract($data);
 
-        include __DIR__ . "/../views/$view.php";
+        include __DIR__ . "/../../views/$view.php";
     }
 
     public static function redirectToResult($msg, $msgType) 
