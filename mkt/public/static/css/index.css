@@ -217,7 +217,7 @@ button:disabled {
   gap: 10px;
 }
 
-.delete-btn {
+.sell-btn {
   width: 40px;
   height: 40px;
   padding: 0;
@@ -228,7 +228,7 @@ button:disabled {
   justify-content: center;
 }
 
-.delete-btn-wrapper {
+.sell-btn-wrapper {
   display: flex;
   justify-content: flex-end;
 }
