@@ -3,17 +3,21 @@
 namespace App\Controllers;
 
 include_once __DIR__ . "/../../core/Controller.php";
+include_once __DIR__ . "/../../core/templates/DbTemplate.php";
 include_once __DIR__ . "/../../models/holdings/Repository.php";
 
 use App\Core\Controller;
+use App\DbTemplate;
 use App\Models\Repository\HoldingRepository;
 
 class HomeController
 {
     private HoldingRepository $holdingRepository;
+    private DbTemplate $db;
 
     public function __construct() {
-        $this->holdingRepository = new HoldingRepository();
+        $this->db = new DbTemplate();
+        $this->holdingRepository = new HoldingRepository($this->db->getPdo());
     }
 
     public function index()
