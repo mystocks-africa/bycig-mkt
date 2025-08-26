@@ -29,6 +29,8 @@ class HoldingsController
 
     public function sell()
     {
+        $this->db->getPdo()->beginTransaction();
+
         try {
             $session = Controller::redirectIfNotAuth(returnSession: true);
             $id = filter_input(INPUT_POST, "id", FILTER_SANITIZE_NUMBER_INT);
@@ -40,18 +42,17 @@ class HoldingsController
             }
 
             $user = $this->userRepository->findByEmail($session['email']);
-
             $newBalance = $user['balance'] - $user['bought_price'];
 
             $this->userRepository->updateBalance($newBalance, $session['email']);
-
             $this->holdingRepository->delete($id, $session['email']);
-            
             Files::deleteFile($holding['proposal_file']);
 
+            $this->db->getPdo()->commit();
             Controller::redirectToResult("Successfully deleted holdings", "success");
 
         } catch(Exception $error) {
+            $this->db->getPdo()->rollBack();
             Controller::redirectToResult("Error in selling holdings", "error");
         }
     }
