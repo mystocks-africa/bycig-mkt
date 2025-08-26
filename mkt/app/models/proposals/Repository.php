@@ -1,15 +1,14 @@
 <?php
 
 namespace App\Models\Repository;
-include_once __DIR__ . "/../../core/templates/DbTemplate.php";
 include_once __DIR__ . "/Entity.php";
 
-use App\DbTemplate;
+use PDO;
 use App\Models\Entity\ProposalEntity;
 
 class ProposalRepository 
 {
-    private DbTemplate $db;
+    private PDO $pdo;
 
     private string $getProposalByIdQuery = "
         SELECT stock_ticker, stock_name, subject_line, thesis, bid_price, target_price, status, proposal_file, full_name, email
@@ -61,14 +60,13 @@ class ProposalRepository
         AND users.cluster_leader = ?;
     ";
 
-    public function __construct() {
-        $this->db = new DbTemplate();
+    public function __construct(PDO $pdo) {
+        $this->pdo = $pdo;
     }
 
     public function save(ProposalEntity $proposal): void
     {
-        $pdo = $this->db->getConnection();
-        $stmt = $pdo->prepare($this->insertProposalQuery);
+        $stmt = $this->pdo->prepare($this->insertProposalQuery);
         $stmt->execute([
             $proposal->post_author,
             $proposal->stock_ticker,
@@ -84,31 +82,27 @@ class ProposalRepository
 
     public function findById(int $id)
     {
-        $pdo = $this->db->getConnection();
-        $stmt = $pdo->prepare($this->getProposalByIdQuery);
+        $stmt = $this->pdo->prepare($this->getProposalByIdQuery);
         $stmt->execute([$id]);
         return $stmt->fetch();
     }
 
     public function findByClusterLeader(string $clusterLeaderEmail)
     {
-        $pdo = $this->db->getConnection();
-        $stmt = $pdo->prepare($this->findProposalByClusterLeaderQuery);
+        $stmt = $this->pdo->prepare($this->findProposalByClusterLeaderQuery);
         $stmt->execute([$clusterLeaderEmail]);
         return $stmt->fetchAll();
     }
 
     public function updateStatus(int $postId, string $clusterLeaderEmail, string $status): bool
     {
-        $pdo = $this->db->getConnection();
-        $stmt = $pdo->prepare($this->updateProposalStatusQuery);
+        $stmt = $this->pdo->prepare($this->updateProposalStatusQuery);
         return $stmt->execute([$status, $postId, $clusterLeaderEmail]);
     }
 
     public function delete(int $postId, string $clusterLeaderEmail): void
     {
-        $pdo = $this->db->getConnection();
-        $stmt = $pdo->prepare($this->deleteProposalQuery);
+        $stmt = $this->pdo->prepare($this->deleteProposalQuery);
         $stmt->execute([$postId, $clusterLeaderEmail]);
     }
 }
