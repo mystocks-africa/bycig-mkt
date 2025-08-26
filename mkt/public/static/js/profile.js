@@ -46,24 +46,22 @@ document.addEventListener('DOMContentLoaded', function() {
     handleToggleScreen();
 });
 
-function handleDeleteHolding(id) {
-    if (typeof id !== 'number' || isNaN(id)) {
-        alert('Invalid ID provided for deletion');
-        return;
-    }
+function handleUpdateUser () {
+    const form = document.getElementById('update-user-form');
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
 
-    if (confirm("Are you sure you want to delete this holding?")) {
-        fetch(`/holdings/delete?id=${id}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        .catch(error => {
-            alert('Error deleting holding: ' + error.message);
-        });
-    }
-}   
+    fetch('/profile/update-user', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .catch(error => {
+        alert('Error updating profile: ' + error.message);
+    });
+}
 
 function handleDeleteUser() {
     if (confirm("Are you sure you want to delete your account? This action cannot be undone.")) {

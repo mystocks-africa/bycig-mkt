@@ -4,6 +4,7 @@ namespace App\Models\Repository;
 include_once __DIR__ . "/../../core/templates/DbTemplate.php";
 include_once __DIR__ . "/Entity.php";
 
+use Exception;
 use PDO;
 use App\Models\Entity\UserEntity;
 
@@ -68,6 +69,12 @@ class UserRepository
         WHERE email = ?;
     ";
 
+    private string $updateUser = "
+        UPDATE FROM users 
+        SET ()
+        WHERE email = ?;
+    ";
+
     public function __construct(PDO $pdo)
     {
         $this->pdo = $pdo;
@@ -100,26 +107,53 @@ class UserRepository
         return $stmt->fetch();
     }
 
-    public function findAllClusterLeaders()
+    public function findAllClusterLeaders(): array
     {        $stmt = $this->pdo->prepare($this->findClusterLeaderQuery);
         $stmt->execute();
         return $stmt->fetchAll();
     }
 
-    public function updatePwd(string $newPwd, string $email, ): void
+    public function updatePwd(string $newPwd, string $email): void
     {        $stmt = $this->pdo->prepare($this->updatePwdQuery);
         $stmt->execute([$newPwd, $email]);
     }
 
-    public function updateBalance(int $newBalance, string $email, ): void 
+    public function updateBalance(int $newBalance, string $email): void 
     {        $stmt = $this->pdo->prepare($this->updateBalanceQuery);
         $stmt->execute([$newBalance, $email]);
     }
 
-    public function delete(string $email, )
-    {        $stmt = $this->pdo->prepare($this->deleteUser);
+    public function delete(string $email): void
+    {        
+        $stmt = $this->pdo->prepare($this->deleteUser);
         $stmt->execute([
             $email
+        ]);
+    }
+
+    public function update(string $email, array $data): void
+    {
+        $fields = [];
+
+        if (empty($fields)) {
+            throw new Exception("Nothing to update");
+        }
+
+        foreach ($data as $field => $value) {
+            if ($value === null) {
+                continue; // skip 
+            }
+
+            $fields[] = "$field = :$field";
+            $params[$field] = $value;
+        }
+
+        // Manually set email as it is unchangable
+        $params['email'] = $email;
+
+        $stmt = $this->pdo->prepare();
+        $stmt->execute([
+
         ]);
     }
 }
