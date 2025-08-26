@@ -50,26 +50,16 @@ function handleUpdateUser (form) {
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
 
-    console.log('Original Data:');
-    for (const key in data) {
-        console.log(`${key}: ${data[key]}`);
-    }
-
     for (const key in data) {
         const formValue = form.querySelector(`[name="${key}"]`)
 
-        // Value is unchaged, set to null
+        // Value is unchanged, set to null
         if (data[key] === formValue.getAttribute('data-original')) {
             data[key] = null;
         }
     }
 
-    console.log('Processed Data:');
-    for (const key in data) {
-        console.log(`${key}: ${data[key]}`);
-    }
-
-    /*
+    
     fetch('/profile/update-user', {
         method: 'PUT',
         headers: {
@@ -80,7 +70,7 @@ function handleUpdateUser (form) {
     .catch(error => {
         alert('Error updating profile: ' + error.message);
     });
-    */
+    
 }
 
 const updateUserForm = document.querySelector('.update-user-form');
