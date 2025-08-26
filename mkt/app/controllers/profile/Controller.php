@@ -72,6 +72,7 @@ class ProfileController
     public function deleteUser() 
     {
         $session = Controller::redirectIfNotAuth(returnSession: true);
+        
         $transaction = new Transaction();
         $transaction->startTransaction($this->db->getPdo());
 
