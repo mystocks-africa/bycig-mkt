@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile</title>
     <link rel="stylesheet" href="/static/css/index.css" >
-    <script src="/static/js/profile.js"></script>
 </head>
 <body>
     <div class="hero-section">
@@ -27,7 +26,7 @@
     $role = $user['role'] ?? '';
     ?>
     <div id="user-info">
-        <form action="/profile/update" method="POST">
+        <form class="update-user-form">
             <?php if ($role === "cluster_leader"): ?>
                 <label>Cluster leaders do not have balances.</label>
                 <br>
@@ -37,14 +36,18 @@
             <?php endif; ?>
 
             <label for="full-name">Full Name:</label>
-            <input type="text" id="full-name" name="fullName" placeholder="Enter your full name" value="<?= $fullName ?>" required>
+            <input type="text" id="full-name" name="fullName"
+                placeholder="Enter your full name"
+                value="<?= $fullName ?>" data-original="<?= $fullName ?>" required>
 
             <label for="email">Email:</label>
-            <input type="email" id="email" name="email" placeholder="Enter your email" value="<?= $email ?>" required>
+            <input type="email" id="email" name="email"
+                placeholder="Enter your email"
+                value="<?= $email ?>" data-original="<?= $email ?>" required>
 
             <?php if (isset($clusterLeaders)): ?>
                 <label for="cluster-leader">Cluster Leader:</label>
-                <select id="cluster-leader" name="clusterLeader">
+                <select id="cluster-leader" name="clusterLeader" data-original="<?= $currentClusterLeader ?>">
                     <option value="" <?= empty($currentClusterLeader) ? 'selected' : '' ?>>None</option>
                     <?php foreach ($clusterLeaders as $leader): 
                         $leaderEmail = $leader['email'];
@@ -56,7 +59,9 @@
                 </select>
             <?php endif; ?>
 
-            <p class="small-gray-link">If you want to update your password, <a href="/auth/forgot-pwd">click here</a>.</p>
+            <p class="small-gray-link">
+                If you want to update your password, <a href="/auth/forgot-pwd">click here</a>.
+            </p>
 
             <button type="submit">Update Profile</button>
         </form>
@@ -64,6 +69,7 @@
 
 
 
+    
     <div id="user-holdings">
         <div id="grid-container">
         <?php if (!empty($holdings)): ?>
@@ -110,5 +116,7 @@
     </div>
 
     </div>
+
+    <script src="/static/js/profile.js"></script>
 </body>
 </html>

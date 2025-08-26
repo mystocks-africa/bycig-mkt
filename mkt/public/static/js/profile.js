@@ -46,11 +46,30 @@ document.addEventListener('DOMContentLoaded', function() {
     handleToggleScreen();
 });
 
-function handleUpdateUser () {
-    const form = document.getElementById('update-user-form');
+function handleUpdateUser (form) {
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
 
+    console.log('Original Data:');
+    for (const key in data) {
+        console.log(`${key}: ${data[key]}`);
+    }
+
+    for (const key in data) {
+        const formValue = form.querySelector(`[name="${key}"]`)
+
+        // Value is unchaged, set to null
+        if (data[key] === formValue.getAttribute('data-original')) {
+            data[key] = null;
+        }
+    }
+
+    console.log('Processed Data:');
+    for (const key in data) {
+        console.log(`${key}: ${data[key]}`);
+    }
+
+    /*
     fetch('/profile/update-user', {
         method: 'PUT',
         headers: {
@@ -61,7 +80,14 @@ function handleUpdateUser () {
     .catch(error => {
         alert('Error updating profile: ' + error.message);
     });
+    */
 }
+
+const updateUserForm = document.querySelector('.update-user-form');
+updateUserForm.addEventListener('submit', function(event) {
+    event.preventDefault();
+    handleUpdateUser(updateUserForm); 
+})
 
 function handleDeleteUser() {
     if (confirm("Are you sure you want to delete your account? This action cannot be undone.")) {
