@@ -65,14 +65,9 @@ class AdminController
                 $this->holdingRepository->save($holdingEntity);
             }
 
-            echo json_encode([
-                'status'=> 'success',
-            ]);
+            Controller::redirectToResult('Posted proposal successfully', 'success');
         } catch (Exception $error) {
-            echo json_encode([
-                'status'=> 'error',
-                'error'=> $error->getMessage(),
-            ]);
+            Controller::redirectToResult('Error in posting proposal', 'error');
         }
     }
 
@@ -89,15 +84,8 @@ class AdminController
 
             $this->proposalRepository->delete($postId, $session['email']);
             Controller::redirectToResult('Deleted proposal successfully', 'success');
-
-            echo json_encode([
-                'status'=> 'success'
-            ]);
         } catch(Exception $error) {
-            echo json_encode([
-                'status'=> 'error',
-                'error'=> $error->getMessage(),
-            ]);        
+            Controller::redirectToResult('Error in deleting proposal', 'error');       
         }
     }
 }
