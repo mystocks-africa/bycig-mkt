@@ -5,10 +5,8 @@ include_once __DIR__ . "/../../core/Controller.php";
 include_once __DIR__ . "/../../models/user/Repository.php";
 include_once __DIR__ . "/../../models/holdings/Repository.php";
 include_once __DIR__ . "/../../core/templates/DbTemplate.php";
-include_once __DIR__ . "/../../core/Transaction.php";
 
 use App\Core\Controller;
-use App\Core\Transaction;
 use App\DbTemplate;
 use App\Models\Repository\UserRepository;
 use App\Models\Repository\HoldingRepository;
