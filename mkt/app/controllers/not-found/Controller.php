@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-include_once __DIR__ . "/../../core/Controller.php";
+include_once __DIR__ . "/../../core/controller/Controller.php";
 
 use App\Core\Controller;
 

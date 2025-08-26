@@ -2,14 +2,14 @@
 
 namespace App\Controllers;
 
-include_once __DIR__ . "/../../core/Controller.php";
+include_once __DIR__ . "/../../core/controller/Controller.php";
+include_once __DIR__ . "/../../core/auth/Session.php";
 include_once __DIR__ . "/../../core/templates/DbTemplate.php";
+include_once __DIR__ . "/../../core/files/Files.php";
 include_once __DIR__ . "/../../models/proposals/Entity.php";
 include_once __DIR__ . "/../../models/proposals/Repository.php";
 include_once __DIR__ . "/../../models/user/Repository.php";
-include_once __DIR__ . "/../../core/Session.php";
 include_once __DIR__ . "/../../../utils/env.php";
-include_once __DIR__ . "/../../core/Files.php";
 
 use App\Core\Controller;
 use App\Core\Session;

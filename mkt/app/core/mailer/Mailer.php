@@ -2,8 +2,8 @@
 
 namespace App\Core;
 
-require __DIR__ . '/../../vendor/autoload.php';
-include_once __DIR__ . "/../../utils/env.php";
+require __DIR__ . '/../../../vendor/autoload.php';
+include_once __DIR__ . "/../../../utils/env.php";
 
 use PHPMailer\PHPMailer\PHPMailer;
 
