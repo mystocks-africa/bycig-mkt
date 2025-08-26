@@ -11,9 +11,6 @@ function handleDeleteHolding(id) {
                 'Content-Type': 'application/json'
             }
         })
-        .then(() => {
-            window.location.href = '/redirect?message=Holding deleted successfully&message_type=success';
-        })
         .catch(error => {
             window.location.href = `/redirect?message=${encodeURIComponent(error.message)}&message_type=error`;
         });
