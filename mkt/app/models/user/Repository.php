@@ -4,8 +4,7 @@ namespace App\Models\Repository;
 include_once __DIR__ . "/../../core/templates/DbTemplate.php";
 include_once __DIR__ . "/Entity.php";
 
-
-use App\DbTemplate;
+use PDO;
 use App\Models\Entity\UserEntity;
 
 class UserRepository 
@@ -68,10 +67,8 @@ class UserRepository
         WHERE email = ?;
     ";
 
-    public function save(UserEntity $user, DbTemplate $db): void
+    public function save(UserEntity $user, PDO $pdo): void
     {
-        $pdo = $db->getConnection();
-
         if ($user->clusterLeader) {
             $stmt = $pdo->prepare($this->userInsertQuery);
             $stmt->execute([
@@ -90,40 +87,30 @@ class UserRepository
         }
     }
 
-    public function findByEmail(string $email, DbTemplate $db)
-    {
-        $pdo = $db->getConnection();
-        $stmt = $pdo->prepare($this->findUserQuery);
+    public function findByEmail(string $email, PDO $pdo)
+    {        $stmt = $pdo->prepare($this->findUserQuery);
         $stmt->execute([$email]);
         return $stmt->fetch();
     }
 
-    public function findAllClusterLeaders(DbTemplate $db)
-    {
-        $pdo = $db->getConnection();
-        $stmt = $pdo->prepare($this->findClusterLeaderQuery);
+    public function findAllClusterLeaders(PDO $pdo)
+    {        $stmt = $pdo->prepare($this->findClusterLeaderQuery);
         $stmt->execute();
         return $stmt->fetchAll();
     }
 
-    public function updatePwd(string $newPwd, string $email, DbTemplate $db): void
-    {
-        $pdo = $db->getConnection();
-        $stmt = $pdo->prepare($this->updatePwdQuery);
+    public function updatePwd(string $newPwd, string $email, PDO $pdo): void
+    {        $stmt = $pdo->prepare($this->updatePwdQuery);
         $stmt->execute([$newPwd, $email]);
     }
 
-    public function updateBalance(int $newBalance, string $email, DbTemplate $db): void 
-    {
-        $pdo = $db->getConnection();
-        $stmt = $pdo->prepare($this->updateBalanceQuery);
+    public function updateBalance(int $newBalance, string $email, PDO $pdo): void 
+    {        $stmt = $pdo->prepare($this->updateBalanceQuery);
         $stmt->execute([$newBalance, $email]);
     }
 
-    public function delete(string $email, DbTemplate $db)
-    {
-        $pdo = $db->getConnection();
-        $stmt = $pdo->prepare($this->deleteUser);
+    public function delete(string $email, PDO $pdo)
+    {        $stmt = $pdo->prepare($this->deleteUser);
         $stmt->execute([
             $email
         ]);
