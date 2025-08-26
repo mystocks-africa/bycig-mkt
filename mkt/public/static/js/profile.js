@@ -59,14 +59,6 @@ function handleDeleteHolding(id) {
                 'Content-Type': 'application/json'
             }
         })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                document.querySelector(`.card[key="${id}"]`).remove();
-            } else {
-                alert('Error deleting holding');
-            }
-        })
         .catch(error => {
             alert('Error deleting holding: ' + error.message);
         });
@@ -79,14 +71,6 @@ function handleDeleteUser() {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                window.location.href = '/redirect?msg=Account%20deleted%20successfully&msg_type=success';
-            } else {
-                alert('Error deleting account');
             }
         })
         .catch(error => {
