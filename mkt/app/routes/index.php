@@ -59,4 +59,7 @@ $router->get("/profile", ProfileController::class, 'index');
 // Profile delete methods
 $router->delete("/profile/delete-user", ProfileController::class, "deleteUser");
 
+// Profile put methods
+$router->put("/profile/update", ProfileController::class, "updateUser");
+
 $router->dispatch();

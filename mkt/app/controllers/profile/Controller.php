@@ -10,6 +10,7 @@ use App\Core\Controller;
 use App\DbTemplate;
 use App\Models\Repository\UserRepository;
 use App\Models\Repository\HoldingRepository;
+use Exception;
 
 class ProfileController 
 {
@@ -77,9 +78,47 @@ class ProfileController
             $this->userRepository->delete($session['email']);
             $this->holdingRepository->deleteAllHoldings($session['email']);
             $this->db->getPdo()->commit();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->db->getPdo()->rollBack();
             Controller::redirectToResult("Failed to delete user: " . $e->getMessage(), "error");
+        }
+    }
+
+    public function updateUser(): void
+    {
+        $session = Controller::redirectIfNotAuth(returnSession: true);
+
+        // Get and store all associated data into an array
+        $fullName = filter_input(INPUT_POST, "full_name", FILTER_SANITIZE_SPECIAL_CHARS);
+        $email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_SPECIAL_CHARS);
+        $clusterLeader = filter_input(INPUT_POST, "cluster_leader", FILTER_SANITIZE_SPECIAL_CHARS);
+        $data = [
+            "full_name" => $fullName,
+            "email" => $email,
+            "cluster_leader" => $clusterLeader
+        ];
+
+        // This will be the data that actually is in need of updation
+        $fields = [];
+
+        if (empty($fields)) {
+            throw new Exception("Nothing to update");
+        }
+
+        foreach ($data as $field => $value) {
+            if ($value === null) {
+                continue; // skip 
+            }
+
+            $fields[] = "$field = :$field";
+            $params[$field] = $value;
+        }
+
+        try {
+            $this->userRepository->update($session['email'], $fields, $params);
+            Controller::redirectToResult("Updated user data", "success");
+        } catch (Exception $e) {
+            Controller::redirectToResult("Error in updating user data", "error");
         }
     }
 }

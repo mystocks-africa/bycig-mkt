@@ -131,23 +131,8 @@ class UserRepository
         ]);
     }
 
-    public function update(string $email, array $data): void
+    public function update(string $email, array $fields, array $params): void
     {
-        $fields = [];
-
-        if (empty($fields)) {
-            throw new Exception("Nothing to update");
-        }
-
-        foreach ($data as $field => $value) {
-            if ($value === null) {
-                continue; // skip 
-            }
-
-            $fields[] = "$field = :$field";
-            $params[$field] = $value;
-        }
-
         // Manually set email as it is unchangable
         $params['email'] = $email;
 
