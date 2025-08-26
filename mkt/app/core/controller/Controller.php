@@ -1,7 +1,7 @@
 <?php
 namespace App\Core;
 
-include_once __DIR__ . "/Session.php";
+include_once __DIR__ . "../auth/Session.php";
 
 use Exception;
 use App\Core\Session;
