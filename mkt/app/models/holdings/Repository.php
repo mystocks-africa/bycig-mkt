@@ -76,7 +76,7 @@ class HoldingRepository
     {
         $stmt = $pdo->prepare($this->findAllHoldingsQuery);
         $stmt->execute();
-        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function findByEmail($email, PDO $pdo): array 
@@ -85,7 +85,7 @@ class HoldingRepository
         $stmt->execute([
             $email
         ]);
-        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function findById($id, PDO $pdo): mixed 
@@ -94,7 +94,7 @@ class HoldingRepository
         $stmt->execute([
             $id
         ]);
-        return $stmt->fetch(\PDO::FETCH_ASSOC);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function delete(int $id, string $email, PDO $pdo): void
