@@ -3,12 +3,14 @@
 namespace App\Controllers;
 
 include_once __DIR__ . "/../../core/Controller.php";
+include_once __DIR__ . "/../../core/templates/DbTemplate.php";
 include_once __DIR__ . "/../../models/holdings/Repository.php";
 include_once __DIR__ . "/../../models/user/Repository.php";
 include_once __DIR__ . "/../../core/Files.php";
 
 use App\Core\Controller;
 use App\Core\Files;
+use App\DbTemplate;
 use App\Models\Repository\HoldingRepository;
 use App\Models\Repository\UserRepository;
 use Exception;
@@ -17,10 +19,12 @@ class HoldingsController
 {
     private HoldingRepository $holdingRepository;
     private UserRepository $userRepository;
+    private DbTemplate $db;
 
     public function __construct() {
-        $this->holdingRepository = new HoldingRepository();
-        $this->userRepository = new UserRepository();
+        $this->db = new DbTemplate();
+        $this->holdingRepository = new HoldingRepository($this->db->getPdo());
+        $this->userRepository = new UserRepository($this->db->getPdo());
     }
 
     public function sell()
