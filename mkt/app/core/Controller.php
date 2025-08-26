@@ -30,7 +30,7 @@ class Controller
         }
     }
 
-        public static function redirectIfAuth($returnSession = false) {
+    public static function redirectIfAuth($returnSession = false) {
         $session = Session::getSession(); // getSession already removes Memcached
         
         if ($session) {

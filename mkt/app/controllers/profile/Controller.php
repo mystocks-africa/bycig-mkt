@@ -4,8 +4,10 @@ namespace App\Controllers;
 include_once __DIR__ . "/../../core/Controller.php";
 include_once __DIR__ . "/../../models/user/Repository.php";
 include_once __DIR__ . "/../../models/holdings/Repository.php";
+include_once __DIR__ . "/../../core/templates/DbTemplate.php";
 
 use App\Core\Controller;
+use App\DbTemplate;
 use App\Models\Repository\UserRepository;
 use App\Models\Repository\HoldingRepository;
 
@@ -13,10 +15,12 @@ class ProfileController
 {
     private UserRepository $userRepository;
     private HoldingRepository $holdingRepository;
+    private DbTemplate $db;
 
     public function __construct() {
-        $this->userRepository = new UserRepository();
-        $this->holdingRepository = new HoldingRepository();
+        $this->db = new DbTemplate();
+        $this->userRepository = new UserRepository($this->db->getPdo());
+        $this->holdingRepository = new HoldingRepository($this->db->getPdo());
     }
 
     public function index() 
@@ -65,6 +69,17 @@ class ProfileController
     public function deleteUser() 
     {
         $session = Controller::redirectIfNotAuth(returnSession: true);
-        $this->userRepository->delete($session['email']);
+
+        // Implemented ACID transactions to ensure fail-safe deletion
+        $this->db->getPdo()->beginTransaction();
+
+        try {
+            $this->userRepository->delete($session['email']);
+            $this->holdingRepository->deleteAllHoldings($session['email']);
+            $this->db->getPdo()->commit();
+        } catch (\Exception $e) {
+            $this->db->getPdo()->rollBack();
+            Controller::redirectToResult("Failed to delete user: " . $e->getMessage(), "error");
+        }
     }
 }

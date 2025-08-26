@@ -1,15 +1,14 @@
 <?php
 
 namespace App\Models\Repository;
-include_once __DIR__ . "/../../core/templates/DbTemplate.php";
 include_once __DIR__ . "/Entity.php";
 
-use App\DbTemplate;
+use PDO;
 use App\Models\Entity\HoldingEntity;
 
 class HoldingRepository
 {
-    private DbTemplate $db;
+    private PDO $pdo;
 
     private string $insertHoldingQuery = "
         INSERT INTO holdings 
@@ -57,14 +56,19 @@ class HoldingRepository
         WHERE id = ?
     ";
 
-    public function __construct() {
-        $this->db = new DbTemplate();
+    private string $deleteAllHoldingsQuery = "
+        DELETE FROM holdings 
+        WHERE investor = ?;
+    ";
+
+    public function __construct(PDO $pdo) 
+    {
+        $this->pdo = $pdo;
     }
+
     public function save(HoldingEntity $holding): void
     {
-        $pdo = $this->db->getConnection();
-
-        $stmt = $pdo->prepare($this->insertHoldingQuery);
+        $stmt = $this->pdo->prepare($this->insertHoldingQuery);
         $stmt->execute([
             $holding->investor,
             $holding->stock_ticker,
@@ -77,40 +81,41 @@ class HoldingRepository
 
     public function findAll(): array
     {
-        $pdo = $this->db->getConnection();
-
-        $stmt = $pdo->prepare($this->findAllHoldingsQuery);
+        $stmt = $this->pdo->prepare($this->findAllHoldingsQuery);
         $stmt->execute();
-        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function findByEmail($email): array 
     {
-        $pdo = $this->db->getConnection();
-
-        $stmt = $pdo->prepare($this->findByEmailQuery);
+        $stmt = $this->pdo->prepare($this->findByEmailQuery);
         $stmt->execute([
             $email
         ]);
-        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function findById($id): mixed 
     {
-        $pdo = $this->db->getConnection();
-
-        $stmt = $pdo->prepare($this->findByIdQuery);
+        $stmt = $this->pdo->prepare($this->findByIdQuery);
         $stmt->execute([
             $id
         ]);
-        return $stmt->fetch(\PDO::FETCH_ASSOC);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function delete(int $id, string $email): void
     {
-        $pdo = $this->db->getConnection();
-
-        $stmt = $pdo->prepare($this->deleteHoldingQuery);
+        $stmt = $this->pdo->prepare($this->deleteHoldingQuery);
         $stmt->execute([$id, $email]);
+    }
+
+    public function deleteAllHoldings(string $email)
+    {        $stmt = $this->pdo->prepare($this->deleteAllHoldingsQuery);
+
+        // The investor field is a foriegn key to user's email (primary key of user)
+        $stmt->execute([
+            $email
+        ]);
     }
 }
