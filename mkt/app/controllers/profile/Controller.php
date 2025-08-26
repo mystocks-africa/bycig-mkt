@@ -20,9 +20,9 @@ class ProfileController
     private DbTemplate $db;
 
     public function __construct() {
-        $this->userRepository = new UserRepository();
-        $this->holdingRepository = new HoldingRepository();
-        $this->db->getPdo() = new DbTemplate();
+        $this->db = new DbTemplate();
+        $this->userRepository = new UserRepository($this->db->getPdo());
+        $this->holdingRepository = new HoldingRepository($this->db->getPdo());
     }
 
     public function index() 
@@ -37,12 +37,12 @@ class ProfileController
         ];
 
         if (empty($activeTab) || $activeTab === "info") {
-            $user = $this->userRepository->findByEmail($session["email"], $this->db->getPdo());
+            $user = $this->userRepository->findByEmail($session["email"]);
             
             if ($user["role"] === "cluster_leader") {
                 $clusterLeaders = null;
             } else {
-                $clusterLeaders = $this->userRepository->findAllClusterLeaders($this->db->getPdo());
+                $clusterLeaders = $this->userRepository->findAllClusterLeaders();
             } 
             
             Controller::render("profile/index", [
@@ -52,7 +52,7 @@ class ProfileController
         } 
 
         else if ($activeTab === "holdings") {
-            $holdings = $this->holdingRepository->findByEmail($session["email"], $this->db->getPdo());
+            $holdings = $this->holdingRepository->findByEmail($session["email"]);
             
             Controller::render("profile/index", [
                 "holdings"=>$holdings,
@@ -77,8 +77,8 @@ class ProfileController
         $transaction->startTransaction();
 
         try {
-            $this->userRepository->delete($session['email'], $this->db->getPdo());
-            $this->holdingRepository->deleteAllHoldings($session['email'], $this->db->getPdo());
+            $this->userRepository->delete($session['email']);
+            $this->holdingRepository->deleteAllHoldings($session['email']);
             $transaction->commit();
         } catch (\Exception $e) {
             $transaction->rollback();

@@ -9,6 +9,7 @@ use App\Models\Entity\UserEntity;
 
 class UserRepository 
 {
+    private PDO $pdo;
 
     private string $userInsertQuery = "
         INSERT INTO users (
@@ -67,10 +68,15 @@ class UserRepository
         WHERE email = ?;
     ";
 
-    public function save(UserEntity $user, PDO $pdo): void
+    public function __construct(PDO $pdo)
+    {
+        $this->pdo = $pdo;
+    }
+
+    public function save(UserEntity $user, ): void
     {
         if ($user->clusterLeader) {
-            $stmt = $pdo->prepare($this->userInsertQuery);
+            $stmt = $this->pdo->prepare($this->userInsertQuery);
             $stmt->execute([
                 $user->email,
                 $user->pwd,
@@ -78,7 +84,7 @@ class UserRepository
                 $user->fullName
             ]);
         } else {
-            $stmt = $pdo->prepare($this->userInsertNoLeaderQuery);
+            $stmt = $this->pdo->prepare($this->userInsertNoLeaderQuery);
             $stmt->execute([
                 $user->email,
                 $user->pwd,
@@ -87,30 +93,31 @@ class UserRepository
         }
     }
 
-    public function findByEmail(string $email, PDO $pdo)
-    {        $stmt = $pdo->prepare($this->findUserQuery);
+    public function findByEmail(string $email, )
+    {        
+        $stmt = $this->pdo->prepare($this->findUserQuery);
         $stmt->execute([$email]);
         return $stmt->fetch();
     }
 
-    public function findAllClusterLeaders(PDO $pdo)
-    {        $stmt = $pdo->prepare($this->findClusterLeaderQuery);
+    public function findAllClusterLeaders()
+    {        $stmt = $this->pdo->prepare($this->findClusterLeaderQuery);
         $stmt->execute();
         return $stmt->fetchAll();
     }
 
-    public function updatePwd(string $newPwd, string $email, PDO $pdo): void
-    {        $stmt = $pdo->prepare($this->updatePwdQuery);
+    public function updatePwd(string $newPwd, string $email, ): void
+    {        $stmt = $this->pdo->prepare($this->updatePwdQuery);
         $stmt->execute([$newPwd, $email]);
     }
 
-    public function updateBalance(int $newBalance, string $email, PDO $pdo): void 
-    {        $stmt = $pdo->prepare($this->updateBalanceQuery);
+    public function updateBalance(int $newBalance, string $email, ): void 
+    {        $stmt = $this->pdo->prepare($this->updateBalanceQuery);
         $stmt->execute([$newBalance, $email]);
     }
 
-    public function delete(string $email, PDO $pdo)
-    {        $stmt = $pdo->prepare($this->deleteUser);
+    public function delete(string $email, )
+    {        $stmt = $this->pdo->prepare($this->deleteUser);
         $stmt->execute([
             $email
         ]);
