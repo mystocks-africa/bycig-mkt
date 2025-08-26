@@ -5,6 +5,8 @@ use PDO;
 
 class Transaction 
 {
+    private PDO $pdo;
+
     private string $startTransactionQuery = "
         START TRANSACTION;
     ";
@@ -17,21 +19,26 @@ class Transaction
         ROLLBACK;
     ";
 
-    public function startTransaction(PDO $pdo): void
+    public function __construct(PDO $pdo) 
     {
-        $stmt = $pdo->prepare($this->startTransactionQuery);
+        $this->pdo = $pdo;
+    }
+
+    public function startTransaction(): void
+    {
+        $stmt = $this->pdo->prepare($this->startTransactionQuery);
         $stmt->execute();
     }
 
-    public function commit(PDO $pdo): void 
+    public function commit(): void 
     {
-        $stmt = $pdo->prepare($this->commitQuery);
+        $stmt = $this->pdo->prepare($this->commitQuery);
         $stmt->execute();
     }
 
-    public function rollback(PDO $pdo): void
+    public function rollback(): void
     {
-        $stmt = $pdo->prepare($this->rollbackQuery);
+        $stmt = $this->pdo->prepare($this->rollbackQuery);
         $stmt->execute();
     }
 }

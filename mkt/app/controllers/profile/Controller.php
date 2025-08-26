@@ -68,29 +68,20 @@ class ProfileController
         }
     }
 
-    // IMPLEMENT ACID TRANSCATION FOR FAIL-SAFE DELETION
     public function deleteUser() 
     {
         $session = Controller::redirectIfNotAuth(returnSession: true);
-        
-        $transaction = new Transaction();
-        $transaction->startTransaction($this->db->getPdo());
+
+        // Implemented ACID transactions to ensure fail-safe deletion
+        $transaction = new Transaction($this->db->getPdo());
+        $transaction->startTransaction();
 
         try {
             $this->userRepository->delete($session['email'], $this->db->getPdo());
-            $deleted = true;
-
-            if ($deleted) {
-                try {
-                    $this->holdingRepository->deleteAllHoldings($session['email'], $this->db->getPdo());
-                    Controller::redirectToResult("User and holdings deleted successfully.", "success");
-                } catch (\Exception $e) {
-                    Controller::redirectToResult("Failed to delete holdings, both user and holdings were not deleted" . $e->getMessage() . ". User has been re-added.", "warning");
-                }
-            } else {
-                Controller::redirectToResult("Failed to delete user, both user and holdings were not deleted.", "error");
-            }
+            $this->holdingRepository->deleteAllHoldings($session['email'], $this->db->getPdo());
+            $transaction->commit();
         } catch (\Exception $e) {
+            $transaction->rollback();
             Controller::redirectToResult("Failed to delete user: " . $e->getMessage(), "error");
         }
     }
