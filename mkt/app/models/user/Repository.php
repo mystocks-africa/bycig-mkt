@@ -69,10 +69,10 @@ class UserRepository
         WHERE email = ?;
     ";
 
-    private string $updateUser = "
-        UPDATE FROM users 
-        SET ()
-        WHERE email = ?;
+    private string $updateUserQuery = "
+        UPDATE users 
+        SET %s 
+        WHERE email = :email
     ";
 
     public function __construct(PDO $pdo)
@@ -151,9 +151,11 @@ class UserRepository
         // Manually set email as it is unchangable
         $params['email'] = $email;
 
-        $stmt = $this->pdo->prepare();
+        // Include the fields within the user query (all that are applicable)
+        $sql = sprintf($this->updateUserQuery, implode(" ,", $fields));
+        $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
-
+            $params
         ]);
     }
 }
