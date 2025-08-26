@@ -73,7 +73,6 @@ class ProfileController
         // Implemented ACID transactions to ensure fail-safe deletion
         $this->db->getPdo()->beginTransaction();
 
-
         try {
             $this->userRepository->delete($session['email']);
             $this->holdingRepository->deleteAllHoldings($session['email']);
