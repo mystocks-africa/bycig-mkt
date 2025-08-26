@@ -73,15 +73,15 @@ class ProfileController
         $session = Controller::redirectIfNotAuth(returnSession: true);
 
         // Implemented ACID transactions to ensure fail-safe deletion
-        $transaction = new Transaction($this->db->getPdo());
-        $transaction->startTransaction();
+        $this->db->getPdo()->beginTransaction();
+
 
         try {
             $this->userRepository->delete($session['email']);
             $this->holdingRepository->deleteAllHoldings($session['email']);
-            $transaction->commit();
+            $this->db->getPdo()->commit();
         } catch (\Exception $e) {
-            $transaction->rollback();
+            $this->db->getPdo()->rollBack();
             Controller::redirectToResult("Failed to delete user: " . $e->getMessage(), "error");
         }
     }
