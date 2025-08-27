@@ -128,7 +128,7 @@ nav {
 .close:after {
     content: ' ';
     position: absolute;
-    height: 18px;
+    height: 35px;
     width: 3px;
     background-color: #333;
     border-radius: 10px;
