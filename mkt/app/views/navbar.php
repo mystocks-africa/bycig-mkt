@@ -11,9 +11,12 @@ ob_start();
     <nav>
         <a href="/" class="logo">BYCIG MKT</a>
         <div class="nav-toggle" aria-label="Toggle navigation">
-            <div class="bar"></div>
-            <div class="bar"></div>
-            <div class="bar"></div>
+            <div class="hamburger">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+            </div>
+            <span class="close"></span>
         </div>
         <ul class="nav-links">
             <li><a href="/auth/forgot-pwd">Forgot password?</a></li>
@@ -23,7 +26,7 @@ ob_start();
                 <form action="/auth/signout" method="POST">
                     <button id="signout-btn" type="submit">Sign out</button>
                 </form>  
-            </li>  
+            </li> 
         </ul>
     </nav>
 

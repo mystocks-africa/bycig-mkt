@@ -3,4 +3,5 @@ const navLinks = document.querySelector('.nav-links');
 
 toggleButton.addEventListener('click', () => {
     navLinks.classList.toggle('active');
+    toggleButton.classList.toggle('active');
 });
