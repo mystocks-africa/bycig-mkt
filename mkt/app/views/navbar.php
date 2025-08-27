@@ -10,6 +10,9 @@ $loggedIn = isset($_COOKIE["session_id"]);
 <body>
     <nav>
         <a href="/" class="logo">BYCIG MKT</a>
+        <button class="nav-toggle" aria-label="Toggle navigation">
+            <span class="hamburger"></span>
+        </button>
         <ul class="nav-links">
             <li><a href="/auth/forgot-pwd">Forgot password?</a></li>
             <?php if ($loggedIn): ?>
@@ -26,5 +29,33 @@ $loggedIn = isset($_COOKIE["session_id"]);
             <?php endif; ?>
         </ul>
     </nav>
+    <div class="nav-overlay"></div>
+    
+    <script>
+        const navToggle = document.querySelector('.nav-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        const navOverlay = document.querySelector('.nav-overlay');
+
+        navToggle.addEventListener('click', () => {
+            navToggle.classList.toggle('active');
+            navLinks.classList.toggle('active');
+            navOverlay.classList.toggle('active');
+        });
+
+        navOverlay.addEventListener('click', () => {
+            navToggle.classList.remove('active');
+            navLinks.classList.remove('active');
+            navOverlay.classList.remove('active');
+        });
+
+        // Close menu when clicking on a link
+        navLinks.addEventListener('click', (e) => {
+            if (e.target.tagName === 'A') {
+                navToggle.classList.remove('active');
+                navLinks.classList.remove('active');
+                navOverlay.classList.remove('active');
+            }
+        });
+    </script>
 </body>
 </html>
