@@ -6,9 +6,11 @@
     <title>Redirection</title>
     <link rel="stylesheet" href="/static/css/index.css">
 </head>
-<body class="redirect-body">
-    <h1 id="main-text"></h1>
-    <button onclick="goBackHome()">Go back home</button>
+<body>
+        <div class="redirect-body">
+            <h1 id="main-text"></h1>
+            <button onclick="goBackHome()">Go back home</button>
+        </div>
         <script>
         // Pass PHP data to js file
         window.serverData = {

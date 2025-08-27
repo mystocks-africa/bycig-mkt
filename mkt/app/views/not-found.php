@@ -6,7 +6,9 @@
     <link rel="stylesheet" href="/static/css/index.css">
     <title>Not Found (404)</title>
 </head>
-<body class="not-found-body">
-    <h1 class="header">404 - Page Not Found</h1>
+<body>
+    <div class="not-found-body">
+        <h1 class="header">404 - Page Not Found</h1>
+    </div>
 </body>
 </html>

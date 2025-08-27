@@ -148,12 +148,11 @@ nav {
 /* OTHER LAYOUT STYLES */
 .redirect-body,
 .not-found-body {
+  margin-top: 100px;
+  text-align: center;
+  justify-self: center;
   display: flex;
   flex-direction: column;
-  align-items: center;      
-  justify-content: center; 
-  height: 100vh;            
-  padding: 60px 20px;
 }
 
 .submit-proposal-body {
