@@ -46,7 +46,6 @@ nav {
     list-style: none;
     display: flex;
     gap: 1.5rem;
-    margin-bottom: 40px;
     align-items: center;
 }
 
