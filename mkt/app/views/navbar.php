@@ -10,11 +10,6 @@ ob_start();
 <body>
     <nav>
         <a href="/" class="logo">BYCIG MKT</a>
-        <div class="nav-toggle" aria-label="Toggle navigation">
-            <div class="bar"></div>
-            <div class="bar"></div>
-            <div class="bar"></div>
-        </div>
         <ul class="nav-links">
             <li><a href="/auth/forgot-pwd">Forgot password?</a></li>
             <li><a href="/proposals/submit">Create Proposal</a></li>
@@ -25,6 +20,11 @@ ob_start();
                 </form>  
             </li>  
         </ul>
+        <div class="nav-toggle" aria-label="Toggle navigation">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
     </nav>
 
     <script src="/static/js/navbar.js"></script>
