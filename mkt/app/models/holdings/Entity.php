@@ -20,8 +20,8 @@ class HoldingEntity
         string $bid_price, 
         string $target_price, 
         string $proposal_file,
-        bool $fulfilled,
-        string $bought_price
+        bool $fulfilled = false,
+        string $bought_price = null
     )
     {
         $this->investor = $investor;
