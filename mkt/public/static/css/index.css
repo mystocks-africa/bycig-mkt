@@ -453,7 +453,6 @@ nav {
 .nav-toggle {
     background-color: transparent;
     display: none;
-    position: absolute;
     top: .75rem;
     right: 1rem;
     flex-direction: column;
@@ -480,17 +479,19 @@ nav {
         display: flex; 
     }
 
-    nav {
-        flex-direction: column;
-    }
-
     .nav-links {
-        display: flex; 
-        opacity: 0; /* Hidden by opacity */
+        display: flex;
+        flex-direction: column;   /* stack links vertically */
+        position: absolute;       /* take out of normal flow */
+        top: 60px;                /* adjust to sit under nav */
+        right: 0;
+        width: 100%;
+        opacity: 0;
         max-height: 0;
-        overflow: hidden; 
-        flex-direction: column;
-        transition: opacity 0.3s ease, max-height 0.3s ease; /* Smooth transitions */
+        overflow: hidden;
+        padding-top: 40px;
+        padding-bottom: 20px;
+        transition: opacity 0.3s ease, max-height 0.3s ease;
     }
 
     .nav-links li {
