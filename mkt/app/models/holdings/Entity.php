@@ -10,6 +10,8 @@ class HoldingEntity
     public string $bid_price;
     public string $target_price;
     public string $proposal_file;
+    public bool $fulfilled;
+    public string $bought_price;
 
     public function __construct(
         string $investor, 
@@ -18,6 +20,8 @@ class HoldingEntity
         string $bid_price, 
         string $target_price, 
         string $proposal_file,
+        bool $fulfilled,
+        string $bought_price
     )
     {
         $this->investor = $investor;
@@ -26,5 +30,7 @@ class HoldingEntity
         $this->bid_price = $bid_price;
         $this->target_price = $target_price;
         $this->proposal_file = $proposal_file;
+        $this->fulfilled = $fulfilled;
+        $this->bought_price = $bought_price;
     }
 }
