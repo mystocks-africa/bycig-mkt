@@ -11,7 +11,7 @@ class HoldingEntity
     public string $target_price;
     public string $proposal_file;
     public bool $fulfilled;
-    public string $bought_price;
+    public int $bought_price;
 
     public function __construct(
         string $investor, 
@@ -21,7 +21,7 @@ class HoldingEntity
         string $target_price, 
         string $proposal_file,
         bool $fulfilled = false,
-        string $bought_price = null
+        int $bought_price = null
     )
     {
         $this->investor = $investor;
