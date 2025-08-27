@@ -10,21 +10,17 @@ ob_start();
 <body>
     <nav>
         <a href="/" class="logo">BYCIG MKT</a>
-        <ul class="nav-links">
-            <li><a href="/auth/forgot-pwd">Forgot password?</a></li>
-            <li><a href="/proposals/submit">Create Proposal</a></li>
-            <li><a href="/profile">User Profile</a></li>
-            <li>
-                <form action="/auth/signout" method="POST">
-                    <button id="signout-btn" type="submit">Sign out</button>
-                </form>  
-            </li>  
-        </ul>
         <div class="nav-toggle" aria-label="Toggle navigation">
-            <div class="bar"></div>
-            <div class="bar"></div>
-            <div class="bar"></div>
+            <div class="hamburger">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+            </div>
+            <span class="close"></span>
         </div>
+        <ul class="nav-links">
+            <!-- JS will populate this container -->        
+        </ul>
     </nav>
 
     <script src="/static/js/navbar.js"></script>
