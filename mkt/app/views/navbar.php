@@ -4,7 +4,6 @@
     <link rel="stylesheet" href="/static/css/navbar.css">
 </head>
 <body>
-    <!-- MOBILE SCREEN -->
     <nav>
         <a href="/" class="logo">BYCIG MKT</a>
         <div class="nav-toggle" aria-label="Toggle navigation">
