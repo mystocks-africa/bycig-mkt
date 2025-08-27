@@ -10,6 +10,7 @@
     <h1 id="main-text"></h1>
     <button onclick="goBackHome()">Go back home</button>
         <script>
+        // Pass PHP data to js file
         window.serverData = {
             msg_type: "<?php echo filter_input(INPUT_GET, 'message_type', FILTER_SANITIZE_SPECIAL_CHARS) ?: 'success'; ?>",
             msg: "<?php echo filter_input(INPUT_GET, 'message', FILTER_SANITIZE_SPECIAL_CHARS) ?: 'Thank you :)'; ?>"
