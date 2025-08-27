@@ -5,7 +5,7 @@ ob_start();
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="/static/css/navbar.css">
+    <link rel="stylesheet" href="/static/css/index.css">
 </head>
 <body>
     <nav>
