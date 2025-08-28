@@ -47,7 +47,8 @@ class ProposalController
     {
         try {
             $session = Controller::redirectIfNotAuth(true);
-            
+            $sessionObj = new Session();
+
             $stockTicker = filter_input(INPUT_POST, 'stock_ticker', FILTER_SANITIZE_SPECIAL_CHARS);
             $stockName = filter_input(INPUT_POST, 'stock_name', FILTER_SANITIZE_SPECIAL_CHARS);
             $subjectLine = filter_input(INPUT_POST, 'subject_line', FILTER_SANITIZE_SPECIAL_CHARS);
@@ -63,7 +64,7 @@ class ProposalController
                 exit();
             }
 
-            $user = $this->userRepository->findByEmail(Session::getSession()["email"]);
+            $user = $this->userRepository->findByEmail($sessionObj->getSession()["email"]);
 
             if (!$user["cluster_leader"]) {
                 throw new Exception("You need to link with a cluster leader before completing this operation");
@@ -85,7 +86,8 @@ class ProposalController
             Controller::redirectToResult("Success in submitting proposal", "success");
         } catch (Exception $error) {
             // Delete the file if there was an error to avoid orphaned files
-            if (isset($fileName)) {
+            $file = Files::getFile($fileName);
+            if (isset($file)) {
                 Files::deleteFile($fileName);
             }
             
