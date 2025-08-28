@@ -8,6 +8,7 @@ include_once __DIR__ . "/../../models/user/Repository.php";
 include_once __DIR__ . "/../../models/holdings/Repository.php";
 
 use App\Core\Controller;
+use App\Core\Cookie;
 use App\Core\Session;
 use App\DbTemplate;
 use App\Models\Repository\UserRepository;
@@ -72,7 +73,8 @@ class ProfileController
     public function deleteUser() 
     {
         $session = Controller::redirectIfNotAuth(returnSession: true);
-        $session2 = new Session();
+        // only need session object in one method, so it doesn't make sense to inject it in constructor for the whole controller class
+        $sessionObj = new Session();
 
         // Implemented ACID transactions to ensure fail-safe deletion
         $this->db->getPdo()->beginTransaction();
@@ -80,7 +82,8 @@ class ProfileController
         try {
             $this->userRepository->delete($session['email']);
             $this->holdingRepository->deleteAllHoldings($session['email']);
-            $session2->
+            $sessionObj->deleteSession();
+            Cookie::clearSessionCookie();
             $this->db->getPdo()->commit();
         } catch (Exception $e) {
             $this->db->getPdo()->rollBack();

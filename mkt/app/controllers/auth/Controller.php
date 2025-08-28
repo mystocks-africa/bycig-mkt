@@ -123,6 +123,7 @@ class AuthController
     public function processSignOut() 
     {
         Controller::redirectIfNotAuth();
+        $this->session->deleteSession();
         Cookie::clearSessionCookie();
         Controller::redirectToResult("Signed out successfully!", "success");
     }

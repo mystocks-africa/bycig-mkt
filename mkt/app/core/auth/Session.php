@@ -21,9 +21,9 @@ class Session extends RedisTemplate
     }
 
     public function getSession() {
-        $session_id_cookie = $_COOKIE["session_id"] ?? "";
+        $sessionIdCookie = Cookie::getSessionCookie();
 
-        $session = $this->redis->get($session_id_cookie);
+        $session = $this->redis->get($sessionIdCookie);
 
         if (!$session) {
             Cookie::clearSessionCookie();
@@ -48,8 +48,9 @@ class Session extends RedisTemplate
         return $sessionId;
     }
 
-    public function deleteSession(string $email): void
+    public function deleteSession(): void
     {
-        $this->redis->del($email);
+        $sessionIdCookie = Cookie::getSessionCookie();
+        $this->redis->del($sessionIdCookie);
     }
 }
