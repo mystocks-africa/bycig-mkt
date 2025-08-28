@@ -3,7 +3,7 @@ namespace App\Controllers;
 
 include_once __DIR__ . "/../../core/controller/Controller.php";
 include_once __DIR__ . "/../../core/templates/DbTemplate.php";
-include_once __DIR__ . "/../../core/Session.php";
+include_once __DIR__ . "/../../core/auth/Session.php";
 include_once __DIR__ . "/../../models/user/Repository.php";
 include_once __DIR__ . "/../../models/holdings/Repository.php";
 
