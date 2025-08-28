@@ -2,16 +2,18 @@
 
 namespace App\Controllers;
 
-include_once __DIR__ . "/../../core/Controller.php";
+include_once __DIR__ . "/../../core/controller/Controller.php";
+include_once __DIR__ . "/../../core/auth/Session.php";
+include_once __DIR__ . "/../../core/templates/DbTemplate.php";
+include_once __DIR__ . "/../../core/files/Files.php";
 include_once __DIR__ . "/../../models/proposals/Entity.php";
 include_once __DIR__ . "/../../models/proposals/Repository.php";
 include_once __DIR__ . "/../../models/user/Repository.php";
-include_once __DIR__ . "/../../core/Session.php";
 include_once __DIR__ . "/../../../utils/env.php";
-include_once __DIR__ . "/../../core/Files.php";
 
 use App\Core\Controller;
 use App\Core\Session;
+use App\DbTemplate;
 use App\Models\Entity\ProposalEntity;
 use App\Models\Repository\ProposalRepository;
 use App\Models\Repository\UserRepository;
@@ -23,14 +25,16 @@ class ProposalController
     private $env;
     private ProposalRepository $proposalRepository;
     private UserRepository $userRepository;
+    private DbTemplate $db;
 
     public function __construct() 
     {
         global $env;
 
         $this->env = $env; 
-        $this->proposalRepository = new ProposalRepository();
-        $this->userRepository = new UserRepository();
+        $this->db = new DbTemplate();
+        $this->proposalRepository = new ProposalRepository($this->db->getPdo());
+        $this->userRepository = new UserRepository($this->db->getPdo());
     }
 
     public function submit() 

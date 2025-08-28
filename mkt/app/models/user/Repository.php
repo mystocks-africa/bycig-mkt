@@ -4,13 +4,13 @@ namespace App\Models\Repository;
 include_once __DIR__ . "/../../core/templates/DbTemplate.php";
 include_once __DIR__ . "/Entity.php";
 
-
-use App\DbTemplate;
+use Exception;
+use PDO;
 use App\Models\Entity\UserEntity;
 
 class UserRepository 
 {
-    private DbTemplate $db;
+    private PDO $pdo;
 
     private string $userInsertQuery = "
         INSERT INTO users (
@@ -64,17 +64,26 @@ class UserRepository
         WHERE email = ?
     ";
 
-    public function __construct()
+    private string $deleteUser = "
+        DELETE FROM users
+        WHERE email = ?;
+    ";
+
+    private string $updateUserQuery = "
+        UPDATE users 
+        SET %s 
+        WHERE email = :email
+    ";
+
+    public function __construct(PDO $pdo)
     {
-        $this->db = new DbTemplate();
+        $this->pdo = $pdo;
     }
 
-    public function save(UserEntity $user): void
+    public function save(UserEntity $user, ): void
     {
-        $pdo = $this->db->getConnection();
-
         if ($user->clusterLeader) {
-            $stmt = $pdo->prepare($this->userInsertQuery);
+            $stmt = $this->pdo->prepare($this->userInsertQuery);
             $stmt->execute([
                 $user->email,
                 $user->pwd,
@@ -82,7 +91,7 @@ class UserRepository
                 $user->fullName
             ]);
         } else {
-            $stmt = $pdo->prepare($this->userInsertNoLeaderQuery);
+            $stmt = $this->pdo->prepare($this->userInsertNoLeaderQuery);
             $stmt->execute([
                 $user->email,
                 $user->pwd,
@@ -91,33 +100,47 @@ class UserRepository
         }
     }
 
-    public function findByEmail(string $email)
-    {
-        $pdo = $this->db->getConnection();
-        $stmt = $pdo->prepare($this->findUserQuery);
+    public function findByEmail(string $email, )
+    {        
+        $stmt = $this->pdo->prepare($this->findUserQuery);
         $stmt->execute([$email]);
         return $stmt->fetch();
     }
 
-    public function findAllClusterLeaders()
-    {
-        $pdo = $this->db->getConnection();
-        $stmt = $pdo->prepare($this->findClusterLeaderQuery);
+    public function findAllClusterLeaders(): array
+    {        $stmt = $this->pdo->prepare($this->findClusterLeaderQuery);
         $stmt->execute();
         return $stmt->fetchAll();
     }
 
     public function updatePwd(string $newPwd, string $email): void
-    {
-        $pdo = $this->db->getConnection();
-        $stmt = $pdo->prepare($this->updatePwdQuery);
+    {        $stmt = $this->pdo->prepare($this->updatePwdQuery);
         $stmt->execute([$newPwd, $email]);
     }
 
     public function updateBalance(int $newBalance, string $email): void 
-    {
-        $pdo = $this->db->getConnection();
-        $stmt = $pdo->prepare($this->updateBalanceQuery);
+    {        $stmt = $this->pdo->prepare($this->updateBalanceQuery);
         $stmt->execute([$newBalance, $email]);
+    }
+
+    public function delete(string $email): void
+    {        
+        $stmt = $this->pdo->prepare($this->deleteUser);
+        $stmt->execute([
+            $email
+        ]);
+    }
+
+    public function update(string $email, array $fields, array $params): void
+    {
+        // Manually set email as it is unchangable
+        $params['email'] = $email;
+
+        // Include the fields within the user query (all that are applicable)
+        $sql = sprintf($this->updateUserQuery, implode(" ,", $fields));
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            $params
+        ]);
     }
 }

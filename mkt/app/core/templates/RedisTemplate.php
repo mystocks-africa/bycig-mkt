@@ -11,9 +11,9 @@ class RedisTemplate {
         global $env;
 
         $redis = new Client([
-                    'scheme' => 'tcp',
-                    'host'   => 'redis', 
-                    'port'   => 6379,
+                    'scheme' => $env["REDIS_SCHEME"] ?? 'tcp',
+                    'host'   => $env["REDIS_HOST"] ?? 'redis', 
+                    'port'   => $env["REDIS_PORT"] ?? 6379,
                 ]);
 
         return $redis;

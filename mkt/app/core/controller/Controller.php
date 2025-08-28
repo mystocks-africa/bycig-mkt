@@ -1,7 +1,7 @@
 <?php
 namespace App\Core;
 
-include_once __DIR__ . "/Session.php";
+include_once __DIR__ . "/../auth/Session.php";
 
 use Exception;
 use App\Core\Session;
@@ -11,7 +11,7 @@ class Controller
     {
         extract($data);
 
-        include __DIR__ . "/../views/$view.php";
+        include __DIR__ . "/../../views/$view.php";
     }
 
     public static function redirectToResult($msg, $msgType) 
@@ -30,7 +30,7 @@ class Controller
         }
     }
 
-        public static function redirectIfAuth($returnSession = false) {
+    public static function redirectIfAuth($returnSession = false) {
         $session = Session::getSession(); // getSession already removes Memcached
         
         if ($session) {

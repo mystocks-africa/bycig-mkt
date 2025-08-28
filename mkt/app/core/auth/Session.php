@@ -2,8 +2,8 @@
 
 namespace App\Core;
 
-include_once __DIR__ . "/../core/Cookie.php";
-include_once __DIR__ . "/../core/templates/RedisTemplate.php";
+include_once __DIR__ . "/Cookie.php";
+include_once __DIR__ . "/../templates/RedisTemplate.php";
 
 use App\Core\Templates\RedisTemplate;
 use App\Core\Cookie;

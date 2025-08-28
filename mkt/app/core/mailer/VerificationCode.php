@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Core;
-include_once __DIR__ . "/../core/templates/RedisTemplate.php";
+include_once __DIR__ . "/../templates/RedisTemplate.php";
 
 use App\Core\Templates\RedisTemplate;
 

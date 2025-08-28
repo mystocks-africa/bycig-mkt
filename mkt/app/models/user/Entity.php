@@ -4,7 +4,7 @@ namespace App\Models\Entity;
 
 class UserEntity
 {
-    public string $email;
+    public readonly string $email;
     public string $pwd;
     public ?string $clusterLeader; // nullable
     public string $fullName;

@@ -6,10 +6,13 @@
     <title>Redirection</title>
     <link rel="stylesheet" href="/static/css/index.css">
 </head>
-<body class="redirect-body">
-    <h1 id="main-text"></h1>
-    <button onclick="goBackHome()">Go back home</button>
+<body>
+        <div class="redirect-body">
+            <h1 id="main-text"></h1>
+            <button onclick="goBackHome()">Go back home</button>
+        </div>
         <script>
+        // Pass PHP data to js file
         window.serverData = {
             msg_type: "<?php echo filter_input(INPUT_GET, 'message_type', FILTER_SANITIZE_SPECIAL_CHARS) ?: 'success'; ?>",
             msg: "<?php echo filter_input(INPUT_GET, 'message', FILTER_SANITIZE_SPECIAL_CHARS) ?: 'Thank you :)'; ?>"

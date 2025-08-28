@@ -2,17 +2,19 @@
 
 namespace App\Controllers;
 
-include_once __DIR__ . "/../../core/Controller.php";
-include_once __DIR__ . "/../../core/Cookie.php";
-include_once __DIR__ . "/../../core/VerificationCode.php";
-include_once __DIR__ . "/../../core/HTMLMessages.php";
-include_once __DIR__ . "/../../core/Mailer.php";
+include_once __DIR__ . "/../../core/controller/Controller.php";
+include_once __DIR__ . "/../../core/templates/DbTemplate.php";
+include_once __DIR__ . "/../../core/auth/Cookie.php";
+include_once __DIR__ . "/../../core/mailer/VerificationCode.php";
+include_once __DIR__ . "/../../core/mailer/HTMLMessages.php";
+include_once __DIR__ . "/../../core/mailer/Mailer.php";
 include_once __DIR__ . "/../../models/user/Entity.php";
 include_once __DIR__ . "/../../models/user/Repository.php";
 
 use App\Core\Controller;
 use App\Core\Session;
 use App\Core\VerificationCode;
+use App\DbTemplate;
 use App\Models\Entity\UserEntity;
 use App\Models\Repository\UserRepository;
 use App\Core\Cookie;
@@ -23,9 +25,11 @@ use HTMLMessages;
 class AuthController
 {   
     private UserRepository $userRepository;
+    private DbTemplate $db;
 
     public function __construct() {
-        $this->userRepository = new UserRepository();    
+        $this->db = new DbTemplate();
+        $this->userRepository = new UserRepository($this->db->getPdo());    
     }
 
     public function signIn()

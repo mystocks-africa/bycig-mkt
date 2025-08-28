@@ -9,9 +9,6 @@ function handleDeleteProposal(postId) {
         fetch(`/admin/delete-proposal?post_id=${postId}`, {
             method: 'DELETE',
         })
-        .then(() => {
-            window.location.href = '/redirect?message=Proposal deleted successfully&message_type=success';
-        })
         .catch((error) => {
             window.location.href = `/redirect?message=${encodeURIComponent(error.message)}&message_type=error`;
         });
@@ -42,9 +39,6 @@ function handleUpdateStatus(postId, clusterLeaderEmail, status) {
 
     fetch(`/admin/handle-proposal-status?${params.toString()}`, {
         method: 'PUT',
-    })
-    .then(() => {
-        window.location.href = '/redirect?message=Proposal deleted successfully&message_type=success';
     })
     .catch(error => {
         window.location.href = `/redirect?message=${encodeURIComponent(error.message)}&message_type=error`;

@@ -1,33 +1,56 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const navToggle = document.querySelector('.nav-toggle');
-    const navLinks = document.querySelector('.nav-links');
-    const navOverlay = document.querySelector('.nav-overlay');
+function handleAddNavItem(e, navItemContainer, navItems) {
+    e.preventDefault();
+    navItems.forEach(item => {
+        const li = document.createElement('li');
+        if (item.isButton) {
+            const form = document.createElement('form');
+            form.action = item.href;
+            form.method = 'POST';
 
-    navToggle.addEventListener('click', function () {
-        navLinks.classList.toggle('active');
-        navToggle.classList.toggle('active');
-        navOverlay.classList.toggle('active');
-    });
+            const button = document.createElement('button');
+            button.type = 'submit';
+            button.id = 'signout-btn';
+            button.textContent = item.text;
 
-    navOverlay.addEventListener('click', function () {
-        navLinks.classList.remove('active');
-        navToggle.classList.remove('active');
-        navOverlay.classList.remove('active');
-    });
-
-    navLinks.addEventListener('click', function (e) {
-        if (e.target.tagName === 'A') {
-            navLinks.classList.remove('active');
-            navToggle.classList.remove('active');
-            navOverlay.classList.remove('active');
+            form.appendChild(button);
+            li.appendChild(form);
+        } else {
+            const a = document.createElement('a');
+            a.href = item.href;
+            a.textContent = item.text;
+            li.appendChild(a);
         }
-    });
+        navItemContainer.appendChild(li);
+    })
+}
 
-    document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape' && navLinks.classList.contains('active')) {
-            navLinks.classList.remove('active');
-            navToggle.classList.remove('active');
-            navOverlay.classList.remove('active');
-        }
-    });
+document.addEventListener('DOMContentLoaded', (event) => {
+    const navItemContainer = document.querySelector('.nav-links');
+    const isAuthenticated = Boolean(window.serverData.sessionCookie);
+
+    let navItems = [
+        { text: 'Forgot password?', href: '/auth/forgot-pwd' },
+    ]
+
+    if (isAuthenticated) {
+        navItems.push(
+            { text: 'User Profile', href: '/profile' },
+            { text: 'Sign out', href: '/auth/signout', isButton: true }
+        )
+    } else {
+        navItems.push(
+            { text: 'Sign In', href: '/auth/signin' },
+            { text: 'Sign Up', href: '/auth/signup' }
+        );
+    }
+
+    handleAddNavItem(event, navItemContainer, navItems);
+});
+
+const toggleButton = document.querySelector('.nav-toggle');
+const navLinks = document.querySelector('.nav-links');
+
+toggleButton.addEventListener('click', () => {
+    navLinks.classList.toggle('active');
+    toggleButton.classList.toggle('active');
 });
