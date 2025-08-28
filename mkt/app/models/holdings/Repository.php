@@ -110,7 +110,7 @@ class HoldingRepository
         $stmt->execute([$id, $email]);
     }
 
-    public function deleteAllHoldings(string $email)
+    public function deleteAllHoldings(string $email): void
     {        $stmt = $this->pdo->prepare($this->deleteAllHoldingsQuery);
 
         // The investor field is a foriegn key to user's email (primary key of user)
