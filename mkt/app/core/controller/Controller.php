@@ -31,7 +31,7 @@ class Controller
     }
 
     public static function redirectIfAuth($returnSession = false) {
-        $session = Session::getSession(); // getSession already removes Memcached
+        $session = Session::getSession(); 
         
         if ($session) {
             header("Location: /auth/signout");
@@ -45,7 +45,7 @@ class Controller
 
     public static function redirectIfNotAuth($returnSession = false) 
     {
-        $session = Session::getSession(); // getSession already removes Memcached
+        $session = Session::getSession(); 
         if (!$session) {
             header("Location: /auth/signin");
             exit();
