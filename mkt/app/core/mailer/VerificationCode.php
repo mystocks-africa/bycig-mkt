@@ -8,7 +8,7 @@ use App\Core\Templates\RedisTemplate;
 class VerificationCode extends RedisTemplate
 {
     public static function generateCode($email) {
-        $redis = parent::getRedis();
+        $redis = new RedisTemplate()->getRedis();
 
         $code = rand(10000,99999);
 
@@ -21,7 +21,7 @@ class VerificationCode extends RedisTemplate
     }
 
     public static function verifyCode($email, $code) {
-        $redis = parent::getRedis();
+        $redis = new RedisTemplate()->getRedis();
         $storedCode = $redis->get($email);
         
         // Use del() instead of delete() - Redis command is DEL

@@ -7,11 +7,20 @@ include_once __DIR__ . "/../templates/RedisTemplate.php";
 
 use App\Core\Templates\RedisTemplate;
 use App\Core\Cookie;
+use Predis\Client;
 
 class Session extends RedisTemplate 
 {
-    public static function getSession() {
-        $redis = parent::getRedis();
+
+    private RedisTemplate $redis;
+
+    public function __construct()
+    {
+        $this->redis = new RedisTemplate();
+    }
+
+    public function getSession() {
+        $redis = $this->redis->getRedis();
 
         $session_id_cookie = $_COOKIE["session_id"] ?? "";
 
@@ -29,9 +38,9 @@ class Session extends RedisTemplate
         ];
     }
 
-    public static function setSession(string $email, string $role) 
+    public function setSession(string $email, string $role) 
     {       
-        $redis = parent::getredis();
+        $redis = $this->redis->getRedis();
 
         $EXPIRATION_DAYS = 60*60*24*30; // 30 days in seconds
         $sessionId = bin2hex(random_bytes(32));
