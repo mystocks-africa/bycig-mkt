@@ -26,12 +26,23 @@ function handleAddNavItem(e, navItemContainer, navItems) {
 
 document.addEventListener('DOMContentLoaded', (event) => {
     const navItemContainer = document.querySelector('.nav-links');
-    const navItems = [
+    const isAuthenticated = Boolean(window.serverData.sessionCookie);
+
+    let navItems = [
         { text: 'Forgot password?', href: '/auth/forgot-pwd' },
-        { text: 'Create Proposal', href: '/proposals/submit' },
-        { text: 'User Profile', href: '/profile' },
-        { text: 'Sign out', href: '/auth/signout', isButton: true }
-    ];
+    ]
+
+    if (isAuthenticated) {
+        navItems.push(
+            { text: 'User Profile', href: '/profile' },
+            { text: 'Sign out', href: '/auth/signout', isButton: true }
+        )
+    } else {
+        navItems.push(
+            { text: 'Sign In', href: '/auth/signin' },
+            { text: 'Sign Up', href: '/auth/signup' }
+        );
+    }
 
     handleAddNavItem(event, navItemContainer, navItems);
 });

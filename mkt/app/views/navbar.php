@@ -23,6 +23,11 @@ ob_start();
         </ul>
     </nav>
 
+    <script>
+        window.serverData = {
+            sessionCookie: <?= isset($_COOKIE['session_id']) ? "true" : "false" ?>
+        }
+    </script>
     <script src="/static/js/navbar.js"></script>
 </body>
 </html>
