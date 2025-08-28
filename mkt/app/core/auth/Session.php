@@ -7,7 +7,6 @@ include_once __DIR__ . "/../templates/RedisTemplate.php";
 
 use App\Core\Templates\RedisTemplate;
 use App\Core\Cookie;
-use Predis\Client;
 
 class Session extends RedisTemplate 
 {
@@ -49,5 +48,11 @@ class Session extends RedisTemplate
         $redis->setex($sessionId, $EXPIRATION_DAYS, "$email, $role");
         
         return $sessionId;
+    }
+
+    public function deleteSession(string $email): void
+    {
+        $redis = $this->redis->getRedis();
+        $redis->del($email);
     }
 }
