@@ -7,15 +7,23 @@ include_once __DIR__ . "/../templates/RedisTemplate.php";
 
 use App\Core\Templates\RedisTemplate;
 use App\Core\Cookie;
+use Predis\Client;
 
 class Session extends RedisTemplate 
 {
-    public static function getSession() {
-        $redis = parent::getRedis();
 
-        $session_id_cookie = $_COOKIE["session_id"] ?? "";
+    private Client $redis;
 
-        $session = $redis->get($session_id_cookie);
+    public function __construct()
+    {
+        $redisObj = new RedisTemplate();
+        $this->redis = $redisObj->getRedis();
+    }
+
+    public function getSession() {
+        $sessionIdCookie = Cookie::getSessionCookie();
+
+        $session = $this->redis->get($sessionIdCookie);
 
         if (!$session) {
             Cookie::clearSessionCookie();
@@ -29,16 +37,20 @@ class Session extends RedisTemplate
         ];
     }
 
-    public static function setSession(string $email, string $role) 
+    public function setSession(string $email, string $role) 
     {       
-        $redis = parent::getredis();
-
         $EXPIRATION_DAYS = 60*60*24*30; // 30 days in seconds
         $sessionId = bin2hex(random_bytes(32));
         
         // Use setex() instead of set() with TTL
-        $redis->setex($sessionId, $EXPIRATION_DAYS, "$email, $role");
+        $this->redis->setex($sessionId, $EXPIRATION_DAYS, "$email, $role");
         
         return $sessionId;
+    }
+
+    public function deleteSession(): void
+    {
+        $sessionIdCookie = Cookie::getSessionCookie();
+        $this->redis->del($sessionIdCookie);
     }
 }

@@ -26,10 +26,12 @@ class AuthController
 {   
     private UserRepository $userRepository;
     private DbTemplate $db;
+    private Session $session;
 
     public function __construct() {
         $this->db = new DbTemplate();
         $this->userRepository = new UserRepository($this->db->getPdo());    
+        $this->session = new Session();
     }
 
     public function signIn()
@@ -82,7 +84,7 @@ class AuthController
         $user = $this->userRepository->findByEmail($email);
 
         if (isset($user) && password_verify($pwd, $user["pwd"])) {
-            $sessionId  = Session::setSession($user["email"], $user["role"]);
+            $sessionId  = $this->session->setSession($user["email"], $user["role"]);
             Cookie::assignSessionCookie($sessionId);
             Controller::redirectToResult("Successfully logged in! Welcome!", "success");
         } else {
@@ -121,6 +123,7 @@ class AuthController
     public function processSignOut() 
     {
         Controller::redirectIfNotAuth();
+        $this->session->deleteSession();
         Cookie::clearSessionCookie();
         Controller::redirectToResult("Signed out successfully!", "success");
     }

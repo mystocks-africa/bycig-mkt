@@ -31,28 +31,29 @@ class Controller
     }
 
     public static function redirectIfAuth($returnSession = false) {
-        $session = Session::getSession(); // getSession already removes Memcached
+        $session = new Session();
         
-        if ($session) {
+        if ($session->getSession()) {
             header("Location: /auth/signout");
             exit();
         }
 
         if ($returnSession) {
-            return $session;
+            return $session->getSession();
         }
     }
 
     public static function redirectIfNotAuth($returnSession = false) 
     {
-        $session = Session::getSession(); // getSession already removes Memcached
-        if (!$session) {
+        $session = new Session();
+        
+        if (!$session->getSession()) {
             header("Location: /auth/signin");
             exit();
         }
 
         if ($returnSession) {
-            return $session;
+            return $session->getSession();
         }
     }
 
