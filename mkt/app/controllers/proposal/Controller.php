@@ -86,6 +86,7 @@ class ProposalController
             Controller::redirectToResult("Success in submitting proposal", "success");
         } catch (Exception $error) {
             // Delete the file if there was an error to avoid orphaned files
+            // We need to get the file from the server before deletion because sometimes the error happens before creation
             $file = Files::getFile($fileName);
             if (isset($file)) {
                 Files::deleteFile($fileName);
