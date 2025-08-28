@@ -14,7 +14,8 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
-COPY . .
+COPY ./mkt /app/
 
 EXPOSE 9999
-CMD ["php", "-S", "0.0.0.0:9999", "-t", "public"]
+
+CMD ["php", "-S", "0.0.0.0:9999", "-t", "mkt/public"]
