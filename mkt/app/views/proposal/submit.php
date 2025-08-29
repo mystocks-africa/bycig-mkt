@@ -33,10 +33,6 @@
         <input type="number" id="bid_price" name="bid_price" step="0.01" min="0" required>
         <br><br>
 
-        <label for="target_price">Target Price (must be ≥ Bid Price):</label><br>
-        <input type="number" id="target_price" name="target_price" step="0.01" min="0" required>
-        <br><br>
-
         <label for="number">Amount of shares to be bought:</label><br>
         <input type="number" id="shares" name="Shares" required>
         <br><br>

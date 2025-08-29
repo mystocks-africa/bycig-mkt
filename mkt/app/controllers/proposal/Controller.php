@@ -54,12 +54,12 @@ class ProposalController
             $subjectLine = filter_input(INPUT_POST, 'subject_line', FILTER_SANITIZE_SPECIAL_CHARS);
             $thesis = filter_input(INPUT_POST, 'thesis', FILTER_SANITIZE_SPECIAL_CHARS);
             $bidPrice = filter_input(INPUT_POST, 'bid_price', FILTER_VALIDATE_FLOAT);
-            $targetPrice = filter_input(INPUT_POST, 'target_price', FILTER_VALIDATE_FLOAT);
+            $shares = filter_input(INPUT_POST, "shares", FILTER_VALIDATE_INT);
             $proposalFile = $_FILES["proposal_file"] ?? null;
 
             $fileName = Files::uploadFile($proposalFile);
 
-            if (!$stockTicker || !$stockName || !$subjectLine || !$thesis || !$bidPrice || !$targetPrice || !$fileName ) {
+            if (!$stockTicker || !$stockName || !$subjectLine || !$thesis || !$bidPrice || !$shares || !$fileName ) {
                 Controller::redirectToResult("Error in form input", "error");
                 exit();
             }
@@ -77,7 +77,7 @@ class ProposalController
                 $subjectLine, 
                 $thesis, 
                 $bidPrice, 
-                $targetPrice, 
+                $shares, 
                 $fileName
             );
 

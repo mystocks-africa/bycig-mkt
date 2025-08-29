@@ -10,7 +10,7 @@ class ProposalEntity
     public string $subject_line;
     public string $thesis;
     public string $bid_price;
-    public string $target_price;
+    public string $shares;
     public string $proposal_file;
     public readonly string $status;
 
@@ -21,7 +21,7 @@ class ProposalEntity
         string $subject_line,
         string $thesis,
         string $bid_price,
-        string $target_price,
+        string $shares,
         string $proposal_file,
     ) {
         $this->post_author = $post_author;
@@ -30,7 +30,7 @@ class ProposalEntity
         $this->subject_line = $subject_line;
         $this->thesis = $thesis;
         $this->bid_price = $bid_price;
-        $this->target_price = $target_price;
+        $this->shares = $shares;
         $this->proposal_file = $proposal_file;
         $this->status = "pending";
     }
