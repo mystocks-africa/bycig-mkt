@@ -1,5 +1,5 @@
 <?php
-namespace App\Core\Service;
+namespace App\Services;
 
 include_once __DIR__ . "/../../core/templates/DbTemplate.php";
 include_once __DIR__ . "/../../core/files/Files.php";

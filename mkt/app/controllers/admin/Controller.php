@@ -11,7 +11,7 @@ use App\Core\Controller;
 use App\Core\Session;
 use App\Core\Auth\AuthGuard;
 
-use App\Services\Admin\AdminService;
+use App\Services\AdminService;
 use Exception;
 
 class AdminController 
