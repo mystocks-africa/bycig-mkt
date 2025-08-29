@@ -26,7 +26,7 @@
     $role = $user['role'] ?? '';
     ?>
     <div id="user-info">
-        <form>
+        <form class="update-user-form">
             <?php if ($role === "cluster_leader"): ?>
                 <label>Cluster leaders do not have balances.</label>
                 <br>
