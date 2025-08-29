@@ -24,16 +24,18 @@ class ProfileController
     private UserRepository $userRepository;
     private HoldingRepository $holdingRepository;
     private DbTemplate $db;
-    
+    private Session $session;
+
     public function __construct() {
         $this->db = new DbTemplate();
         $this->userRepository = new UserRepository($this->db->getPdo());
         $this->holdingRepository = new HoldingRepository($this->db->getPdo());
+        $this->session = new Session();
     }
 
     public function index() 
     {
-        $session = Controller::redirectIfNotAuth(returnSession:true);
+        AuthGuard::redirectIfNotAuth($this->session);
 
         $activeTab = filter_input(INPUT_GET, "tab", FILTER_SANITIZE_SPECIAL_CHARS);
 
@@ -43,7 +45,7 @@ class ProfileController
         ];
 
         if (empty($activeTab) || $activeTab === "info") {
-            $user = $this->userRepository->findByEmail($session["email"]);
+            $user = $this->userRepository->findByEmail($this->session->getSession()["email"]);
             
             if ($user["role"] === "cluster_leader") {
                 $clusterLeaders = null;
@@ -58,7 +60,7 @@ class ProfileController
         } 
 
         else if ($activeTab === "holdings") {
-            $holdings = $this->holdingRepository->findByEmail($session["email"]);
+            $holdings = $this->holdingRepository->findByEmail($this->session->getSession()["email"]);
             
             Controller::render("profile/index", [
                 "holdings"=>$holdings,
@@ -76,17 +78,15 @@ class ProfileController
 
     public function deleteUser() 
     {
-        $session = Controller::redirectIfNotAuth(returnSession: true);
-        // only need session object in one method, so it doesn't make sense to inject it in constructor for the whole controller class
-        $sessionObj = new Session();
+        AuthGuard::redirectIfNotAuth($this->session);
 
         // Implemented ACID transactions to ensure fail-safe deletion
         $this->db->getPdo()->beginTransaction();
 
         try {
-            $this->userRepository->delete($session['email']);
-            $this->holdingRepository->deleteAllHoldings($session['email']);
-            $sessionObj->deleteSession();
+            $this->userRepository->delete($this->session->getSession()['email']);
+            $this->holdingRepository->deleteAllHoldings($this->session->getSession()['email']);
+            $this->session->deleteSession();
             Cookie::clearSessionCookie();
             $this->db->getPdo()->commit();
         } catch (Exception $e) {
@@ -97,7 +97,7 @@ class ProfileController
 
     public function updateUser(): void
     {
-        $session = Controller::redirectIfNotAuth(returnSession: true);
+        AuthGuard::redirectIfNotAuth($this->session);
 
         // Get and store all associated data into an array
         $fullName = filter_input(INPUT_POST, "full_name", FILTER_SANITIZE_SPECIAL_CHARS);
@@ -126,7 +126,7 @@ class ProfileController
         }
 
         try {
-            $this->userRepository->update($session['email'], $fields, $params);
+            $this->userRepository->update($this->session->getSession()['email'], $fields, $params);
             Controller::redirectToResult("Updated user data", "success");
         } catch (Exception $e) {
             Controller::redirectToResult("Error in updating user data", "error");
