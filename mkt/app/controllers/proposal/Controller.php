@@ -28,13 +28,13 @@ class ProposalController
         $this->proposalService = new ProposalService();
     }
 
-    public function submit() 
+    public function submit(): void 
     {
         $this->authGuard->redirectIfNotAuth();
         Controller::render("proposal/submit");
     }
 
-    public function submitPost() 
+    public function submitPost(): void 
     {
         $this->authGuard->redirectIfNotAuth();
 
