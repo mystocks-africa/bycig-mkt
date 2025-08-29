@@ -26,17 +26,19 @@ class AdminController
     private ProposalRepository $proposalRepository;
     private DbTemplate $db;
     private Session $session;
+    private AuthGuard $authGuard;
 
     public function __construct() {
         $this->db = new DbTemplate();
         $this->holdingRepository = new HoldingRepository($this->db->getPdo());
         $this->proposalRepository = new ProposalRepository($this->db->getPdo());
         $this->session = new Session();
+        $this->authGuard = new AuthGuard($this->session);
     }
 
     public function index()
     {
-        AuthGuard::redirectIfNotAuth($this->session);
+        $this->authGuard->redirectIfNotAuth();
 
         $proposals = $this->proposalRepository->findByClusterLeader($this->session->getSession()['email']);
         Controller::render("admin/index", [
@@ -46,7 +48,7 @@ class AdminController
 
     public function handleProposalStatusPost() 
     {
-        AuthGuard::redirectIfNotAuth($this->session);
+        $this->authGuard->redirectIfNotAuth();
 
         try {
             $postId = filter_input(INPUT_GET, 'post_id', FILTER_SANITIZE_NUMBER_INT);
@@ -82,7 +84,7 @@ class AdminController
 
     public function deleteProposal()
     {
-        AuthGuard::redirectIfNotClusterLeader($this->session);
+        $this->authGuard->redirectIfNotClusterLeader();
 
         try {
             $postId = filter_input(INPUT_GET, 'post_id', FILTER_SANITIZE_NUMBER_INT);
