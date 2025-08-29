@@ -25,12 +25,12 @@ class AuthController
         $this->authService = new AuthService();
     }
 
-    public function signIn() {
+    public function signIn(): void {
         $this->authGuard->redirectIfAuth();
         Controller::render('/auth/signin');
     }
 
-    public function signUp() {
+    public function signUp(): void {
         $this->authGuard->redirectIfAuth();
         try {
             $clusterLeaderEmails = $this->authService->getClusterLeaderEmails();
@@ -40,16 +40,16 @@ class AuthController
         }
     }
 
-    public function forgotPwd() {
+    public function forgotPwd(): void {
         Controller::render("auth/forgot-pwd");
     }
 
-    public function updatePwd() {
+    public function updatePwd(): void {
         $code = filter_input(INPUT_GET, "code", FILTER_SANITIZE_SPECIAL_CHARS);
         Controller::render("auth/update-pwd", ["code" => $code]);
     }
 
-    public function processSignIn() {
+    public function processSignIn(): void {
         $this->authGuard->redirectIfAuth();
         try {
             $email = trim(filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL));
@@ -61,7 +61,7 @@ class AuthController
         }
     }
 
-    public function processSignUp() {
+    public function processSignUp(): void {
         $this->authGuard->redirectIfAuth();
         try {
             $email        = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
@@ -75,7 +75,7 @@ class AuthController
         }
     }
 
-    public function processSignOut() {
+    public function processSignOut(): void {
         $this->authGuard->redirectIfNotAuth();
         try {
             $this->authService->deleteSession($this->session);
@@ -85,7 +85,7 @@ class AuthController
         }
     }
 
-    public function processForgotPwd() {
+    public function processForgotPwd(): void {
         try {
             $email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_EMAIL);
             $this->authService->sendForgotPwdCode($email);
@@ -95,7 +95,7 @@ class AuthController
         }
     }
 
-    public function processUpdatePwd() {
+    public function processUpdatePwd(): void {
         $this->authGuard->redirectIfAuth();
         try {
             $email  = filter_input(INPUT_POST, "email", FILTER_SANITIZE_EMAIL);
