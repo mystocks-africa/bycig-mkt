@@ -7,7 +7,6 @@ include_once __DIR__ . "/../templates/RedisTemplate.php";
 
 use App\Core\Templates\RedisTemplate;
 use App\Core\Cookie;
-use Predis\Client;
 
 class Session extends RedisTemplate 
 {
