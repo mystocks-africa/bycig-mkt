@@ -60,6 +60,6 @@ $router->get("/profile", ProfileController::class, 'index');
 $router->delete("/profile/delete-user", ProfileController::class, "deleteUser");
 
 // Profile put methods
-$router->put("/profile/update", ProfileController::class, "updateUser");
+$router->post("/profile/update-user", ProfileController::class, "updateUser");
 
 $router->dispatch();

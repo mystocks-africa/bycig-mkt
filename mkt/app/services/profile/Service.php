@@ -80,10 +80,11 @@ class ProfileService
     }
 
     public function updateAffectedUserFields(
-        string $email,
+        ?string $email,
         string $sessionEmail,
-        string $fullName,
-        string $clusterLeader
+        ?string $fullName,
+        ?string $clusterLeader,
+        Session $session
     ): void {
         $data = [
             "full_name"      => $fullName,
@@ -95,11 +96,14 @@ class ProfileService
         $params = [];
 
         foreach ($data as $field => $value) {
-            if ($value === null) {
-                continue;
-            }
+            if ($value === null) continue;
+            // Building SQL-code
             $fields[] = "$field = :$field";
             $params[$field] = $value;
+        }
+
+        if (array_key_exists("email", $params)) {
+            $session->updateSessionEmail($params['email']);
         }
 
         if (empty($fields)) {

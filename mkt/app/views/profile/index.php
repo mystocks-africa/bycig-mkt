@@ -26,7 +26,7 @@
     $role = $user['role'] ?? '';
     ?>
     <div id="user-info">
-        <form>
+        <form class="update-user-form">
             <?php if ($role === "cluster_leader"): ?>
                 <label>Cluster leaders do not have balances.</label>
                 <br>
@@ -36,7 +36,7 @@
             <?php endif; ?>
 
             <label for="full-name">Full Name:</label>
-            <input type="text" id="full-name" name="fullName"
+            <input type="text" id="full-name" name="full_name"
                 placeholder="Enter your full name"
                 value="<?= $fullName ?>" data-original="<?= $fullName ?>" required>
 
@@ -47,7 +47,7 @@
 
             <?php if (isset($clusterLeaders)): ?>
                 <label for="cluster-leader">Cluster Leader:</label>
-                <select id="cluster-leader" name="clusterLeader" data-original="<?= $currentClusterLeader ?>">
+                <select id="cluster-leader" name="cluster_leader" data-original="<?= $currentClusterLeader ?>">
                     <option value="" <?= empty($currentClusterLeader) ? 'selected' : '' ?>>None</option>
                     <?php foreach ($clusterLeaders as $leader): 
                         $leaderEmail = $leader['email'];

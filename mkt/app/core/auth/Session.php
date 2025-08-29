@@ -8,7 +8,7 @@ include_once __DIR__ . "/../templates/RedisTemplate.php";
 use App\Core\Templates\RedisTemplate;
 use App\Core\Cookie;
 
-class Session extends RedisTemplate 
+class Session 
 {
     private RedisTemplate $redis;
 
@@ -49,5 +49,12 @@ class Session extends RedisTemplate
     {
         $sessionIdCookie = Cookie::getSessionCookie();
         $this->redis->getRedis()->del($sessionIdCookie);
+    }
+
+    public function updateSessionEmail($newEmail): void
+    {
+        $sessionId = Cookie::getSessionCookie();
+        $role = $this->getSession()['role'];
+        $this->redis->getRedis()->set($sessionId, "$newEmail, $role", 'KEEPTTL');
     }
 }

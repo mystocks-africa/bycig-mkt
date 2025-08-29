@@ -69,18 +69,12 @@ class UserRepository
         WHERE email = ?;
     ";
 
-    private string $updateUserQuery = "
-        UPDATE users 
-        SET %s 
-        WHERE email = :email
-    ";
-
     public function __construct(PDO $pdo)
     {
         $this->pdo = $pdo;
     }
 
-    public function save(UserEntity $user, ): void
+    public function save(UserEntity $user): void
     {
         if ($user->clusterLeader) {
             $stmt = $this->pdo->prepare($this->userInsertQuery);
@@ -100,7 +94,7 @@ class UserRepository
         }
     }
 
-    public function findByEmail(string $email, )
+    public function findByEmail(string $email): array|false
     {        
         $stmt = $this->pdo->prepare($this->findUserQuery);
         $stmt->execute([$email]);
@@ -108,18 +102,21 @@ class UserRepository
     }
 
     public function findAllClusterLeaders(): array
-    {        $stmt = $this->pdo->prepare($this->findClusterLeaderQuery);
+    {        
+        $stmt = $this->pdo->prepare($this->findClusterLeaderQuery);
         $stmt->execute();
         return $stmt->fetchAll();
     }
 
     public function updatePwd(string $newPwd, string $email): void
-    {        $stmt = $this->pdo->prepare($this->updatePwdQuery);
+    {        
+        $stmt = $this->pdo->prepare($this->updatePwdQuery);
         $stmt->execute([$newPwd, $email]);
     }
 
     public function updateBalance(int $newBalance, string $email): void 
-    {        $stmt = $this->pdo->prepare($this->updateBalanceQuery);
+    {        
+        $stmt = $this->pdo->prepare($this->updateBalanceQuery);
         $stmt->execute([$newBalance, $email]);
     }
 
@@ -133,14 +130,10 @@ class UserRepository
 
     public function update(string $email, array $fields, array $params): void
     {
-        // Manually set email as it is unchangable
+        $sql = "UPDATE users SET " . implode(", ", $fields) . " WHERE email = :email";
         $params['email'] = $email;
-
-        // Include the fields within the user query (all that are applicable)
-        $sql = sprintf($this->updateUserQuery, implode(" ,", $fields));
+        
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([
-            $params
-        ]);
+        $stmt->execute($params);
     }
 }
