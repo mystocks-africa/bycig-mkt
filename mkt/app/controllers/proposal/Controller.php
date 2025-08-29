@@ -15,34 +15,22 @@ include_once __DIR__ . "/../../../utils/env.php";
 
 use App\Core\Controller;
 use App\Core\Session;
-use App\DbTemplate;
 use App\Core\Auth\AuthGuard;
 
-use App\Models\Entity\ProposalEntity;
-use App\Models\Repository\ProposalRepository;
-use App\Models\Repository\UserRepository;
-use App\Core\Files;
+use App\Services\ProposalService;
 use Exception;
 
 class ProposalController
 {
-    private $env;
-    private ProposalRepository $proposalRepository;
-    private UserRepository $userRepository;
-    private DbTemplate $db;
     private Session $session;
     private AuthGuard $authGuard;
+    private ProposalService $proposalService;
 
     public function __construct() 
     {
-        global $env;
-
-        $this->env = $env; 
-        $this->db = new DbTemplate();
-        $this->proposalRepository = new ProposalRepository($this->db->getPdo());
-        $this->userRepository = new UserRepository($this->db->getPdo());
         $this->session = new Session();
         $this->authGuard = new AuthGuard($this->session);
+        $this->proposalService = new ProposalService();
     }
 
     public function submit() 
@@ -63,41 +51,19 @@ class ProposalController
             $bidPrice = filter_input(INPUT_POST, 'bid_price', FILTER_VALIDATE_FLOAT);
             $shares = filter_input(INPUT_POST, "shares", FILTER_VALIDATE_INT);
             $proposalFile = $_FILES["proposal_file"] ?? null;
-
-            $fileName = Files::uploadFile($proposalFile);
-
-            if (!$stockTicker || !$stockName || !$subjectLine || !$thesis || !$bidPrice || !$shares || !$fileName ) {
-                Controller::redirectToResult("Error in form input", "error");
-                exit();
-            }
-
-            $user = $this->userRepository->findByEmail($this->session->getSession()["email"]);
-
-            if (!$user["cluster_leader"]) {
-                throw new Exception("You need to link with a cluster leader before completing this operation");
-            }
-            
-            $proposalEntity = new ProposalEntity(
-                $this->session->getSession()["email"], 
-                $stockTicker, 
-                $stockName, 
-                $subjectLine, 
-                $thesis, 
-                $bidPrice, 
-                $shares, 
-                $fileName
-            );
-
-            $this->proposalRepository->save($proposalEntity);
-
+            $this->proposalService->createProposal(
+                $this->session->getSession()['email'],
+                $stockTicker,
+                $stockName,
+                $subjectLine,
+                $thesis,
+                $bidPrice,
+                $shares,
+                $proposalFile
+            );            
             Controller::redirectToResult("Success in submitting proposal", "success");
         } catch (Exception $error) {
-            // Delete the file if there was an error to avoid orphaned files
-            // We need to get the file from the server before deletion because sometimes the error happens before creation
-            $file = Files::getFile($fileName);
-            if (isset($file)) {
-                Files::deleteFile($fileName);
-            }
+            $this->proposalService->deleteFileOnError($this->proposalService->getFileName());
             Controller::redirectToResult($error->getMessage(), "error");
         }
     }
