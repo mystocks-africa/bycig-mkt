@@ -97,8 +97,13 @@ class ProfileService
 
         foreach ($data as $field => $value) {
             if ($value === null) continue;
+            // Building SQL-code
             $fields[] = "$field = :$field";
             $params[$field] = $value;
+        }
+
+        if (array_key_exists("email", $params)) {
+            $session->updateSessionEmail($params['email']);
         }
 
         if (empty($fields)) {
@@ -106,7 +111,5 @@ class ProfileService
         }
 
         $this->userRepository->update($sessionEmail, $fields, $params);
-        $session->deleteSession();
-        Cookie::clearSessionCookie();
     }
 }
