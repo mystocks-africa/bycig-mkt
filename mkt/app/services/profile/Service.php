@@ -80,10 +80,10 @@ class ProfileService
     }
 
     public function updateAffectedUserFields(
-        string $email,
+        ?string $email,
         string $sessionEmail,
-        string $fullName,
-        string $clusterLeader
+        ?string $fullName,
+        ?string $clusterLeader
     ): void {
         $data = [
             "full_name"      => $fullName,
@@ -95,9 +95,7 @@ class ProfileService
         $params = [];
 
         foreach ($data as $field => $value) {
-            if ($value === null) {
-                continue;
-            }
+            if ($value === null) continue;
             $fields[] = "$field = :$field";
             $params[$field] = $value;
         }
