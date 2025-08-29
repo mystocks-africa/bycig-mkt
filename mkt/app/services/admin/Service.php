@@ -31,7 +31,7 @@ class AdminService
         return $this->proposalRepository->findByClusterLeader($email);
     }
 
-    public function processProposalDecision(string $postId, string $clusterLeaderEmail, string $status): void 
+    public function processProposalDecision(?int $postId, ?string $clusterLeaderEmail, ?string $status): void 
     {
         if ($status != 'accept' && $status != 'decline') {
                 throw new Exception('Status is not properly formatted');
@@ -55,7 +55,7 @@ class AdminService
         }
     }
 
-    public function deleteProposalById(int $postId, string $email): void
+    public function deleteProposalById(?int $postId, string $email): void
     {
         $proposal = $this->proposalRepository->findById($postId);
             
