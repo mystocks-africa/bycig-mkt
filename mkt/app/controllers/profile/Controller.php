@@ -3,8 +3,9 @@ namespace App\Controllers;
 
 include_once __DIR__ . "/../../core/controller/Controller.php";
 include_once __DIR__ . "/../../core/templates/DbTemplate.php";
-
+include_once __DIR__ . "/../../core/auth/Guard.php";
 include_once __DIR__ . "/../../core/auth/Session.php";
+
 include_once __DIR__ . "/../../models/user/Repository.php";
 include_once __DIR__ . "/../../models/holdings/Repository.php";
 
@@ -12,6 +13,7 @@ use App\Core\Controller;
 use App\Core\Cookie;
 use App\Core\Session;
 use App\DbTemplate;
+use App\Core\Auth\AuthGuard;
 
 use App\Models\Repository\UserRepository;
 use App\Models\Repository\HoldingRepository;
@@ -22,7 +24,7 @@ class ProfileController
     private UserRepository $userRepository;
     private HoldingRepository $holdingRepository;
     private DbTemplate $db;
-
+    
     public function __construct() {
         $this->db = new DbTemplate();
         $this->userRepository = new UserRepository($this->db->getPdo());
