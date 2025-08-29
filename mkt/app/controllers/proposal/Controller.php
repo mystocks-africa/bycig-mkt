@@ -31,6 +31,7 @@ class ProposalController
     private UserRepository $userRepository;
     private DbTemplate $db;
     private Session $session;
+    private AuthGuard $authGuard;
 
     public function __construct() 
     {
@@ -41,17 +42,18 @@ class ProposalController
         $this->proposalRepository = new ProposalRepository($this->db->getPdo());
         $this->userRepository = new UserRepository($this->db->getPdo());
         $this->session = new Session();
+        $this->authGuard = new AuthGuard($this->session);
     }
 
     public function submit() 
     {
-        AuthGuard::redirectIfNotAuth($this->session);
+        $this->authGuard->redirectIfNotAuth();
         Controller::render("proposal/submit");
     }
 
     public function submitPost() 
     {
-        AuthGuard::redirectIfNotAuth($this->session);
+        $this->authGuard->redirectIfNotAuth();
 
         try {
             $stockTicker = filter_input(INPUT_POST, 'stock_ticker', FILTER_SANITIZE_SPECIAL_CHARS);
