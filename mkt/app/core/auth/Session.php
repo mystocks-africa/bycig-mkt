@@ -11,7 +11,6 @@ use Predis\Client;
 
 class Session extends RedisTemplate 
 {
-
     private Client $redis;
 
     public function __construct()
