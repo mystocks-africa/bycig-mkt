@@ -21,17 +21,19 @@ class HomeController
     private HoldingRepository $holdingRepository;
     private DbTemplate $db;
     private Session $session;
+    private AuthGuard $authGuard;
 
     public function __construct() {
         $this->db = new DbTemplate();
         $this->holdingRepository = new HoldingRepository($this->db->getPdo());
         $this->session = new Session();
+        $this->authGuard = new AuthGuard($this->session);
     }
 
     public function index()
     { 
-        AuthGuard::redirectIfNotAuth($this->session);
-        
+        $this->authGuard->redirectIfNotAuth();
+
         $holdings = $this->holdingRepository->findAll();
         
         Controller::render("index", [
@@ -41,7 +43,7 @@ class HomeController
 
     public function favicon()
     {
-        AuthGuard::redirectIfNotAuth($this->session);
+        $this->authGuard->redirectIfNotAuth();
         Controller::render('favicon');
     }
 
