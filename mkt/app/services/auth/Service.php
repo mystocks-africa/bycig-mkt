@@ -51,7 +51,7 @@ class AuthService
         return $clusterLeaderEmails;
     }
 
-    public function validateUserAccount(string $email, string $pwd, Session $session): void
+    public function validateUserAccount(?string $email, ?string $pwd, Session $session): void
     {
         $user = $this->userRepository->findByEmail($email);
 
@@ -63,7 +63,7 @@ class AuthService
         } 
     }
 
-    public function createUserAccount(string $email, string $pwd, string $clusterLeader, string $fullName): void
+    public function createUserAccount(?string $email, ?string $pwd, ?string $clusterLeader, ?string $fullName): void
     {
 
         $hashPwd = password_hash($pwd, PASSWORD_DEFAULT);
@@ -84,14 +84,14 @@ class AuthService
         Cookie::clearSessionCookie();
     }
 
-    public function sendForgotPwdCode(string $email): void
+    public function sendForgotPwdCode(?string $email): void
     {
         $code = VerificationCode::generateCode($email);
         $message = HTMLMessages::getForgottenPassword($code);
         Mailer::send($email, $message);
     }
 
-    public function validateForgotPwdCode(string $email, int $code, string $newPwd): void 
+    public function validateForgotPwdCode(?string $email, ?string $code, ?string $newPwd): void 
     {
         if (VerificationCode::verifyCode($email, $code) === true) {
             $hashNewPwd = password_hash($newPwd, PASSWORD_DEFAULT);
