@@ -21,7 +21,7 @@ class ProposalRepository
     private string $insertProposalQuery = "
         INSERT INTO proposals (
         post_author, stock_ticker, stock_name,
-        subject_line, thesis, bid_price, target_price, proposal_file, status
+        subject_line, thesis, bid_price, shares, proposal_file, status
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
     ";
 
@@ -74,7 +74,7 @@ class ProposalRepository
             $proposal->subject_line,
             $proposal->thesis,
             $proposal->bid_price,
-            $proposal->target_price,
+            $proposal->shares,
             $proposal->proposal_file,
             $proposal->status
         ]);

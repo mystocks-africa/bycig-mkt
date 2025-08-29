@@ -3,29 +3,33 @@
 namespace App\Controllers;
 
 include_once __DIR__ . "/../../core/controller/Controller.php";
-include_once __DIR__ . "/../../core/templates/DbTemplate.php";
-include_once __DIR__ . "/../../models/holdings/Repository.php";
+include_once __DIR__ . "/../../core/auth/Guard.php";
+include_once __DIR__ . "/../../core/auth/Session.php";
+
+include_once __DIR__ . "/../../services/home/Service.php";
 
 use App\Core\Controller;
-use App\DbTemplate;
-use App\Models\Repository\HoldingRepository;
+use App\Core\Auth\AuthGuard;
+use App\Core\Session;
+use App\Services\HomeService;
+
 
 class HomeController
 {
-    private HoldingRepository $holdingRepository;
-    private DbTemplate $db;
+    private Session $session;
+    private AuthGuard $authGuard;
+    private HomeService $homeService;
 
     public function __construct() {
-        $this->db = new DbTemplate();
-        $this->holdingRepository = new HoldingRepository($this->db->getPdo());
+        $this->session = new Session();
+        $this->authGuard = new AuthGuard($this->session);
+        $this->homeService = new HomeService();
     }
 
     public function index()
     { 
-        Controller::redirectIfNotAuth();
-        
-        $holdings = $this->holdingRepository->findAll();
-        
+        $this->authGuard->redirectIfNotAuth();
+        $holdings = $this->homeService->getAllHoldings();  
         Controller::render("index", [
             "holdings"=>$holdings
         ]);    
@@ -33,7 +37,7 @@ class HomeController
 
     public function favicon()
     {
-        Controller::redirectIfNotAuth();
+        $this->authGuard->redirectIfNotAuth();
         Controller::render('favicon');
     }
 

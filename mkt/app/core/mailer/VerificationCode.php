@@ -5,7 +5,7 @@ include_once __DIR__ . "/../templates/RedisTemplate.php";
 
 use App\Core\Templates\RedisTemplate;
 
-class VerificationCode extends RedisTemplate
+class VerificationCode 
 {
     public static function generateCode($email) {
         $redis = new RedisTemplate();
