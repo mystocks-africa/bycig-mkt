@@ -3,6 +3,8 @@
 namespace App;
 include_once __DIR__ . "/../../../utils/env.php";
 
+use PDO;
+
 class DbTemplate {
 
     private array $env;
@@ -29,7 +31,7 @@ class DbTemplate {
         }
     }
     
-    public function getPdo(): \PDO 
+    public function getPdo(): PDO 
     {
         return $this->pdo;
     }
