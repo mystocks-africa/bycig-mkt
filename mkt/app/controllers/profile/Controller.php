@@ -25,17 +25,19 @@ class ProfileController
     private HoldingRepository $holdingRepository;
     private DbTemplate $db;
     private Session $session;
+    private AuthGuard $authGuard;
 
     public function __construct() {
         $this->db = new DbTemplate();
         $this->userRepository = new UserRepository($this->db->getPdo());
         $this->holdingRepository = new HoldingRepository($this->db->getPdo());
         $this->session = new Session();
+        $this->authGuard = new AuthGuard($this->session);
     }
 
     public function index() 
     {
-        AuthGuard::redirectIfNotAuth($this->session);
+        $this->authGuard->redirectIfNotAuth();
 
         $activeTab = filter_input(INPUT_GET, "tab", FILTER_SANITIZE_SPECIAL_CHARS);
 
@@ -78,7 +80,7 @@ class ProfileController
 
     public function deleteUser() 
     {
-        AuthGuard::redirectIfNotAuth($this->session);
+        $this->authGuard->redirectIfNotAuth();
 
         // Implemented ACID transactions to ensure fail-safe deletion
         $this->db->getPdo()->beginTransaction();
@@ -97,7 +99,7 @@ class ProfileController
 
     public function updateUser(): void
     {
-        AuthGuard::redirectIfNotAuth($this->session);
+        $this->authGuard->redirectIfNotAuth();
 
         // Get and store all associated data into an array
         $fullName = filter_input(INPUT_POST, "full_name", FILTER_SANITIZE_SPECIAL_CHARS);
