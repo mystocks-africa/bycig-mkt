@@ -27,17 +27,19 @@ class HoldingsController
     private UserRepository $userRepository;
     private DbTemplate $db;
     private Session $session;
+    private AuthGuard $authGuard;
 
     public function __construct() {
         $this->db = new DbTemplate();
         $this->holdingRepository = new HoldingRepository($this->db->getPdo());
         $this->userRepository = new UserRepository($this->db->getPdo());
         $this->session = new Session();
+        $this->authGuard = new AuthGuard($this->session);
     }
 
     public function sell()
     {
-        AuthGuard::redirectIfNotAuth($this->session);
+        $this->authGuard->redirectIfNotAuth();
         $this->db->getPdo()->beginTransaction();
 
         try {
