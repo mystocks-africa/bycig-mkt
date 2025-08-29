@@ -59,7 +59,13 @@ class ProfileController
             $fullName = filter_input(INPUT_POST, "full_name", FILTER_SANITIZE_SPECIAL_CHARS);
             $email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_SPECIAL_CHARS);
             $clusterLeader = filter_input(INPUT_POST, "cluster_leader", FILTER_SANITIZE_SPECIAL_CHARS);
-            $this->profileService->updateAffectedUserFields($email, $this->session->getSession()['email'], $fullName, $clusterLeader);
+            $this->profileService->updateAffectedUserFields(
+                $email, 
+                $this->session->getSession()['email'], 
+                $fullName, 
+                $clusterLeader,
+                $this->session
+            );
             Controller::redirectToResult("Updated user data", "success");
         } catch (Exception $error) {
             Controller::redirectToResult($error, "error");

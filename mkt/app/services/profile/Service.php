@@ -83,7 +83,8 @@ class ProfileService
         ?string $email,
         string $sessionEmail,
         ?string $fullName,
-        ?string $clusterLeader
+        ?string $clusterLeader,
+        Session $session
     ): void {
         $data = [
             "full_name"      => $fullName,
@@ -105,5 +106,7 @@ class ProfileService
         }
 
         $this->userRepository->update($sessionEmail, $fields, $params);
+        $session->deleteSession();
+        Cookie::clearSessionCookie();
     }
 }
