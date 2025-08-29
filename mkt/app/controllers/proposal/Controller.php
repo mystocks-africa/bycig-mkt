@@ -6,6 +6,8 @@ include_once __DIR__ . "/../../core/controller/Controller.php";
 include_once __DIR__ . "/../../core/auth/Session.php";
 include_once __DIR__ . "/../../core/templates/DbTemplate.php";
 include_once __DIR__ . "/../../core/files/Files.php";
+include_once __DIR__ . "/../../core/auth/Guard.php";
+
 include_once __DIR__ . "/../../models/proposals/Entity.php";
 include_once __DIR__ . "/../../models/proposals/Repository.php";
 include_once __DIR__ . "/../../models/user/Repository.php";
@@ -14,6 +16,8 @@ include_once __DIR__ . "/../../../utils/env.php";
 use App\Core\Controller;
 use App\Core\Session;
 use App\DbTemplate;
+use App\Core\Auth\AuthGuard;
+
 use App\Models\Entity\ProposalEntity;
 use App\Models\Repository\ProposalRepository;
 use App\Models\Repository\UserRepository;
@@ -26,6 +30,7 @@ class ProposalController
     private ProposalRepository $proposalRepository;
     private UserRepository $userRepository;
     private DbTemplate $db;
+    private Session $session;
 
     public function __construct() 
     {
@@ -35,20 +40,20 @@ class ProposalController
         $this->db = new DbTemplate();
         $this->proposalRepository = new ProposalRepository($this->db->getPdo());
         $this->userRepository = new UserRepository($this->db->getPdo());
+        $this->session = new Session();
     }
 
     public function submit() 
     {
-        Controller::redirectIfNotAuth();
+        AuthGuard::redirectIfNotAuth($this->session);
         Controller::render("proposal/submit");
     }
 
     public function submitPost() 
     {
-        try {
-            $session = Controller::redirectIfNotAuth(true);
-            $sessionObj = new Session();
+        AuthGuard::redirectIfNotAuth($this->session);
 
+        try {
             $stockTicker = filter_input(INPUT_POST, 'stock_ticker', FILTER_SANITIZE_SPECIAL_CHARS);
             $stockName = filter_input(INPUT_POST, 'stock_name', FILTER_SANITIZE_SPECIAL_CHARS);
             $subjectLine = filter_input(INPUT_POST, 'subject_line', FILTER_SANITIZE_SPECIAL_CHARS);
@@ -64,14 +69,14 @@ class ProposalController
                 exit();
             }
 
-            $user = $this->userRepository->findByEmail($sessionObj->getSession()["email"]);
+            $user = $this->userRepository->findByEmail($this->session->getSession()["email"]);
 
             if (!$user["cluster_leader"]) {
                 throw new Exception("You need to link with a cluster leader before completing this operation");
             }
             
             $proposalEntity = new ProposalEntity(
-                $session["email"], 
+                $this->session->getSession()["email"], 
                 $stockTicker, 
                 $stockName, 
                 $subjectLine, 
