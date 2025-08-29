@@ -8,7 +8,7 @@ use App\Core\Controller;
 
 class NotFoundController
 {
-    public function index() 
+    public function index(): void 
     {
         Controller::render("not-found");
     }
