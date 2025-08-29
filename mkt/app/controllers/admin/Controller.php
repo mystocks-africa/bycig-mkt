@@ -4,11 +4,16 @@ namespace App\Controllers;
 
 include_once __DIR__ . "/../../core/controller/Controller.php";
 include_once __DIR__ . "/../../core/templates/DbTemplate.php";
+include_once __DIR__ . "/../../core/auth/Guard.php";
+
 include_once __DIR__ . "/../../models/proposals/Repository.php";
 include_once __DIR__ . "/../../models/holdings/Repository.php";
 include_once __DIR__ . "/../../models/holdings/Entity.php";
 
 use App\Core\Controller;
+use App\Core\Session;
+use App\Core\Auth\AuthGuard;
+
 use App\DbTemplate;
 use App\Models\Repository\HoldingRepository;
 use App\Models\Entity\HoldingEntity;
@@ -20,18 +25,20 @@ class AdminController
     private HoldingRepository $holdingRepository;
     private ProposalRepository $proposalRepository;
     private DbTemplate $db;
+    private Session $session;
 
     public function __construct() {
         $this->db = new DbTemplate();
         $this->holdingRepository = new HoldingRepository($this->db->getPdo());
         $this->proposalRepository = new ProposalRepository($this->db->getPdo());
+        $this->session = new Session();
     }
 
     public function index()
     {
-        $session = Controller::redirectIfNotClusterLeader();
+        AuthGuard::redirectIfNotAuth($this->session);
 
-        $proposals = $this->proposalRepository->findByClusterLeader($session['email']);
+        $proposals = $this->proposalRepository->findByClusterLeader($this->session->getSession()['email']);
         Controller::render("admin/index", [
             'proposals' => $proposals
         ]);
@@ -39,6 +46,8 @@ class AdminController
 
     public function handleProposalStatusPost() 
     {
+        AuthGuard::redirectIfNotAuth($this->session);
+
         try {
             $postId = filter_input(INPUT_GET, 'post_id', FILTER_SANITIZE_NUMBER_INT);
             $clusterLeaderEmail = filter_input(INPUT_GET, 'cluster_leader_email', FILTER_SANITIZE_SPECIAL_CHARS);
@@ -73,7 +82,8 @@ class AdminController
 
     public function deleteProposal()
     {
-        $session = Controller::redirectIfNotClusterLeader();
+        AuthGuard::redirectIfNotClusterLeader($this->session);
+
         try {
             $postId = filter_input(INPUT_GET, 'post_id', FILTER_SANITIZE_NUMBER_INT);
             $proposal = $this->proposalRepository->findById($postId);
@@ -82,7 +92,7 @@ class AdminController
                 throw new Exception("Proposal is not found. You are deleting something that doesn't exist");
             }
 
-            $this->proposalRepository->delete($postId, $session['email']);
+            $this->proposalRepository->delete($postId, $this->session->getSession()['email']);
             Controller::redirectToResult('Deleted proposal successfully', 'success');
         } catch(Exception $error) {
             Controller::redirectToResult('Error in deleting proposal', 'error');       
