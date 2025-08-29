@@ -8,26 +8,33 @@ use App\Core\Session;
 // Protects UI based on auth status
 class AuthGuard 
 {
-    public static function redirectIfAuth(Session $session): void 
+    private Session $session;
+
+    public function __construct(Session $session)
+    {
+        $this->session = $session;
+    }
+
+    public function redirectIfAuth(): void 
     {        
-        if ($session->getSession()) {
+        if ($this->session->getSession()) {
             header("Location: /auth/signout");
             exit();
         }
     }
 
-    public static function redirectIfNotAuth(Session $session): void 
+    public function redirectIfNotAuth(): void 
     {
-        if (!$session->getSession()) {
+        if (!$this->session->getSession()) {
             header("Location: /auth/signin");
             exit();
         }
 
     }
 
-    public static function redirectIfNotClusterLeader(Session $session): void 
+    public function redirectIfNotClusterLeader(): void 
     {
-        if ($session->getSession()['role'] != "cluster_leader") {
+        if ($this->session->getSession()['role'] != "cluster_leader") {
             $msg = "You are not authenticated for this action.";
             header("Location: /redirect?message=$msg&message_type=error");
             exit();
