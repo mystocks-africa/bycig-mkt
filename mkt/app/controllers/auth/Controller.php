@@ -31,22 +31,24 @@ class AuthController
     private UserRepository $userRepository;
     private DbTemplate $db;
     private Session $session;
+    private AuthGuard $authGuard;
 
     public function __construct() {
         $this->db = new DbTemplate();
         $this->userRepository = new UserRepository($this->db->getPdo());    
         $this->session = new Session();
+        $this->authGuard = new AuthGuard($this->session);
     }
 
     public function signIn()
     {
-        AuthGuard::redirectIfAuth($this->session);
+        $this->authGuard->redirectIfAuth();
         Controller::render('/auth/signin');
     }
 
     public function signUp()
     {
-        AuthGuard::redirectIfAuth($this->session);
+        $this->authGuard->redirectIfAuth();
         $clusterLeaders = $this->userRepository->findAllClusterLeaders();
 
         // O(n) is fine because cluster leaders will always be small
@@ -80,7 +82,7 @@ class AuthController
 
     public function processSignIn() 
     {
-        AuthGuard::redirectIfAuth($this->session);
+        $this->authGuard->redirectIfAuth();
 
         $email = trim(filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL));
         $pwd   = trim(filter_input(INPUT_POST, 'password', FILTER_SANITIZE_SPECIAL_CHARS));
@@ -98,7 +100,7 @@ class AuthController
 
     public function processSignUp() 
     {
-        AuthGuard::redirectIfAuth($this->session);
+        $this->authGuard->redirectIfAuth();
 
         try {
             $email        = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
@@ -126,7 +128,7 @@ class AuthController
     
     public function processSignOut() 
     {
-        AuthGuard::redirectIfNotAuth($this->session);
+        $this->authGuard->redirectIfNotAuth();
         $this->session->deleteSession();
         Cookie::clearSessionCookie();
         Controller::redirectToResult("Signed out successfully!", "success");
@@ -146,7 +148,7 @@ class AuthController
 
     public function processUpdatePwd() 
     {
-        AuthGuard::redirectIfAuth($this->session);
+        $this->authGuard->redirectIfAuth();
 
         $email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_EMAIL);
         $code = filter_input(INPUT_POST, "code", FILTER_SANITIZE_SPECIAL_CHARS);
