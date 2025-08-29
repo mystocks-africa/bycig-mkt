@@ -1,4 +1,5 @@
 <?php
+namespace App\Core\Mailers\HTMLMessages;
 
 class HTMLMessages 
 {
