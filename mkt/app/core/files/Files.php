@@ -6,7 +6,7 @@ use Exception;
 
 class Files 
 {
-    public static function uploadFile($file) 
+    public static function uploadFile(array $file): string|false 
     {
         $uploadDir = __DIR__ . "/../../../public/uploads/";
         if (!is_dir($uploadDir)) {
@@ -19,7 +19,7 @@ class Files
         return move_uploaded_file($file["tmp_name"], $fullPath) ? $filename : false;
     }
 
-    public static function deleteFile($fileName)
+    public static function deleteFile(string $fileName): void
     {
         $fullPath = __DIR__ . "/../../../public/uploads/" . $fileName;
         if (file_exists($fullPath)) {
