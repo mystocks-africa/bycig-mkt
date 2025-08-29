@@ -34,10 +34,8 @@ class HoldingsController
 
         try {
             $id = filter_input(INPUT_POST, "id", FILTER_SANITIZE_NUMBER_INT);
-
             $this->holdingService->processSellOrder($id, $this->session->getSession()['email']);
             Controller::redirectToResult("Successfully deleted holdings", "success");
-
         } catch(Exception $error) {
             Controller::redirectToResult($error, "error");
         }

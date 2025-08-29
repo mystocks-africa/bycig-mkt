@@ -98,7 +98,6 @@ class ProposalController
             if (isset($file)) {
                 Files::deleteFile($fileName);
             }
-            
             Controller::redirectToResult($error->getMessage(), "error");
         }
     }
