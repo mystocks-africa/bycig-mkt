@@ -8,7 +8,7 @@ use PDO;
 class DbTemplate {
 
     private array $env;
-    private \PDO $pdo;
+    private PDO $pdo;
 
     public function __construct()
     {
