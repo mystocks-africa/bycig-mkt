@@ -29,7 +29,7 @@ class ProfileService
         $this->holdingRepository = new HoldingRepository($this->db->getPdo());
     }
 
-    public function getProfileData(string $email, string $activeTab = null): array
+    public function getProfileData(string $email, ?string $activeTab = null): array
     {
         // Supported tabs that do not need specialized logic 
         $otherSupportedTabs = [
