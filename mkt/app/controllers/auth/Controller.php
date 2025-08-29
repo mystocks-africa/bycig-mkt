@@ -8,13 +8,17 @@ include_once __DIR__ . "/../../core/auth/Cookie.php";
 include_once __DIR__ . "/../../core/mailer/VerificationCode.php";
 include_once __DIR__ . "/../../core/mailer/HTMLMessages.php";
 include_once __DIR__ . "/../../core/mailer/Mailer.php";
+include_once __DIR__ . "/../../core/auth/Guard.php";
+
 include_once __DIR__ . "/../../models/user/Entity.php";
 include_once __DIR__ . "/../../models/user/Repository.php";
 
 use App\Core\Controller;
 use App\Core\Session;
 use App\Core\VerificationCode;
+use App\Core\Auth\AuthGuard;
 use App\DbTemplate;
+
 use App\Models\Entity\UserEntity;
 use App\Models\Repository\UserRepository;
 use App\Core\Cookie;
@@ -36,13 +40,13 @@ class AuthController
 
     public function signIn()
     {
-        Controller::redirectIfAuth();
+        AuthGuard::redirectIfAuth($this->session);
         Controller::render('/auth/signin');
     }
 
     public function signUp()
     {
-        Controller::redirectIfAuth();
+        AuthGuard::redirectIfAuth($this->session);
         $clusterLeaders = $this->userRepository->findAllClusterLeaders();
 
         // O(n) is fine because cluster leaders will always be small
@@ -76,7 +80,7 @@ class AuthController
 
     public function processSignIn() 
     {
-        Controller::redirectIfAuth();
+        AuthGuard::redirectIfAuth($this->session);
 
         $email = trim(filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL));
         $pwd   = trim(filter_input(INPUT_POST, 'password', FILTER_SANITIZE_SPECIAL_CHARS));
@@ -94,7 +98,7 @@ class AuthController
 
     public function processSignUp() 
     {
-        Controller::redirectIfAuth();
+        AuthGuard::redirectIfAuth($this->session);
 
         try {
             $email        = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
@@ -122,7 +126,7 @@ class AuthController
     
     public function processSignOut() 
     {
-        Controller::redirectIfNotAuth();
+        AuthGuard::redirectIfNotAuth($this->session);
         $this->session->deleteSession();
         Cookie::clearSessionCookie();
         Controller::redirectToResult("Signed out successfully!", "success");
@@ -142,7 +146,7 @@ class AuthController
 
     public function processUpdatePwd() 
     {
-        Controller::redirectIfAuth();
+        AuthGuard::redirectIfAuth($this->session);
 
         $email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_EMAIL);
         $code = filter_input(INPUT_POST, "code", FILTER_SANITIZE_SPECIAL_CHARS);
