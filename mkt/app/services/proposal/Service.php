@@ -32,13 +32,13 @@ class ProposalService
 
     public function createProposal(
         string $email,
-        string $stockTicker,
-        string $stockName,
-        string $subjectLine,
-        string $thesis,
-        float $bidPrice,
-        int $shares,
-        string $proposalFile
+        ?string $stockTicker,
+        ?string $stockName,
+        ?string $subjectLine,
+        ?string $thesis,
+        ?float $bidPrice,
+        ?int $shares,
+        ?array $proposalFile
     ): void {
         $this->fileName = Files::uploadFile($proposalFile);
 
@@ -66,7 +66,7 @@ class ProposalService
         $this->proposalRepository->save($proposalEntity);
     }
 
-    public function deleteFileOnError(string $fileName): void
+    public function deleteFileOnError(?string $fileName): void
     {
         // Delete the file if there was an error to avoid orphaned files
         // We need to get the file from the server before deletion because sometimes the error happens before creation

@@ -28,7 +28,7 @@ class HoldingsController
         $this->holdingService = new HoldingService();
     }
 
-    public function sell()
+    public function sell(): void
     {
         $this->authGuard->redirectIfNotAuth();
 

@@ -22,7 +22,7 @@ class RedisTemplate
                 ]);
     }
 
-    public function getRedis()
+    public function getRedis(): Client
     {
         return $this->redis;
     }

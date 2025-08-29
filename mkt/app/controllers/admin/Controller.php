@@ -26,7 +26,7 @@ class AdminController
         $this->adminService = new AdminService();
     }
 
-    public function index()
+    public function index(): void
     {
         $this->authGuard->redirectIfNotAuth();
         $proposals = $this->adminService->getProposalsByClusterLeader($this->session->getSession()['email']);
@@ -35,7 +35,7 @@ class AdminController
         ]);
     }
 
-    public function handleProposalStatusPost() 
+    public function handleProposalStatusPost(): void 
     {
         $this->authGuard->redirectIfNotAuth();
 
@@ -52,7 +52,7 @@ class AdminController
         }
     }
 
-    public function deleteProposal()
+    public function deleteProposal(): void
     {
         $this->authGuard->redirectIfNotClusterLeader();
 
