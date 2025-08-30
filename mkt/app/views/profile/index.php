@@ -79,13 +79,11 @@
                         $investor = $holding["investor"];
                         $stockTicker = $holding["stock_ticker"];
                         $stockName = $holding["stock_name"];
-                        $proposalFile = $holding["proposal_file"];
                     ?>
                     <div key=<?= $id ?> class="card" style="text-decoration: none; color: black;">
                         <h3 class="truncate"><?= $stockName ?></h3>
                         <p><strong>Stock Ticker:</strong> <?= $stockTicker ?></p>
                         <p><strong>Investor:</strong> <?= $investor ?></p>
-                        <p><strong>File:</strong> <a class="underline-text" href="/uploads/<?= $proposalFile ?>"">click here</a></p>
 
                         <form class="sell-btn-wrapper" action="/holdings/buy" method="POST">
 
