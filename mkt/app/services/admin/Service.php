@@ -42,8 +42,6 @@ class AdminService
             }
 
             $this->proposalRepository->updateStatus($id, $clusterLeaderEmail, $status);
-
-
             if ($status == 'accept') {
                 $proposalWithUser = $this->proposalRepository->findById($id);
                 $holdingEntity = new HoldingEntity(
@@ -58,21 +56,11 @@ class AdminService
                 $this->holdingRepository->save($holdingEntity);
             }
 
+            $this->proposalRepository->delete($id, $clusterLeaderEmail);
             $this->db->getPdo()->commit();
         }
         catch (Exception $error) {
             $this->db->getPdo()->rollBack();
         }
-    }
-
-    public function deleteProposalById(int $id, string $email): void
-    {
-        $proposal = $this->proposalRepository->findById($id);
-            
-        if (empty($proposal)) {
-            throw new Exception("Proposal is not found. You are deleting something that doesn't exist");
-        }
-
-        $this->proposalRepository->delete($id, $email);
     }
 }
