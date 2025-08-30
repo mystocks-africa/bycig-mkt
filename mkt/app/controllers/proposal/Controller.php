@@ -14,6 +14,7 @@ use App\Core\Auth\AuthGuard;
 
 use App\Services\ProposalService;
 use Exception;
+use Stocks;
 
 class ProposalController
 {
@@ -31,7 +32,10 @@ class ProposalController
     public function submit(): void 
     {
         $this->authGuard->redirectIfNotAuth();
-        Controller::render("proposal/submit");
+        $supportedStocks = Stocks::getSupportedStocks();
+        Controller::render("proposal/submit", [
+            'supportedStocks' => $supportedStocks
+        ]);
     }
 
     public function submitPost(): void 
