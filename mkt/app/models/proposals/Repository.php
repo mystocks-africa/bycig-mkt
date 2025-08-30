@@ -11,7 +11,7 @@ class ProposalRepository
     private PDO $pdo;
 
     private string $getProposalByIdQuery = "
-        SELECT stock_ticker, stock_name, subject_line, thesis, bid_price, shares, status, proposal_file, full_name, email
+        SELECT stock_ticker, stock_name, subject_line, thesis, bid_price, shares, status, proposal_file, full_name, users.email
         FROM proposals 
         INNER JOIN users 
             ON proposals.post_author = users.email

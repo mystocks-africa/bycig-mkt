@@ -11,7 +11,6 @@ class HoldingEntity
     public int $shares;
     public string $proposal_file;
     public bool $fulfilled;
-    public int $bought_price;
 
     public function __construct(
         string $investor, 
@@ -21,7 +20,6 @@ class HoldingEntity
         int $shares, 
         string $proposal_file,
         bool $fulfilled = false,
-        int $bought_price = null
     )
     {
         $this->investor = $investor;
@@ -31,6 +29,5 @@ class HoldingEntity
         $this->shares = $shares;
         $this->proposal_file = $proposal_file;
         $this->fulfilled = $fulfilled;
-        $this->bought_price = $bought_price;
     }
 }

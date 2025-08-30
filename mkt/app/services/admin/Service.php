@@ -24,6 +24,7 @@ class AdminService
     {
         $this->db = new DbTemplate();
         $this->proposalRepository = new ProposalRepository($this->db->getPdo());
+        $this->holdingRepository = new HoldingRepository($this->db->getPdo());
     }
 
     public function getProposalsByClusterLeader(string $email): array
@@ -44,14 +45,14 @@ class AdminService
 
 
             if ($status == 'accept') {
-                $proposal = $this->proposalRepository->findById($id);
+                $proposalWithUser = $this->proposalRepository->findById($id);
                 $holdingEntity = new HoldingEntity(
-                    $proposal['post_author'],
-                    $proposal['stock_ticker'],
-                    $proposal['stock_name'],
-                    $proposal['bid_price'],
-                    $proposal['shares'],
-                    $proposal['proposal_file']
+                    $proposalWithUser['email'],
+                    $proposalWithUser['stock_ticker'],
+                    $proposalWithUser['stock_name'],
+                    $proposalWithUser['bid_price'],
+                    $proposalWithUser['shares'],
+                    $proposalWithUser['proposal_file']
                 );
 
                 $this->holdingRepository->save($holdingEntity);
