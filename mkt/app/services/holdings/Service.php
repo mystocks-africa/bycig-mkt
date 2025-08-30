@@ -64,7 +64,7 @@ class HoldingService
             if ($holding['investor'] != $user['email']) {
                 throw new Exception("This holding does not belong to you");
             }
-            
+
             $newBalance = $user['balance'] - $this->getStockPrice($holding['stock_symbol']); 
 
             if ($newBalance < 0) {
@@ -100,7 +100,7 @@ class HoldingService
             $newBalance = $user['balance'] + $this->getStockPrice($holding['stock_symbol']);
             
             $this->userRepository->updateBalance($newBalance, $email);
-            $this->holdingRepository->delete($id, $email); // added email query for extra protection
+            $this->holdingRepository->delete($id); 
 
             $this->db->getPdo()->commit();
         } catch(Exception $error) {
