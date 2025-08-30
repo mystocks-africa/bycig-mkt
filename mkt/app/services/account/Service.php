@@ -9,6 +9,7 @@ include_once __DIR__ . "/../../models/user/Repository.php";
 use App\DbTemplate;
 use App\Models\Repository\HoldingRepository;
 use App\Models\Repository\UserRepository;
+use Exception;
 
 class AccountService 
 {
@@ -23,8 +24,11 @@ class AccountService
         $this->userRepository = new UserRepository($this->db->getPdo());
     }
 
-    public function getUserInfo(string $email): array
+    public function getUserInfo(?string $email): array
     {
+        if (!$email) {
+            throw new Exception("Email is not given");
+        }
         $holdings = $this->holdingRepository->findByEmail($email);
         $user = $this->userRepository->findByEmail($email);
         return [
