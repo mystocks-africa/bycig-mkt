@@ -126,7 +126,7 @@
     </div>
 
     </div>
-
+    <!-- JS needs DOM to be fully loaded before running its code -->
     <script src="/static/js/profile.js"></script>
 </body>
 </html>
