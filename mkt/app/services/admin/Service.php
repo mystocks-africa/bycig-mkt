@@ -41,7 +41,6 @@ class AdminService
                     throw new Exception('Status is not properly formatted');
             }
 
-            $this->proposalRepository->updateStatus($id, $clusterLeaderEmail, $status);
             if ($status == 'accept') {
                 $proposalWithUser = $this->proposalRepository->findById($id);
                 $holdingEntity = new HoldingEntity(

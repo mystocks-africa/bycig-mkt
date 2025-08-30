@@ -94,12 +94,6 @@ class ProposalRepository
         return $stmt->fetchAll();
     }
 
-    public function updateStatus(int $postId, string $clusterLeaderEmail, string $status): bool
-    {
-        $stmt = $this->pdo->prepare($this->updateProposalStatusQuery);
-        return $stmt->execute([$status, $postId, $clusterLeaderEmail]);
-    }
-
     public function delete(int $postId, string $clusterLeaderEmail): void
     {
         $stmt = $this->pdo->prepare($this->deleteProposalQuery);
