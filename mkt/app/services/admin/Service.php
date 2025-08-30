@@ -34,9 +34,9 @@ class AdminService
 
     public function processProposalDecision(string $id, string $clusterLeaderEmail, string $status): void 
     {
-        $this->db->getPdo()->beginTransaction();
-
         try {
+            $this->db->getPdo()->beginTransaction();
+
             if ($status != 'accept' && $status != 'decline') {
                     throw new Exception('Status is not properly formatted');
             }
@@ -48,18 +48,22 @@ class AdminService
                     $proposalWithUser['stock_ticker'],
                     $proposalWithUser['stock_name'],
                     $proposalWithUser['bid_price'],
-                    $proposalWithUser['shares'],
-                    $proposalWithUser['proposal_file']
+                    $proposalWithUser['shares']
                 );
 
                 $this->holdingRepository->save($holdingEntity);
             }
 
             $this->proposalRepository->delete($id, $clusterLeaderEmail);
-            $this->db->getPdo()->commit();
+
+            if ($this->db->getPdo()->inTransaction()) {
+                $this->db->getPdo()->commit();
+            }
         }
         catch (Exception $error) {
-            $this->db->getPdo()->rollBack();
+            if ($this->db->getPdo()->inTransaction()) {
+                $this->db->getPdo()->rollBack();
+            }
             throw $error;
         }
     }

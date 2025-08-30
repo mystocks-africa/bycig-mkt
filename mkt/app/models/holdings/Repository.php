@@ -80,7 +80,7 @@ class HoldingRepository
             $holding->stock_ticker,
             $holding->stock_name,
             $holding->bid_price,
-            $holding->shares, 
+            $holding->shares
         ]);
         $this->pdo->commit();
     }

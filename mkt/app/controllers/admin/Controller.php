@@ -48,7 +48,7 @@ class AdminController
 
             Controller::redirectToResult('Posted proposal successfully', 'success');
         } catch (Exception $error) {
-            Controller::redirectToResult('Error in posting proposal', 'error');
+            Controller::redirectToResult($error->getMessage(), 'error');
         }
     }
 }
