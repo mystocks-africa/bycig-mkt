@@ -33,26 +33,36 @@ class AdminService
 
     public function processProposalDecision(string $postId, string $clusterLeaderEmail, string $status): void 
     {
-        if ($status != 'accept' && $status != 'decline') {
-                throw new Exception('Status is not properly formatted');
+        $this->db->getPdo()->beginTransaction();
+
+        try {
+            if ($status != 'accept' && $status != 'decline') {
+                    throw new Exception('Status is not properly formatted');
+            }
+
+            $this->proposalRepository->updateStatus($postId, $clusterLeaderEmail, $status);
+
+
+            if ($status == 'accept') {
+                $proposal = $this->proposalRepository->findById($postId);
+                $holdingEntity = new HoldingEntity(
+                    $proposal['email'],
+                    $proposal['stock_ticker'],
+                    $proposal['stock_name'],
+                    $proposal['bid_price'],
+                    $proposal['shares'],
+                    $proposal['proposal_file']
+                );
+
+                $this->holdingRepository->save($holdingEntity);
+            }
+
+            $this->db->getPdo()->commit();
+        }
+        catch (Exception $error) {
+            $this->db->getPdo()->rollBack();
         }
 
-        $this->proposalRepository->updateStatus($postId, $clusterLeaderEmail, $status);
-
-
-        if ($status == 'accept') {
-            $proposal = $this->proposalRepository->findById($postId);
-            $holdingEntity = new HoldingEntity(
-                $proposal['email'],
-                $proposal['stock_ticker'],
-                $proposal['stock_name'],
-                $proposal['bid_price'],
-                $proposal['shares'],
-                $proposal['proposal_file']
-            );
-
-            $this->holdingRepository->save($holdingEntity);
-        }
     }
 
     public function deleteProposalById(int $postId, string $email): void
