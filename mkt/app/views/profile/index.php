@@ -117,7 +117,7 @@
             All your profile data and holdings will be lost.
         </p>
         <button type="submit" class="delete-button" onclick="handleDeleteUser()">
-                Delete My Account
+            Delete My Account
         </button>
         <p class="cancel-text">
             Changed your mind? <a href="/profile?tab=info">Go back to profile</a>
