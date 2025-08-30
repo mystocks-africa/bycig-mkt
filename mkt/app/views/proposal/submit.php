@@ -9,7 +9,7 @@
 <body>
     <div class="hero-section">
         <h1>Submit proposal</h1>
-        <p>This proposal will be sent to your cluster leader. If they agree to it, a holding will be added and a limit order for 5 days will be placed.</p>
+        <p>This proposal will be sent to your cluster leader. If they agree to it, a holding will be added and you can purchase that holding whenever you wish.</p>
     <br>
     </div>
     <form method="post" enctype="multipart/form-data" action="/proposals/submit" novalidate>
