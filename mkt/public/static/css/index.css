@@ -437,20 +437,9 @@ button:disabled {
 
 .big-bold-black-text {
   color: var(--text-main);
-  font-size: 1.1rem;
+  font-size: 1.3rem;
   font-weight: 600;
   cursor: pointer;
-  padding: 1rem 0;
-  border-bottom: 1px solid var(--gray-border);
-  transition: all 0.2s ease;
-  display: block;
-}
-
-.big-bold-black-text:hover {
-  color: var(--accent);
-  background-color: var(--hover-bg);
-  padding-left: 0.5rem;
-  border-left: 3px solid var(--accent);
 }
 
 .big-bold-black-text:last-child {
