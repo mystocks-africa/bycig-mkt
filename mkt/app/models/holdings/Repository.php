@@ -30,7 +30,8 @@ class HoldingRepository
             id,
             stock_ticker,
             stock_name,
-            investor
+            investor,
+            fulfilled
         FROM holdings
         WHERE investor = ?;
     ";
