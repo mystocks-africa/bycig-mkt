@@ -12,10 +12,10 @@ include_once __DIR__ . "/../../services/proposal/Service.php";
 use App\Core\Controller;
 use App\Core\Session;
 use App\Core\Auth\AuthGuard;
+use App\Core\Stocks;
 
 use App\Services\ProposalService;
 use Exception;
-use Stocks;
 
 class ProposalController
 {

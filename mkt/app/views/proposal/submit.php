@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BYCIG Stock Proposal Submission</title>
-    <link rel="stylesheet" href="/static/css/index.css" >
+    <link rel="stylesheet" href="/static/css/index.css">
 </head>
 <body>
     <div class="hero-section">
@@ -13,21 +13,18 @@
     <br>
     </div>
     <form method="post" enctype="multipart/form-data" action="/proposals/submit" novalidate>
-        <label for="stock_ticker">Your Stock Ticker:</label>
-        <select name="stock_ticker" id="customStock" required>
+        <label for="stock_ticker">Your Stock:</label>
+        <select name="stock_ticker" id="custom_stock" required>
             <option value="" disabled selected>Select a stock</option>
-            <? foreach($supportedStocks as $supportedStock): ?>
-                <option value="<?= $supportedStock ?>">
-                    <?= $supportedStock ?>
+            <? foreach($supportedStocks as $ticker => $name): ?>
+                <option value="<?= $ticker ?>" data-stock-name="<?= $name ?>">
+                    <?= $name ?>
                 </option>
             <? endforeach; ?>
         </select>
         <br><br>
 
-
-        <label for="stock_name">Stock Name:</label><br>
-        <input type="text" id="stock_name" name="stock_name" maxlength="255" required>
-        <br><br>
+        <input type="text" id="stock_name" name="stock_name" value="" required style="display:none;">
 
         <label for="subject_line">Subject Line:</label><br>
         <input type="text" id="subject_line" name="subject_line" maxlength="255" required>
@@ -51,5 +48,7 @@
 
         <button type="submit">Submit Proposal</button>
     </form>
+
+    <script src="/static/js/submit.js"></script>
 </body>
 </html>

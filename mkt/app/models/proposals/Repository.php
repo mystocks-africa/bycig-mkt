@@ -68,6 +68,7 @@ class ProposalRepository
             $proposal->shares,
             $proposal->proposal_file,
         ]);
+        $this->pdo->commit();
     }
 
     public function findById(int $id): mixed
@@ -88,5 +89,6 @@ class ProposalRepository
     {
         $stmt = $this->pdo->prepare($this->deleteProposalQuery);
         $stmt->execute([$postId, $clusterLeaderEmail]);
+        $this->pdo->commit();
     }
 }
