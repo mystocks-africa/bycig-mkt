@@ -82,6 +82,7 @@ class HoldingRepository
             $holding->bid_price,
             $holding->shares, 
         ]);
+        $this->pdo->commit();
     }
 
     public function findAll(): array
@@ -115,6 +116,7 @@ class HoldingRepository
         $stmt->execute([
             $id,
         ]);
+        $this->pdo->commit();
     }
 
     public function deleteAllHoldings(string $email): void
@@ -125,6 +127,7 @@ class HoldingRepository
         $stmt->execute([
             $email
         ]);
+        $this->pdo->commit();
     }
 
     public function fulfillOrder(int $id): void
@@ -133,5 +136,6 @@ class HoldingRepository
         $stmt->execute([
             $id
         ]);
+        $this->pdo->commit();
     }
 }

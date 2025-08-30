@@ -92,6 +92,8 @@ class UserRepository
                 $user->fullName
             ]);
         }
+
+        $this->pdo->commit();
     }
 
     public function findByEmail(string $email): array|false
@@ -115,6 +117,7 @@ class UserRepository
             $newPwd, 
             $email
         ]);
+        $this->pdo->commit();
     }
 
     public function updateBalance(float $newBalance, string $email): void 
@@ -124,6 +127,7 @@ class UserRepository
             $newBalance, 
             $email
         ]);
+        $this->pdo->commit();
     }
 
     public function delete(string $email): void
@@ -132,6 +136,7 @@ class UserRepository
         $stmt->execute([
             $email
         ]);
+        $this->pdo->commit();
     }
 
     public function update(string $email, array $fields, array $params): void
@@ -141,5 +146,6 @@ class UserRepository
         
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($params);
+        $this->pdo->commit();
     }
 }
