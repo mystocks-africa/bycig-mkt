@@ -38,7 +38,7 @@ class ProposalService
         string $thesis,
         float $bidPrice,
         int $shares,
-        string $proposalFile
+        array $proposalFile
     ): void {
         $this->fileName = Files::uploadFile($proposalFile);
 

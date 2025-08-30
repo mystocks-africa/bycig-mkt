@@ -34,7 +34,7 @@
         <br><br>
 
         <label for="number">Amount of shares to be bought:</label><br>
-        <input type="number" id="shares" name="Shares" required>
+        <input type="number" id="shares" name="shares" required>
         <br><br>
 
         <label for="proposal_file">Upload Proposal (PDF only, max 5MB):</label><br>
