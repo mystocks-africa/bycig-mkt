@@ -80,12 +80,14 @@
                         $stockTicker = $holding["stock_ticker"];
                         $stockName = $holding["stock_name"];
                         $fulfilled = $holding["fulfilled"];
+                        $shares = $holding['shares'];
                     ?>
                     <div key=<?= $id ?> class="card" style="text-decoration: none; color: black;">
                         <h3 class="truncate"><?= $stockName ?></h3>
                         <p><strong>Stock Ticker:</strong> <?= $stockTicker ?></p>
                         <p><strong>Investor:</strong> <?= $investor ?></p>
-                        <p><strong>Fulfilled:</strong><?= $fulfilled ? 'yes' : 'no' ?></p>
+                        <p><strong>Fulfilled:</strong> <?= $fulfilled ? ' yes' : ' no' ?></p>
+                        <p><strong>Shares:</strong> <?= $shares ?></p>
                         <? if ($fulfilled): ?>
                                 <form class="sell-btn-wrapper" action="/holdings/sell" method="POST">
                                     <input name="email" value="<?= $investor ?>" style="display:none;">

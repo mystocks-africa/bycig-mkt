@@ -31,7 +31,8 @@ class HoldingRepository
             stock_ticker,
             stock_name,
             investor,
-            fulfilled
+            fulfilled,
+            shares
         FROM holdings
         WHERE investor = ?;
     ";
