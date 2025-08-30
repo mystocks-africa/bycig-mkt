@@ -13,9 +13,17 @@
     <br>
     </div>
     <form method="post" enctype="multipart/form-data" action="/proposals/submit" novalidate>
-        <label for="customStock">Your Stock Ticker:</label>
-        <input type="text" name="stock_ticker" placeholder="e.g. AAPL, TSLA" maxlength="10">
+        <label for="stock_ticker">Your Stock Ticker:</label>
+        <select name="stock_ticker" id="customStock" required>
+            <option value="" disabled selected>Select a stock</option>
+            <? foreach($supportedStocks as $supportedStock): ?>
+                <option value="<?= $supportedStock ?>">
+                    <?= $supportedStock ?>
+                </option>
+            <? endforeach; ?>
+        </select>
         <br><br>
+
 
         <label for="stock_name">Stock Name:</label><br>
         <input type="text" id="stock_name" name="stock_name" maxlength="255" required>

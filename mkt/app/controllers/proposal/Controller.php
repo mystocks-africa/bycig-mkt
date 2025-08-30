@@ -5,6 +5,7 @@ namespace App\Controllers;
 include_once __DIR__ . "/../../core/controller/Controller.php";
 include_once __DIR__ . "/../../core/auth/Session.php";
 include_once __DIR__ . "/../../core/auth/Guard.php";
+include_once __DIR__ . "/../../core/stocks/Stocks.php";
 
 include_once __DIR__ . "/../../services/proposal/Service.php";
 
