@@ -60,6 +60,11 @@ class HoldingService
             }
 
             $user = $this->userRepository->findByEmail($email);
+
+            if ($holding['investor'] != $user['email']) {
+                throw new Exception("This holding does not belong to you");
+            }
+            
             $newBalance = $user['balance'] - $this->getStockPrice($holding['stock_symbol']); 
 
             if ($newBalance < 0) {
@@ -87,6 +92,11 @@ class HoldingService
             }
 
             $user = $this->userRepository->findByEmail($email);
+
+            if ($holding['investor'] != $user['email']) {
+                throw new Exception("This holding does not belong to you.");
+            }
+
             $newBalance = $user['balance'] + $this->getStockPrice($holding['stock_symbol']);
             
             $this->userRepository->updateBalance($newBalance, $email);
