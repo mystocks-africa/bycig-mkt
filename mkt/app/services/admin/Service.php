@@ -31,7 +31,7 @@ class AdminService
         return $this->proposalRepository->findByClusterLeader($email);
     }
 
-    public function processProposalDecision(string $postId, string $clusterLeaderEmail, string $status): void 
+    public function processProposalDecision(string $id, string $clusterLeaderEmail, string $status): void 
     {
         $this->db->getPdo()->beginTransaction();
 
@@ -40,11 +40,11 @@ class AdminService
                     throw new Exception('Status is not properly formatted');
             }
 
-            $this->proposalRepository->updateStatus($postId, $clusterLeaderEmail, $status);
+            $this->proposalRepository->updateStatus($id, $clusterLeaderEmail, $status);
 
 
             if ($status == 'accept') {
-                $proposal = $this->proposalRepository->findById($postId);
+                $proposal = $this->proposalRepository->findById($id);
                 $holdingEntity = new HoldingEntity(
                     $proposal['email'],
                     $proposal['stock_ticker'],
@@ -65,14 +65,14 @@ class AdminService
 
     }
 
-    public function deleteProposalById(int $postId, string $email): void
+    public function deleteProposalById(int $id, string $email): void
     {
-        $proposal = $this->proposalRepository->findById($postId);
+        $proposal = $this->proposalRepository->findById($id);
             
         if (empty($proposal)) {
             throw new Exception("Proposal is not found. You are deleting something that doesn't exist");
         }
 
-        $this->proposalRepository->delete($postId, $email);
+        $this->proposalRepository->delete($id, $email);
     }
 }
