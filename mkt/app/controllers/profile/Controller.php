@@ -35,7 +35,7 @@ class ProfileController
             $data = $this->profileService->getProfileData($this->session->getSession()['email'], $activeTab);
             Controller::render('profile/index', $data);
         } catch (Exception $error) {
-            Controller::redirectToResult($error, "error");
+            Controller::redirectToResult($error->getMessage(), "error");
         }
     }
 
@@ -46,7 +46,7 @@ class ProfileController
             $this->profileService->deleteProfile($this->session->getSession()['email'], $this->session);
             Controller::redirectToResult("Successfully deleted user", "success");
         } catch (Exception $error) {
-            Controller::redirectToResult($error, "error");
+            Controller::redirectToResult($error->getMessage(), "error");
         }
     }
 
@@ -68,7 +68,7 @@ class ProfileController
             );
             Controller::redirectToResult("Updated user data", "success");
         } catch (Exception $error) {
-            Controller::redirectToResult($error, "error");
+            Controller::redirectToResult($error->getMessage(), "error");
         }
     }
 }
