@@ -44,14 +44,6 @@ class ProposalRepository
         WHERE authors.cluster_leader = ?;
     ";
 
-    private string $updateProposalStatusQuery = "
-        UPDATE proposals
-        INNER JOIN users ON proposals.post_author = users.email
-        SET proposals.status = ?
-        WHERE proposals.post_id = ? 
-        AND users.cluster_leader = ?;
-    ";
-
     private string $deleteProposalQuery = "
         DELETE proposals 
         FROM proposals
