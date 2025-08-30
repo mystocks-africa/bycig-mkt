@@ -46,7 +46,7 @@ class AdminService
             if ($status == 'accept') {
                 $proposal = $this->proposalRepository->findById($id);
                 $holdingEntity = new HoldingEntity(
-                    $proposal['email'],
+                    $proposal['post_author'],
                     $proposal['stock_ticker'],
                     $proposal['stock_name'],
                     $proposal['bid_price'],
@@ -62,7 +62,6 @@ class AdminService
         catch (Exception $error) {
             $this->db->getPdo()->rollBack();
         }
-
     }
 
     public function deleteProposalById(int $id, string $email): void
