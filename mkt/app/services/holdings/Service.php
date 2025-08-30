@@ -76,7 +76,6 @@ class HoldingService
             }
 
             $newBalance = $user['balance'] - $stockPrice;
-            echo $newBalance;
             $this->userRepository->updateBalance($newBalance, $email);
 
             $this->userRepository->updateBalance($newBalance, $email);
