@@ -53,10 +53,10 @@ class HoldingService
 
     // We need a try-catch block here so that the ACID transaction rollbacks (reverts) gracefully
     public function processBuyOrder(int $id, string $email): void
-    {
-        $this->db->getPdo()->beginTransaction();
-         
-        try {
+    {         
+        try {        
+            $this->db->getPdo()->beginTransaction();
+
             $holding = $this->holdingRepository->findById($id);
 
             if ($holding['fulfilled']) {
@@ -79,18 +79,22 @@ class HoldingService
             $this->userRepository->updateBalance($newBalance, $email);
             $this->holdingRepository->fulfillOrder($id);
 
-            $this->db->getPdo()->commit();
+            if ($this->db->getPdo()->inTransaction()) {
+                $this->db->getPdo()->commit();
+            }        
         } catch(Exception $error) {
-            $this->db->getPdo()->rollBack();
+            if ($this->db->getPdo()->inTransaction()) {
+                $this->db->getPdo()->rollBack();
+            }            
             throw $error;
         }
     }
 
     public function processSellOrder(int $id, string $email): void
-    {
-        $this->db->getPdo()->beginTransaction();
-         
+    {         
         try {
+            $this->db->getPdo()->beginTransaction();
+
             $holding = $this->holdingRepository->findById($id);
 
             if (!$holding['fulfilled']) {
@@ -109,9 +113,13 @@ class HoldingService
             $this->userRepository->updateBalance($newBalance, $email);
             $this->holdingRepository->delete($id); 
 
-            $this->db->getPdo()->commit();
+            if ($this->db->getPdo()->inTransaction()) {
+                $this->db->getPdo()->commit();
+            }
         } catch(Exception $error) {
-            $this->db->getPdo()->rollBack();
+            if ($this->db->getPdo()->inTransaction()) {
+                $this->db->getPdo()->rollBack();
+            }            
             throw $error;
         }
     }
