@@ -67,9 +67,6 @@
         </form>
     </div>
 
-
-
-    
     <div id="user-holdings">
         <div id="grid-container">
         <?php if (!empty($holdings)): ?>
