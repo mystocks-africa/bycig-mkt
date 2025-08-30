@@ -19,7 +19,7 @@ class HomeService
         $this->holdingRepository = new HoldingRepository($this->db->getPdo());
     }
 
-    public function getAllHoldings()
+    public function getAllHoldings(): array
     {
        return $this->holdingRepository->findAll();
     }

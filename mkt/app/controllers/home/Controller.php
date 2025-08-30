@@ -26,7 +26,7 @@ class HomeController
         $this->homeService = new HomeService();
     }
 
-    public function index()
+    public function index(): void
     { 
         $this->authGuard->redirectIfNotAuth();
         $holdings = $this->homeService->getAllHoldings();  
@@ -35,13 +35,13 @@ class HomeController
         ]);    
     }
 
-    public function favicon()
+    public function favicon(): void
     {
         $this->authGuard->redirectIfNotAuth();
         Controller::render('favicon');
     }
 
-    public function redirect() {
+    public function redirect(): void {
         Controller::render('redirect');
     }
 }

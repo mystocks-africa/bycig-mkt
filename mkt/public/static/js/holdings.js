@@ -11,6 +11,17 @@ function handleDeleteHolding(id) {
                 'Content-Type': 'application/json'
             }
         })
+        .then(response => {
+            if (response.redirected) {
+                window.location.href = response.url;
+                return;
+            }
+            if (!response.ok) {
+                return response.text().then(text => {
+                    throw new Error(`Server error: ${response.status} - ${text}`);
+                });
+            }
+        })
         .catch(error => {
             window.location.href = `/redirect?message=${encodeURIComponent(error.message)}&message_type=error`;
         });

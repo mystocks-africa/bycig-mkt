@@ -70,14 +70,14 @@ class ProposalRepository
         ]);
     }
 
-    public function findById(int $id)
+    public function findById(int $id): mixed
     {
         $stmt = $this->pdo->prepare($this->getProposalByIdQuery);
         $stmt->execute([$id]);
         return $stmt->fetch();
     }
 
-    public function findByClusterLeader(string $clusterLeaderEmail)
+    public function findByClusterLeader(string $clusterLeaderEmail): array
     {
         $stmt = $this->pdo->prepare($this->findProposalByClusterLeaderQuery);
         $stmt->execute([$clusterLeaderEmail]);

@@ -26,7 +26,7 @@ class ProfileController
         $this->profileService = new ProfileService();
     }
 
-    public function index() 
+    public function index(): void 
     {
         $this->authGuard->redirectIfNotAuth();
 
@@ -39,7 +39,7 @@ class ProfileController
         }
     }
 
-    public function deleteUser() 
+    public function deleteUser(): void 
     {
         $this->authGuard->redirectIfNotAuth();
         try {

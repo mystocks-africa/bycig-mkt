@@ -17,7 +17,7 @@ class Session
         $this->redis = new RedisTemplate();
     }
 
-    public function getSession() {
+    public function getSession(): array|bool {
         $sessionIdCookie = Cookie::getSessionCookie();
 
         $session = $this->redis->getRedis()->get($sessionIdCookie);
@@ -34,7 +34,7 @@ class Session
         ];
     }
 
-    public function setSession(string $email, string $role) 
+    public function setSession(string $email, string $role): string 
     {       
         $EXPIRATION_DAYS = 60*60*24*30; // 30 days in seconds
         $sessionId = bin2hex(random_bytes(32));

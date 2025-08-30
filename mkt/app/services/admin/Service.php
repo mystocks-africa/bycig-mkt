@@ -61,5 +61,4 @@ class AdminService
         catch (Exception $error) {
             $this->db->getPdo()->rollBack();
         }
-    }
 }
