@@ -24,6 +24,7 @@ class AdminService
     {
         $this->db = new DbTemplate();
         $this->proposalRepository = new ProposalRepository($this->db->getPdo());
+        $this->holdingRepository = new HoldingRepository($this->db->getPdo());
     }
 
     public function getProposalsByClusterLeader(string $email): array
@@ -31,38 +32,39 @@ class AdminService
         return $this->proposalRepository->findByClusterLeader($email);
     }
 
-    public function processProposalDecision(?int $postId, ?string $clusterLeaderEmail, ?string $status): void 
+    public function processProposalDecision(string $id, string $clusterLeaderEmail, string $status): void 
     {
-        if ($status != 'accept' && $status != 'decline') {
-                throw new Exception('Status is not properly formatted');
+        try {
+            $this->db->getPdo()->beginTransaction();
+
+            if ($status != 'accept' && $status != 'decline') {
+                    throw new Exception('Status is not properly formatted');
+            }
+
+            if ($status == 'accept') {
+                $proposalWithUser = $this->proposalRepository->findById($id);
+                $holdingEntity = new HoldingEntity(
+                    $proposalWithUser['email'],
+                    $proposalWithUser['stock_ticker'],
+                    $proposalWithUser['stock_name'],
+                    $proposalWithUser['bid_price'],
+                    $proposalWithUser['shares']
+                );
+
+                $this->holdingRepository->save($holdingEntity);
+            }
+
+            $this->proposalRepository->delete($id, $clusterLeaderEmail);
+
+            if ($this->db->getPdo()->inTransaction()) {
+                $this->db->getPdo()->commit();
+            }
         }
-
-        $this->proposalRepository->updateStatus($postId, $clusterLeaderEmail, $status);
-
-
-        if ($status == 'accept') {
-            $proposal = $this->proposalRepository->findById($postId);
-            $holdingEntity = new HoldingEntity(
-                $proposal['email'],
-                $proposal['stock_ticker'],
-                $proposal['stock_name'],
-                $proposal['bid_price'],
-                $proposal['target_price'],
-                $proposal['proposal_file']
-            );
-
-            $this->holdingRepository->save($holdingEntity);
+        catch (Exception $error) {
+            if ($this->db->getPdo()->inTransaction()) {
+                $this->db->getPdo()->rollBack();
+            }
+            throw $error;
         }
-    }
-
-    public function deleteProposalById(?int $postId, string $email): void
-    {
-        $proposal = $this->proposalRepository->findById($postId);
-            
-        if (empty($proposal)) {
-            throw new Exception("Proposal is not found. You are deleting something that doesn't exist");
-        }
-
-        $this->proposalRepository->delete($postId, $email);
     }
 }

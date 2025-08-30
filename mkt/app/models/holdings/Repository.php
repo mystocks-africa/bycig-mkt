@@ -12,8 +12,8 @@ class HoldingRepository
 
     private string $insertHoldingQuery = "
         INSERT INTO holdings 
-        (investor, stock_ticker, stock_name, bid_price, target_price, proposal_file) 
-        VALUES (?, ?, ?, ?, ?, ?)
+        (investor, stock_ticker, stock_name, bid_price, shares) 
+        VALUES (?, ?, ?, ?, ?);
     ";
     
     private string $findAllHoldingsQuery = "
@@ -21,9 +21,8 @@ class HoldingRepository
             id,
             stock_ticker,
             stock_name,
-            investor,
-            proposal_file
-        FROM holdings
+            investor
+        FROM holdings;
     ";
 
     private string $findByEmailQuery = "
@@ -31,17 +30,17 @@ class HoldingRepository
             id,
             stock_ticker,
             stock_name,
-            investor, 
-            proposal_file
+            investor,
+            fulfilled,
+            shares
         FROM holdings
-        WHERE investor = ?
+        WHERE investor = ?;
     ";
 
     private string $deleteHoldingQuery = "
         DELETE 
         FROM holdings 
-        WHERE id = ? 
-        AND investor = ?
+        WHERE id = ?;
     ";
 
     private string $findByIdQuery = "
@@ -50,15 +49,23 @@ class HoldingRepository
             stock_ticker,
             stock_name,
             investor,
-            proposal_file,
-            bid_price
+            bid_price,
+            fulfilled,
+            shares
         FROM holdings
-        WHERE id = ?
+        WHERE id = ?;
     ";
 
     private string $deleteAllHoldingsQuery = "
-        DELETE FROM holdings 
+        DELETE 
+        FROM holdings 
         WHERE investor = ?;
+    ";
+
+    private string $updateFulfillOrder = "
+        UPDATE holdings 
+        SET fulfilled = true
+        WHERE id = ?;
     ";
 
     public function __construct(PDO $pdo) 
@@ -74,9 +81,9 @@ class HoldingRepository
             $holding->stock_ticker,
             $holding->stock_name,
             $holding->bid_price,
-            $holding->target_price, 
-            $holding->proposal_file
+            $holding->shares
         ]);
+        $this->pdo->commit();
     }
 
     public function findAll(): array
@@ -86,7 +93,7 @@ class HoldingRepository
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function findByEmail($email): array 
+    public function findByEmail(string $email): array 
     {
         $stmt = $this->pdo->prepare($this->findByEmailQuery);
         $stmt->execute([
@@ -95,7 +102,7 @@ class HoldingRepository
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function findById($id): mixed 
+    public function findById(int $id): mixed 
     {
         $stmt = $this->pdo->prepare($this->findByIdQuery);
         $stmt->execute([
@@ -104,18 +111,32 @@ class HoldingRepository
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function delete(int $id, string $email): void
+    public function delete(int $id): void
     {
         $stmt = $this->pdo->prepare($this->deleteHoldingQuery);
-        $stmt->execute([$id, $email]);
+        $stmt->execute([
+            $id,
+        ]);
+        $this->pdo->commit();
     }
 
     public function deleteAllHoldings(string $email): void
-    {        $stmt = $this->pdo->prepare($this->deleteAllHoldingsQuery);
+    {        
+        $stmt = $this->pdo->prepare($this->deleteAllHoldingsQuery);
 
         // The investor field is a foriegn key to user's email (primary key of user)
         $stmt->execute([
             $email
         ]);
+        $this->pdo->commit();
+    }
+
+    public function fulfillOrder(int $id): void
+    {
+        $stmt = $this->pdo->prepare($this->updateFulfillOrder);
+        $stmt->execute([
+            $id
+        ]);
+        $this->pdo->commit();
     }
 }

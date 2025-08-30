@@ -56,8 +56,8 @@ class AuthController
             $pwd   = trim(filter_input(INPUT_POST, 'password', FILTER_SANITIZE_SPECIAL_CHARS));
             $this->authService->validateUserAccount($email, $pwd, $this->session);
             Controller::redirectToResult("Successfully logged in", "success");
-        } catch (Exception $e) {
-            Controller::redirectToResult("Invalid email or password", "error");
+        } catch (Exception $error) {
+            Controller::redirectToResult($error->getMessage(), "error");
         }
     }
 
@@ -70,8 +70,8 @@ class AuthController
             $fullName     = filter_input(INPUT_POST, 'full_name', FILTER_SANITIZE_SPECIAL_CHARS);
             $this->authService->createUserAccount($email, $pwd, $clusterLeader, $fullName);
             Controller::redirectToResult("User has been created. You may sign in now.", "success");
-        } catch (Exception $e) {
-            Controller::redirectToResult("There has been an error in signing up.", "error");
+        } catch (Exception $error) {
+            Controller::redirectToResult($error->getMessage(), "error");
         }
     }
 
@@ -80,8 +80,8 @@ class AuthController
         try {
             $this->authService->deleteSession($this->session);
             Controller::redirectToResult("Signed out successfully!", "success");
-        } catch (Exception $e) {
-            Controller::redirectToResult("There was a problem signing out. Try again.", "error");
+        } catch (Exception $error) {
+            Controller::redirectToResult($error->getMessage(), "error");
         }
     }
 
@@ -90,8 +90,8 @@ class AuthController
             $email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_EMAIL);
             $this->authService->sendForgotPwdCode($email);
             Controller::redirectToResult("Sent the code to your email", "success");
-        } catch (Exception $e) {
-            Controller::redirectToResult("Failed to send the code. Try again.", "error");
+        } catch (Exception $error) {
+            Controller::redirectToResult($error->getMessage(), "error");
         }
     }
 
@@ -103,8 +103,8 @@ class AuthController
             $newPwd = filter_input(INPUT_POST, "pwd", FILTER_SANITIZE_SPECIAL_CHARS);
             $this->authService->validateForgotPwdCode($email, $code, $newPwd);
             Controller::redirectToResult("Updated your password successfully", "success");
-        } catch (Exception $e) {
-            Controller::redirectToResult("Failed to update password", "error");
+        } catch (Exception $error) {
+            Controller::redirectToResult($error->getMessage(), "error");
         }
     }
 }

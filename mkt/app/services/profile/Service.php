@@ -64,17 +64,19 @@ class ProfileService
 
     public function deleteProfile(string $email, Session $session): void
     {
-        $pdo = $this->db->getPdo();
-        $pdo->beginTransaction();
-
         try {
+            $this->db->getPdo()->beginTransaction();
             $this->userRepository->delete($email);
             $this->holdingRepository->deleteAllHoldings($email);
             $session->deleteSession();
             Cookie::clearSessionCookie();
-            $pdo->commit();
+            if ($this->db->getPdo()->inTransaction()) {
+                $this->db->getPdo()->commit();
+            }
         } catch (Exception $error) {
-            $pdo->rollBack();
+            if ($this->db->getPdo()->inTransaction()) {
+                $this->db->getPdo()->rollBack();
+            }
             throw $error;
         }
     }

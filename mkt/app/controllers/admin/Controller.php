@@ -48,20 +48,7 @@ class AdminController
 
             Controller::redirectToResult('Posted proposal successfully', 'success');
         } catch (Exception $error) {
-            Controller::redirectToResult('Error in posting proposal', 'error');
-        }
-    }
-
-    public function deleteProposal(): void
-    {
-        $this->authGuard->redirectIfNotClusterLeader();
-
-        try {
-            $postId = filter_input(INPUT_GET, 'post_id', FILTER_SANITIZE_NUMBER_INT);
-            $this->adminService->deleteProposalById($postId, $this->session->getSession()['email']);
-            Controller::redirectToResult('Deleted proposal successfully', 'success');
-        } catch(Exception $error) {
-            Controller::redirectToResult('Error in deleting proposal', 'error');       
+            Controller::redirectToResult($error->getMessage(), 'error');
         }
     }
 }

@@ -12,7 +12,6 @@ class ProposalEntity
     public string $bid_price;
     public string $shares;
     public string $proposal_file;
-    public readonly string $status;
 
     public function __construct(
         string $post_author,
@@ -32,6 +31,5 @@ class ProposalEntity
         $this->bid_price = $bid_price;
         $this->shares = $shares;
         $this->proposal_file = $proposal_file;
-        $this->status = "pending";
     }
 }

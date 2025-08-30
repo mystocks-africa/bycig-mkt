@@ -6,7 +6,7 @@ include_once __DIR__ . "/../../core/auth/Session.php";
 include_once __DIR__ . "/../../core/auth/Cookie.php";
 include_once __DIR__ . "/../../core/mailer/HTMLMessages.php";
 include_once __DIR__ . "/../../core/mailer/Mailer.php";
-
+include_once __DIR__ . "/../../core/mailer/VerificationCode.php";
 
 include_once __DIR__ . "/../../models/user/Repository.php";
 include_once __DIR__ . "/../../models/user/Entity.php";

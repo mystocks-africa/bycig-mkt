@@ -32,13 +32,13 @@ class ProposalService
 
     public function createProposal(
         string $email,
-        ?string $stockTicker,
-        ?string $stockName,
-        ?string $subjectLine,
-        ?string $thesis,
-        ?float $bidPrice,
-        ?int $shares,
-        ?array $proposalFile
+        string $stockTicker,
+        string $stockName,
+        string $subjectLine,
+        string $thesis,
+        float $bidPrice,
+        int $shares,
+        array $proposalFile
     ): void {
         $this->fileName = Files::uploadFile($proposalFile);
 
