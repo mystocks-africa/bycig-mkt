@@ -47,7 +47,7 @@ class AdminService
                 $proposal['stock_ticker'],
                 $proposal['stock_name'],
                 $proposal['bid_price'],
-                $proposal['target_price'],
+                $proposal['shares'],
                 $proposal['proposal_file']
             );
 

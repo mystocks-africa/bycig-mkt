@@ -30,7 +30,7 @@ $baseUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "
                     $name = $proposal['stock_name'];
                     $thesis = $proposal['thesis'];
                     $bid = $proposal['bid_price'];
-                    $target = $proposal['target_price'];
+                    $shares = $proposal['shares'];
                     $status = $proposal['status'];
                     $proposalFile = $proposal['proposal_file'];
                     $modalId = "admin-modal-$index"; // unique modal ID
@@ -49,7 +49,7 @@ $baseUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "
                         <p><strong>Name:</strong> <?= $name ?></p>
                         <p><strong>Thesis:</strong> <?= $thesis ?></p>
                         <p><strong>Bid Price:</strong> $<?= $bid ?></p>
-                        <p><strong>Target Price:</strong> $<?= $target ?></p>
+                        <p><strong>Shares:</strong> <?= $shares ?></p>
                         <p><strong>Status:</strong> <?= $status ?></p>
                         <p class="underline-text"><strong>File:</strong> <a href="<?= $baseUrl . "/uploads/" . $proposalFile ?>"><?= $proposalFile ?></a></p>
 

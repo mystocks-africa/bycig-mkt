@@ -8,7 +8,7 @@ class HoldingEntity
     public string $stock_ticker;
     public string $stock_name;
     public string $bid_price;
-    public string $target_price;
+    public int $shares;
     public string $proposal_file;
     public bool $fulfilled;
     public int $bought_price;
@@ -18,7 +18,7 @@ class HoldingEntity
         string $stock_ticker, 
         string $stock_name, 
         string $bid_price, 
-        string $target_price, 
+        int $shares, 
         string $proposal_file,
         bool $fulfilled = false,
         int $bought_price = null
@@ -28,7 +28,7 @@ class HoldingEntity
         $this->stock_ticker = $stock_ticker;
         $this->stock_name = $stock_name;
         $this->bid_price = $bid_price;
-        $this->target_price = $target_price;
+        $this->shares = $shares;
         $this->proposal_file = $proposal_file;
         $this->fulfilled = $fulfilled;
         $this->bought_price = $bought_price;
