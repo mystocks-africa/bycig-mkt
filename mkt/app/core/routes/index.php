@@ -47,9 +47,6 @@ $router->get('/admin', AdminController::class, 'index');
 // Admin put methods 
 $router->put('/admin/handle-proposal-status', AdminController::class,'handleProposalStatusPost');
 
-// Admin delete methods
-$router->delete('/admin/delete-proposal', AdminController::class, 'deleteProposal');
-
 // Holdings post methods
 $router->post('/holdings/buy', HoldingsController::class, 'buy');
 $router->post('/holdings/sell', HoldingsController::class, 'sell');
