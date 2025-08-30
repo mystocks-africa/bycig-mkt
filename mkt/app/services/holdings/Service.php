@@ -77,14 +77,12 @@ class HoldingService
 
             $newBalance = $user['balance'] - $stockPrice;
             $this->userRepository->updateBalance($newBalance, $email);
-
-            $this->userRepository->updateBalance($newBalance, $email);
             $this->holdingRepository->fulfillOrder($id);
 
             $this->db->getPdo()->commit();
         } catch(Exception $error) {
             $this->db->getPdo()->rollBack();
-            throw new Exception($error);
+            throw $error;
         }
     }
 
@@ -114,7 +112,7 @@ class HoldingService
             $this->db->getPdo()->commit();
         } catch(Exception $error) {
             $this->db->getPdo()->rollBack();
-            throw new Exception($error);
+            throw $error;
         }
     }
 }
