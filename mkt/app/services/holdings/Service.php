@@ -70,4 +70,16 @@ class HoldingService
             $this->db->getPdo()->rollBack();
         }
     }
+
+    public function processSellOrder(int $id, string $email): void
+    {
+        $this->db->getPdo()->beginTransaction();
+         
+        try {
+
+            $this->db->getPdo()->commit();
+        } catch(Exception $error) {
+            $this->db->getPdo()->rollBack();
+        }
+    }
 }
