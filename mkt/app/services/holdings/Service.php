@@ -65,7 +65,8 @@ class HoldingService
                 throw new Exception("This holding does not belong to you");
             }
 
-            $newBalance = $user['balance'] - $this->getStockPrice($holding['stock_symbol']); 
+            $stockPrice = $this->getStockPrice($holding['stock_symbol']) * $holding['shares'];
+            $newBalance = $user['balance'] - $stockPrice; 
 
             if ($newBalance < 0) {
                 throw new Exception("You cannot afford this stock. Invest into others to earn money!");
@@ -97,7 +98,8 @@ class HoldingService
                 throw new Exception("This holding does not belong to you.");
             }
 
-            $newBalance = $user['balance'] + $this->getStockPrice($holding['stock_symbol']);
+            $stockPrice = $this->getStockPrice($holding['stock_symbol']) * $holding['shares'];
+            $newBalance = $user['balance'] + $stockPrice;
             
             $this->userRepository->updateBalance($newBalance, $email);
             $this->holdingRepository->delete($id); 
