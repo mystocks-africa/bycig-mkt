@@ -6,6 +6,10 @@
     <title>Account</title>
 </head>
 <body>
+    <div class="hero-section">
+        <h1>Account</h1>
+        <p>View others account and build a network of like-minded people.</p>
+    </div>
     <div class="account">
         <section class="account-user-info">
             <h1><?= $user["full_name"] ?></h1>
