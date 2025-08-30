@@ -37,7 +37,7 @@ class HoldingsController
             $this->holdingService->processBuyOrder($id, $this->session->getSession()['email']);
             Controller::redirectToResult("Successfully deleted holdings", "success");
         } catch(Exception $error) {
-            Controller::redirectToResult($error, "error");
+            Controller::redirectToResult($error->getMessage(), "error");
         }
     }
 
@@ -50,7 +50,7 @@ class HoldingsController
             $this->holdingService->processSellOrder($id, $this->session->getSession()['email']);
             Controller::redirectToResult("Successfully sold your holding", "success");
         } catch (Exception $error) {
-            Controller::redirectToResult($error, "error");
+            Controller::redirectToResult($error->getMessage(), "error");
         }
     }
 }
