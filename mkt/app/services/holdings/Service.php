@@ -90,8 +90,8 @@ class HoldingService
             $newBalance = $user['balance'] + $this->getStockPrice($holding['stock_symbol']);
             
             $this->userRepository->updateBalance($newBalance, $email);
-            $this->holdingRepository->delete($id);
-            
+            $this->holdingRepository->delete($id, $email); // added email query for extra protection
+
             $this->db->getPdo()->commit();
         } catch(Exception $error) {
             $this->db->getPdo()->rollBack();

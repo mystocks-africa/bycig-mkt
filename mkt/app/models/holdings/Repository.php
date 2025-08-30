@@ -13,7 +13,7 @@ class HoldingRepository
     private string $insertHoldingQuery = "
         INSERT INTO holdings 
         (investor, stock_ticker, stock_name, bid_price, target_price, proposal_file) 
-        VALUES (?, ?, ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?, ?);
     ";
     
     private string $findAllHoldingsQuery = "
@@ -23,7 +23,7 @@ class HoldingRepository
             stock_name,
             investor,
             proposal_file
-        FROM holdings
+        FROM holdings;
     ";
 
     private string $findByEmailQuery = "
@@ -34,13 +34,13 @@ class HoldingRepository
             investor, 
             proposal_file
         FROM holdings
-        WHERE investor = ?
+        WHERE investor = ?;
     ";
 
     private string $deleteHoldingQuery = "
         DELETE 
         FROM holdings 
-        WHERE id = ? 
+        WHERE id = ? AND investor = ?;
     ";
 
     private string $findByIdQuery = "
@@ -52,7 +52,7 @@ class HoldingRepository
             proposal_file,
             bid_price
         FROM holdings
-        WHERE id = ?
+        WHERE id = ?;
     ";
 
     private string $deleteAllHoldingsQuery = "
@@ -111,10 +111,13 @@ class HoldingRepository
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function delete(int $id): void
+    public function delete(int $id, string $email): void
     {
         $stmt = $this->pdo->prepare($this->deleteHoldingQuery);
-        $stmt->execute([$id]);
+        $stmt->execute([
+            $id,
+            $email
+        ]);
     }
 
     public function deleteAllHoldings(string $email): void
