@@ -28,13 +28,13 @@ class HoldingsController
         $this->holdingService = new HoldingService();
     }
 
-    public function sell()
+    public function buy()
     {
         $this->authGuard->redirectIfNotAuth();
 
         try {
             $id = filter_input(INPUT_POST, "id", FILTER_SANITIZE_NUMBER_INT);
-            $this->holdingService->processSellOrder($id, $this->session->getSession()['email']);
+            $this->holdingService->processBuyOrder($id, $this->session->getSession()['email']);
             Controller::redirectToResult("Successfully deleted holdings", "success");
         } catch(Exception $error) {
             Controller::redirectToResult($error, "error");

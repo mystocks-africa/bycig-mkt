@@ -36,7 +36,7 @@ class HoldingService
     }
 
     // We need a try-catch block here so that the ACID transaction rollbacks (reverts) gracefully
-    public function processSellOrder(int $id, string $email): void
+    public function processBuyOrder(int $id, string $email): void
     {
         $this->db->getPdo()->beginTransaction();
          

@@ -50,8 +50,8 @@ $router->put('/admin/handle-proposal-status', AdminController::class,'handleProp
 // Admin delete methods
 $router->delete('/admin/delete-proposal', AdminController::class, 'deleteProposal');
 
-// Holdings delete methods
-$router->post('/holdings/sell', HoldingsController::class, 'sell');
+// Holdings post methods
+$router->post('/holdings/buy', HoldingsController::class, 'sell');
 
 // Profile get methods
 $router->get("/profile", ProfileController::class, 'index');
