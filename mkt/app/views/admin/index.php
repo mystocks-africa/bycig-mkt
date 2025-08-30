@@ -54,15 +54,10 @@ $baseUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "
                         <p class="underline-text"><strong>File:</strong> <a href="<?= $baseUrl . "/uploads/" . $proposalFile ?>"><?= $proposalFile ?></a></p>
 
                         <div style="margin-top: 40px;">
-                            <?php if ($status == "pending"): ?>
-                                <div class="side-by-side-btns">
-                                    <button onclick="handleUpdateStatus(<?= $postId ?>, '<?= $clusterLeaderEmail ?>', 'accept')">Accept</button>
-                                    <button onclick="handleUpdateStatus(<?= $postId ?>, '<?= $clusterLeaderEmail ?>', 'decline')">Decline</button>
-                                </div>
-
-                            <?php else: ?>
-                                <button onclick="handleDeleteProposal(<?= $postId ?>)">Delete proposal</button>
-                            <?php endif ?>
+                            <div class="side-by-side-btns">
+                                <button onclick="handleUpdateStatus(<?= $postId ?>, '<?= $clusterLeaderEmail ?>', 'accept')">Accept</button>
+                                <button onclick="handleUpdateStatus(<?= $postId ?>, '<?= $clusterLeaderEmail ?>', 'decline')">Decline</button>
+                            </div>
                         </div>
 
                     </div>

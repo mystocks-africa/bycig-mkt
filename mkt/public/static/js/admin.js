@@ -1,20 +1,3 @@
-// HTML form does not support DELETE or PUT methods directly.
-function handleDeleteProposal(postId) {
-    if (typeof postId !== 'number' || postId <= 0) {
-        alert("Invalid post ID.");
-        return;
-    }
-    
-    if (confirm("Are you sure you want to delete this proposal? This action cannot be undone.")) {
-        fetch(`/admin/delete-proposal?post_id=${postId}`, {
-            method: 'DELETE',
-        })
-        .catch((error) => {
-            window.location.href = `/redirect?message=${encodeURIComponent(error.message)}&message_type=error`;
-        });
-    }
-}
-
 function handleUpdateStatus(postId, clusterLeaderEmail, status) {
     if (typeof postId !== 'number' || postId <= 0) {
         alert("Invalid post ID.");
