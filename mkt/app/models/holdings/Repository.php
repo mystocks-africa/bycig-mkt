@@ -57,8 +57,16 @@ class HoldingRepository
     ";
 
     private string $deleteAllHoldingsQuery = "
-        DELETE FROM holdings 
+        DELETE 
+        FROM holdings 
         WHERE investor = ?;
+    ";
+
+    private string $updateFulfillOrder = "
+        UPDATE 
+        FROM holdings 
+        SET fulfilled = true
+        WHERE id = ?;
     ";
 
     public function __construct(PDO $pdo) 
@@ -86,7 +94,7 @@ class HoldingRepository
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function findByEmail($email): array 
+    public function findByEmail(string $email): array 
     {
         $stmt = $this->pdo->prepare($this->findByEmailQuery);
         $stmt->execute([
@@ -95,7 +103,7 @@ class HoldingRepository
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function findById($id): mixed 
+    public function findById(int $id): mixed 
     {
         $stmt = $this->pdo->prepare($this->findByIdQuery);
         $stmt->execute([
@@ -111,11 +119,20 @@ class HoldingRepository
     }
 
     public function deleteAllHoldings(string $email): void
-    {        $stmt = $this->pdo->prepare($this->deleteAllHoldingsQuery);
+    {        
+        $stmt = $this->pdo->prepare($this->deleteAllHoldingsQuery);
 
         // The investor field is a foriegn key to user's email (primary key of user)
         $stmt->execute([
             $email
+        ]);
+    }
+
+    public function fulfillOrder(int $id): void
+    {
+        $stmt = $this->pdo->prepare($this->updateFulfillOrder);
+        $stmt->execute([
+            $id
         ]);
     }
 }
