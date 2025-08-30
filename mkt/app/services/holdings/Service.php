@@ -35,6 +35,18 @@ class HoldingService
         $this->userRepository = new UserRepository($this->db->getPdo());
     }
 
+    private function getStockPrice(string $stockSymbol): int 
+    {
+        $config = Configuration::getDefaultConfiguration()->setApiKey('token', $this->env['FINNHUB_API_KEY']);
+        $client = new DefaultApi(
+            new GuzzleClient(),
+            $config
+        );
+        $response = $client->quote($stockSymbol);
+
+        return $response->c; // c is current price of stock
+    }
+
     // We need a try-catch block here so that the ACID transaction rollbacks (reverts) gracefully
     public function processBuyOrder(int $id, string $email): void
     {
@@ -48,14 +60,7 @@ class HoldingService
             }
 
             $user = $this->userRepository->findByEmail($email);
-
-            $config = Configuration::getDefaultConfiguration()->setApiKey('token', $this->env['FINNHUB_API_KEY']);
-            $client = new DefaultApi(
-                new GuzzleClient(),
-                $config
-            );
-            $response = $client->quote($holding['stock_symbol']);
-            $newBalance = $user['balance'] - $response->c; // current price of stock
+            $newBalance = $user['balance'] - $this->getStockPrice($holding['stock_symbol']); 
 
             if ($newBalance < 0) {
                 throw new Exception("You cannot afford this stock. Invest into others to earn money!");
@@ -75,7 +80,18 @@ class HoldingService
         $this->db->getPdo()->beginTransaction();
          
         try {
+            $holding = $this->holdingRepository->findById($id);
 
+            if (!$holding['fulfilled']) {
+                throw new Exception("Holding is not yet fulfilled. You need to buy it before selling it.");
+            }
+
+            $user = $this->userRepository->findByEmail($email);
+            $newBalance = $user['balance'] + $this->getStockPrice($holding['stock_symbol']);
+            
+            $this->userRepository->updateBalance($newBalance, $email);
+            $this->holdingRepository->delete($id);
+            
             $this->db->getPdo()->commit();
         } catch(Exception $error) {
             $this->db->getPdo()->rollBack();

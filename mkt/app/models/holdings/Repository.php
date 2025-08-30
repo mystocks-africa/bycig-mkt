@@ -41,7 +41,6 @@ class HoldingRepository
         DELETE 
         FROM holdings 
         WHERE id = ? 
-        AND investor = ?
     ";
 
     private string $findByIdQuery = "
@@ -112,10 +111,10 @@ class HoldingRepository
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function delete(int $id, string $email): void
+    public function delete(int $id): void
     {
         $stmt = $this->pdo->prepare($this->deleteHoldingQuery);
-        $stmt->execute([$id, $email]);
+        $stmt->execute([$id]);
     }
 
     public function deleteAllHoldings(string $email): void
