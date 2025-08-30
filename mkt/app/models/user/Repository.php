@@ -111,13 +111,19 @@ class UserRepository
     public function updatePwd(string $newPwd, string $email): void
     {        
         $stmt = $this->pdo->prepare($this->updatePwdQuery);
-        $stmt->execute([$newPwd, $email]);
+        $stmt->execute([
+            $newPwd, 
+            $email
+        ]);
     }
 
-    public function updateBalance(int $newBalance, string $email): void 
+    public function updateBalance(float $newBalance, string $email): void 
     {        
         $stmt = $this->pdo->prepare($this->updateBalanceQuery);
-        $stmt->execute([$newBalance, $email]);
+        $stmt->execute([
+            $newBalance, 
+            $email
+        ]);
     }
 
     public function delete(string $email): void

@@ -35,16 +35,20 @@ class HoldingService
         $this->userRepository = new UserRepository($this->db->getPdo());
     }
 
-    private function getStockPrice(string $stockSymbol): int 
+    private function getStockPrice(string $stockSymbol): float 
     {
-        $config = Configuration::getDefaultConfiguration()->setApiKey('token', $this->env['FINNHUB_API_KEY']);
-        $client = new DefaultApi(
-            new GuzzleClient(),
-            $config
-        );
-        $response = $client->quote($stockSymbol);
+        try {
+            $config = Configuration::getDefaultConfiguration()->setApiKey('token', $this->env['FINNHUB_API_KEY']);
+            $client = new DefaultApi(
+                new GuzzleClient(),
+                $config
+            );
+            $response = $client->quote($stockSymbol);
 
-        return $response->c; // c is current price of stock
+            return $response['c']; // c is current price of stock
+        } catch (Exception $error) {
+            throw $error;
+        }
     }
 
     // We need a try-catch block here so that the ACID transaction rollbacks (reverts) gracefully
@@ -65,7 +69,7 @@ class HoldingService
                 throw new Exception("This holding does not belong to you");
             }
 
-            $stockPrice = $this->getStockPrice($holding['stock_symbol']) * $holding['shares'];
+            $stockPrice = $this->getStockPrice($holding['stock_ticker']) * $holding['shares'];
             $newBalance = $user['balance'] - $stockPrice; 
 
             if ($newBalance < 0) {
@@ -78,6 +82,7 @@ class HoldingService
             $this->db->getPdo()->commit();
         } catch(Exception $error) {
             $this->db->getPdo()->rollBack();
+            throw $error;
         }
     }
 
@@ -98,7 +103,7 @@ class HoldingService
                 throw new Exception("This holding does not belong to you.");
             }
 
-            $stockPrice = $this->getStockPrice($holding['stock_symbol']) * $holding['shares'];
+            $stockPrice = $this->getStockPrice($holding['stock_ticker']) * $holding['shares'];
             $newBalance = $user['balance'] + $stockPrice;
             
             $this->userRepository->updateBalance($newBalance, $email);
@@ -107,6 +112,7 @@ class HoldingService
             $this->db->getPdo()->commit();
         } catch(Exception $error) {
             $this->db->getPdo()->rollBack();
+            throw $error;
         }
     }
 }
