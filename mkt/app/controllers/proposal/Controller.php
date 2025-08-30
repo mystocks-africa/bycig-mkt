@@ -5,6 +5,7 @@ namespace App\Controllers;
 include_once __DIR__ . "/../../core/controller/Controller.php";
 include_once __DIR__ . "/../../core/auth/Session.php";
 include_once __DIR__ . "/../../core/auth/Guard.php";
+include_once __DIR__ . "/../../core/stocks/Stocks.php";
 
 include_once __DIR__ . "/../../services/proposal/Service.php";
 
@@ -14,6 +15,7 @@ use App\Core\Auth\AuthGuard;
 
 use App\Services\ProposalService;
 use Exception;
+use Stocks;
 
 class ProposalController
 {
@@ -31,7 +33,10 @@ class ProposalController
     public function submit(): void 
     {
         $this->authGuard->redirectIfNotAuth();
-        Controller::render("proposal/submit");
+        $supportedStocks = Stocks::getSupportedStocks();
+        Controller::render("proposal/submit", [
+            'supportedStocks' => $supportedStocks
+        ]);
     }
 
     public function submitPost(): void 
