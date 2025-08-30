@@ -43,7 +43,7 @@ class HoldingService
         try {
             $holding = $this->holdingRepository->findById($id);
 
-            if (!$holding['fulfilled']) {
+            if ($holding['fulfilled']) {
                 throw new Exception("Order already has been fulfilled.");
             }
 
@@ -63,7 +63,6 @@ class HoldingService
 
             $this->userRepository->updateBalance($newBalance, $email);
             $this->holdingRepository->fulfillOrder($id);
-            Files::deleteFile($holding['proposal_file']);
 
             $this->db->getPdo()->commit();
         } catch(Exception $error) {
