@@ -4,6 +4,7 @@ namespace App;
 include_once __DIR__ . "/../../../utils/env.php";
 
 use PDO;
+use PDOException;
 
 class DbTemplate {
 
@@ -24,7 +25,7 @@ class DbTemplate {
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_AUTOCOMMIT => false
             ]);
-        } catch (\PDOException $e) {
+        } catch (PDOException $e) {
             die("Database connection failed: " . $e->getMessage());
         }
     }
