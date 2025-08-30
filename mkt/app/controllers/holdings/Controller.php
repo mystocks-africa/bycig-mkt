@@ -28,7 +28,7 @@ class HoldingsController
         $this->holdingService = new HoldingService();
     }
 
-    public function buy()
+    public function buy(): void
     {
         $this->authGuard->redirectIfNotAuth();
 
@@ -37,6 +37,19 @@ class HoldingsController
             $this->holdingService->processBuyOrder($id, $this->session->getSession()['email']);
             Controller::redirectToResult("Successfully deleted holdings", "success");
         } catch(Exception $error) {
+            Controller::redirectToResult($error, "error");
+        }
+    }
+
+    public function sell(): void 
+    {
+        $this->authGuard->redirectIfNotAuth();
+
+        try {
+            $id = filter_input(INPUT_POST, "id", FILTER_VALIDATE_INT);
+            $this->holdingService->processSellOrder($id, $this->session->getSession()['email']);
+            Controller::redirectToResult("Successfully sold your holding", "success");
+        } catch (Exception $error) {
             Controller::redirectToResult($error, "error");
         }
     }

@@ -52,6 +52,7 @@ $router->delete('/admin/delete-proposal', AdminController::class, 'deleteProposa
 
 // Holdings post methods
 $router->post('/holdings/buy', HoldingsController::class, 'sell');
+$router->post('/holdings/sell', HoldingsController::class, 'buy');
 
 // Profile get methods
 $router->get("/profile", ProfileController::class, 'index');
