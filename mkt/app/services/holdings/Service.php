@@ -70,11 +70,14 @@ class HoldingService
             }
 
             $stockPrice = $this->getStockPrice($holding['stock_ticker']) * $holding['shares'];
-            $newBalance = $user['balance'] - $stockPrice; 
 
-            if ($newBalance < 0) {
+            if ($user['balance'] < $stockPrice) {
                 throw new Exception("You cannot afford this stock. Invest into others to earn money!");
             }
+
+            $newBalance = $user['balance'] - $stockPrice;
+            echo $newBalance;
+            $this->userRepository->updateBalance($newBalance, $email);
 
             $this->userRepository->updateBalance($newBalance, $email);
             $this->holdingRepository->fulfillOrder($id);
@@ -82,7 +85,7 @@ class HoldingService
             $this->db->getPdo()->commit();
         } catch(Exception $error) {
             $this->db->getPdo()->rollBack();
-            throw $error;
+            throw new Exception($error);
         }
     }
 
@@ -112,7 +115,7 @@ class HoldingService
             $this->db->getPdo()->commit();
         } catch(Exception $error) {
             $this->db->getPdo()->rollBack();
-            throw $error;
+            throw new Exception($error);
         }
     }
 }

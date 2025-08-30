@@ -48,7 +48,8 @@ class HoldingRepository
             stock_name,
             investor,
             bid_price,
-            fulfilled
+            fulfilled,
+            shares
         FROM holdings
         WHERE id = ?;
     ";
