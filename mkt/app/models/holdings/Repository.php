@@ -12,8 +12,8 @@ class HoldingRepository
 
     private string $insertHoldingQuery = "
         INSERT INTO holdings 
-        (investor, stock_ticker, stock_name, bid_price, shares, proposal_file) 
-        VALUES (?, ?, ?, ?, ?, ?);
+        (investor, stock_ticker, stock_name, bid_price, shares) 
+        VALUES (?, ?, ?, ?, ?);
     ";
     
     private string $findAllHoldingsQuery = "
@@ -21,8 +21,7 @@ class HoldingRepository
             id,
             stock_ticker,
             stock_name,
-            investor,
-            proposal_file
+            investor
         FROM holdings;
     ";
 
@@ -31,8 +30,7 @@ class HoldingRepository
             id,
             stock_ticker,
             stock_name,
-            investor, 
-            proposal_file
+            investor
         FROM holdings
         WHERE investor = ?;
     ";
@@ -49,7 +47,6 @@ class HoldingRepository
             stock_ticker,
             stock_name,
             investor,
-            proposal_file,
             bid_price
         FROM holdings
         WHERE id = ?;
@@ -62,8 +59,7 @@ class HoldingRepository
     ";
 
     private string $updateFulfillOrder = "
-        UPDATE 
-        FROM holdings 
+        UPDATE holdings 
         SET fulfilled = true
         WHERE id = ?;
     ";
@@ -82,7 +78,6 @@ class HoldingRepository
             $holding->stock_name,
             $holding->bid_price,
             $holding->shares, 
-            $holding->proposal_file
         ]);
     }
 
