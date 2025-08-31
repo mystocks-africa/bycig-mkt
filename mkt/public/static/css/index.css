@@ -6,19 +6,32 @@
 
 /* Assign all variables that will be used by the styling program */
 :root {
-  --gray-bg: #f3f3f3;
-  --gray-border: #d1d5db;
-  --text-main: #111827;
-  --text-muted: #6b7280;
+  --gray-bg: #f8fafc;
+  --gray-border: #e2e8f0;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --text-lighter: #94a3b8;
   --accent: #000000;
-  --font-sans: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --card-bg: #ffffff;
+  --hover-bg: #f1f5f9;
+  --font-sans: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --radius: 12px;
+  --radius-lg: 16px;
+}
+
+.flex-col-wrapper {
+  display: flex;
+  flex-direction: column;
 }
 
 body, html {
-  background-color: var(--gray-bg);
   font-family: var(--font-sans);
   color: var(--text-main);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
 }
 
 a {
@@ -415,6 +428,60 @@ button:disabled {
   margin-bottom: 25px;
 }
 
+.small-gray-text {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.big-bold-black-text {
+  color: var(--text-main);
+  font-size: 1.3rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.big-bold-black-text:last-child {
+  border-bottom: none;
+}
+
+.account {
+  display: flex;
+  gap: 3rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.account-user-info {
+  background-color: var(--card-bg);
+  padding: 2.5rem;
+  height: fit-content;
+}
+
+.account-user-info h1 {
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: var(--text-main);
+}
+
+.account-user-info .small-gray-text {
+  font-size: 1rem;
+}
+
+.account-content {
+  flex: 1;
+  background-color: var(--card-bg);
+  padding: 2.5rem;
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  font-size: 1.125rem;
+  font-weight: 500;
+}
+
 /* MOBILE RESPONSIVE */
 @media (max-width: 768px) {
     .submit-proposal-body {
@@ -469,6 +536,20 @@ button:disabled {
     .tab {
         padding: 8px 12px;
         font-size: 0.9rem;
+    }
+
+    .account {
+        flex-direction: column;
+        padding: 1.5rem;
+        gap: 1.5rem;
+    }
+
+    .account-user-info {
+        flex: none;
+    }
+
+    .account-user-info h1 {
+        font-size: 1.875rem;
     }
 
     /* Mobile navbar */

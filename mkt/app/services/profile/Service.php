@@ -49,11 +49,11 @@ class ProfileService
                 "user" => $user,
                 "clusterLeaders" => $clusterLeaders
             ];
-        } elseif ($activeTab === "holdings") {
+        } else if ($activeTab === "holdings") {
             $holdings = $this->holdingRepository->findByEmail($email);
             
             return [
-                "holdings" => $holdings,
+                "holdings" => $holdings
             ];
         } elseif (in_array($activeTab, $otherSupportedTabs)) {
             return [];

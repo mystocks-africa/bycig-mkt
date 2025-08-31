@@ -63,6 +63,13 @@
                 If you want to update your password, <a href="/auth/forgot-pwd">click here</a>.
             </p>
 
+            <a href="/account?email=<?= $user["email"] ?>">
+                <button>
+                    Your account page (share with others!)
+                </button>
+            </a>
+            <br><br>
+
             <button type="submit">Update Profile</button>
         </form>
     </div>
