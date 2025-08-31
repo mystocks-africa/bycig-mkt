@@ -28,9 +28,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const navItemContainer = document.querySelector('.nav-links');
     const isAuthenticated = Boolean(window.serverData.sessionCookie);
 
-    let navItems = [
-        { text: 'Forgot password?', href: '/auth/forgot-pwd' },
-    ]
+    let navItems = [ ]
 
     if (isAuthenticated) {
         navItems.push(
@@ -41,7 +39,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
     } else {
         navItems.push(
             { text: 'Sign In', href: '/auth/signin' },
-            { text: 'Sign Up', href: '/auth/signup' }
+            { text: 'Sign Up', href: '/auth/signup' },
+            { text: 'Forgot password?', href: '/auth/forgot-pwd' }
         );
     }
 

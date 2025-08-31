@@ -18,7 +18,7 @@ class AuthGuard
     public function redirectIfAuth(): void 
     {        
         if ($this->session->getSession()) {
-            header("Location: /auth/signout");
+            header("Location: /");
             exit();
         }
     }

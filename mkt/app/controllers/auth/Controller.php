@@ -41,10 +41,12 @@ class AuthController
     }
 
     public function forgotPwd(): void {
+        $this->authGuard->redirectIfAuth();
         Controller::render("auth/forgot-pwd");
     }
 
     public function updatePwd(): void {
+        $this->authGuard->redirectIfAuth();
         $code = filter_input(INPUT_GET, "code", FILTER_SANITIZE_SPECIAL_CHARS);
         Controller::render("auth/update-pwd", ["code" => $code]);
     }
@@ -86,6 +88,7 @@ class AuthController
     }
 
     public function processForgotPwd(): void {
+        $this->authGuard->redirectIfAuth();
         try {
             $email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_EMAIL);
             $this->authService->sendForgotPwdCode($email);
