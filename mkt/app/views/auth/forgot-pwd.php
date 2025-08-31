@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Forgot your password?</title>
-    <link rel="stylesheet" href="/static/css/index.css">
+    <title>Forgot your password? - MKT</title>
 </head>
 <body>
     <div class="hero-section">

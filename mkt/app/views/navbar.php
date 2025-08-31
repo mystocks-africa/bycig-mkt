@@ -5,7 +5,6 @@ ob_start();
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="/static/css/index.css">
 </head>
 <body>
     <nav>

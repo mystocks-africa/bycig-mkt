@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Redirection</title>
-    <link rel="stylesheet" href="/static/css/index.css">
+    <title>Message - MKT</title>
 </head>
 <body>
         <div class="redirect-body">
