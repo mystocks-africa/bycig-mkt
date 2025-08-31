@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Profile</title>
-    <link rel="stylesheet" href="/static/css/index.css" >
+    <title>User Profile - MKT</title>
 </head>
 <body>
     <?php

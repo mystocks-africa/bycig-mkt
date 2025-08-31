@@ -7,8 +7,7 @@ $baseUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Portal</title>
-    <link rel="stylesheet" href="/static/css/index.css">
+    <title>Admin Portal - MKT</title>
     <script src="/static/js/modal.js"></script>
     <script src="/static/js/admin.js"></script>
 </head>

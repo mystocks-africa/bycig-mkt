@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proposal Submissions</title>
+    <title>Home - MKT</title>
     <script src="/static/js/index.js"></script>
-    <link rel="stylesheet" href="/static/css/index.css">
 </head>
 <body>
     <a href="/proposals/submit">
