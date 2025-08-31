@@ -7,6 +7,15 @@
     <link rel="stylesheet" href="/static/css/index.css" >
 </head>
 <body>
+    <?php
+        $fullName = $user['full_name'] ?? '';
+        $email = $user['email'] ?? '';
+        $currentClusterLeader = $user['cluster_leader'] ?? '';
+        $balance = $user['balance'] ?? '';
+        $role = $user['role'] ?? '';
+        $pwd = $user['pwd'] ?? '';
+    ?>
+
     <div class="hero-section">
         <h1>User Profile</h1>
         <p>Update or view your profile or view your holdings</p>
@@ -18,14 +27,6 @@
         </div>
     </div>
 
-    <?php
-    $fullName = $user['full_name'] ?? '';
-    $email = $user['email'] ?? '';
-    $currentClusterLeader = $user['cluster_leader'] ?? '';
-    $balance = $user['balance'] ?? '';
-    $role = $user['role'] ?? '';
-    $pwd = $user['pwd'] ?? '';
-    ?>
     <div id="user-info">
         <form class="update-user-form">
             <?php if ($role === "cluster_leader"): ?>
@@ -60,8 +61,8 @@
                 </select>
             <?php endif; ?>
 
-            <a class="button" onclick="location.href='/account?email=<?= $user['email'] ?>'">
-                Share your page with others 
+            <a class="button" href="/account?email=<?= $user['email'] ?>">
+                Go to your account page (share with others!)
             </a>
             <br><br>
 
