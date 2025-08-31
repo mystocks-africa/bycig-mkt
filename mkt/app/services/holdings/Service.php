@@ -7,14 +7,14 @@ include_once __DIR__ . "/../../models/holdings/Repository.php";
 include_once __DIR__ . "/../../models/user/Repository.php";
 include_once __DIR__ . "/../../../utils/env.php";
 
-use App\DbTemplate;
+use App\Core\Templates\DbTemplate;
 
 use App\Models\Repository\HoldingRepository;
 use App\Models\Repository\UserRepository;
-use Exception;
 use Finnhub\Api\DefaultApi;
 use Finnhub\Configuration;
 use GuzzleHttp\Client as GuzzleClient;
+use Exception;
 
 class HoldingService 
 {

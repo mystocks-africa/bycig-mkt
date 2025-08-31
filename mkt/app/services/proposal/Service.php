@@ -8,7 +8,7 @@ include_once __DIR__ . "/../../models/proposals/Repository.php";
 include_once __DIR__ . "/../../models/proposals/Entity.php";
 include_once __DIR__ . "/../../models/user/Repository.php";
 
-use App\DbTemplate;
+use App\Core\Templates\DbTemplate;
 use App\Core\Files\Files;
 
 use App\Models\Repository\ProposalRepository;

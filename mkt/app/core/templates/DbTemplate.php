@@ -1,6 +1,6 @@
 <?php
+namespace App\Core\Templates;
 
-namespace App;
 include_once __DIR__ . "/../../../utils/env.php";
 
 use PDO;
