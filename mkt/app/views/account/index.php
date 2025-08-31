@@ -40,7 +40,5 @@
             <?php endif; ?>
         </div>
     </div>
-    
-    <script src="/static/js/account.js"></script>
 </body>
 </html>
