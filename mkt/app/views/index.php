@@ -25,11 +25,15 @@
                     $investor = $holding["investor"];
                     $stockTicker = $holding["stock_ticker"];
                     $stockName = $holding["stock_name"];
+                    $shares = $holding["shares"];
+                    $fulfilled = $holding["fulfilled"];
                 ?>
                 <div key=<?= $id ?> class="card" style="text-decoration: none; color: black;">
                     <h3 class="truncate"><?= $stockName ?></h3>
                     <p><strong>Stock Ticker:</strong> <?= $stockTicker ?></p>
                     <p><strong>Investor:</strong> <?= $investor ?></p>
+                    <p><strong>Shares:</strong> <?= $shares ?></p>
+                    <p><strong><?= $fulfilled ? "User owns this": "User has yet to own it"?></strong></p>
                 </div>
             <?php endforeach; ?>
         <?php else: ?>

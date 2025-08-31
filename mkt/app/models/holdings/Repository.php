@@ -21,7 +21,9 @@ class HoldingRepository
             id,
             stock_ticker,
             stock_name,
-            investor
+            investor,
+            shares,
+            fulfilled
         FROM holdings;
     ";
 
