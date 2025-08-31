@@ -35,7 +35,7 @@ class AdminController
         ]);
     }
 
-    public function handleProposalStatusPost(): void 
+    public function processProposalStatusPost(): void 
     {
         $this->authGuard->redirectIfNotAuth();
 

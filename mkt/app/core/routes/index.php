@@ -47,7 +47,7 @@ $router->post('/proposals/submit', ProposalController::class,'processSubmit');
 $router->get('/admin', AdminController::class, 'index');
 
 // Admin put methods 
-$router->put('/admin/handle-proposal-status', AdminController::class,'handleProposalStatusPost');
+$router->put('/admin/handle-proposal-status', AdminController::class,'processProposalStatusPost');
 
 // Holdings post methods
 $router->post('/holdings/buy', HoldingsController::class, 'buy');
