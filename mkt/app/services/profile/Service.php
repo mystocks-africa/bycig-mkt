@@ -8,9 +8,9 @@ include_once __DIR__ . "/../../core/auth/Cookie.php";
 include_once __DIR__ . "/../../models/user/Repository.php";
 include_once __DIR__ . "/../../models/proposals/Repository.php";
 
-use App\DbTemplate;
-use App\Core\Session;
-use App\Core\Cookie;
+use App\Core\Templates\DbTemplate;
+use App\Core\Auth\Session;
+use App\Core\Auth\Cookie;
 
 use App\Models\Repository\UserRepository;
 use App\Models\Repository\HoldingRepository;

@@ -41,13 +41,13 @@ $router->post('/auth/update-pwd', AuthController::class,'processUpdatePwd');
 $router->get('/proposals/submit', ProposalController::class,'submit');
 
 // Proposal post methods
-$router->post('/proposals/submit', ProposalController::class,'submitPost');
+$router->post('/proposals/submit', ProposalController::class,'processSubmit');
 
 // Admin get methods
 $router->get('/admin', AdminController::class, 'index');
 
 // Admin put methods 
-$router->put('/admin/handle-proposal-status', AdminController::class,'handleProposalStatusPost');
+$router->put('/admin/handle-proposal-status', AdminController::class,'processProposalStatusPost');
 
 // Holdings post methods
 $router->post('/holdings/buy', HoldingsController::class, 'buy');

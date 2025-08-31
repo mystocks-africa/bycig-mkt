@@ -1,9 +1,9 @@
 <?php 
-
 namespace App\Core\Auth;
+
 include_once __DIR__ . "/Session.php";
 
-use App\Core\Session;
+use App\Core\Auth\Session;
 
 // Protects UI based on auth status
 class AuthGuard 

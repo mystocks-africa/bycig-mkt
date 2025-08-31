@@ -1,10 +1,11 @@
 <?php
-namespace App\Core;
+namespace App\Core\Controller;
 
 include_once __DIR__ . "/../auth/Session.php";
 
+use App\Core\Auth\Session;
+
 use Exception;
-use App\Core\Session;
 class Controller
 {
     public static function render(string $view, array $data = []): void

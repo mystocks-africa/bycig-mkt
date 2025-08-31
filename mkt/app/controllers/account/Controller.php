@@ -5,7 +5,7 @@ include_once __DIR__ . "/../../core/controller/Controller.php";
 
 include_once __DIR__ . "/../../services/account/Service.php";
 
-use App\Core\Controller;
+use App\Core\Controller\Controller;
 
 use App\Services\AccountService;
 use Exception;
