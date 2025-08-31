@@ -5,8 +5,10 @@ include_once __DIR__ . "/../../controllers/proposal/Controller.php";
 include_once __DIR__ . "/../../controllers/admin/Controller.php";
 include_once __DIR__ . "/../../controllers/holdings/Controller.php";
 include_once __DIR__ . "/../../controllers/profile/Controller.php";
+include_once __DIR__ . "/../../controllers/account/Controller.php";
 include_once __DIR__ . "/Router.php";
 
+use App\Controllers\AccountController;
 use App\Controllers\AdminController;
 use App\Controllers\AuthController;
 use App\Controllers\HomeController;
@@ -47,10 +49,8 @@ $router->get('/admin', AdminController::class, 'index');
 // Admin put methods 
 $router->put('/admin/handle-proposal-status', AdminController::class,'handleProposalStatusPost');
 
-// Admin delete methods
-$router->delete('/admin/delete-proposal', AdminController::class, 'deleteProposal');
-
-// Holdings delete methods
+// Holdings post methods
+$router->post('/holdings/buy', HoldingsController::class, 'buy');
 $router->post('/holdings/sell', HoldingsController::class, 'sell');
 
 // Profile get methods
@@ -60,6 +60,9 @@ $router->get("/profile", ProfileController::class, 'index');
 $router->delete("/profile/delete-user", ProfileController::class, "deleteUser");
 
 // Profile put methods
-$router->put("/profile/update", ProfileController::class, "updateUser");
+$router->post("/profile/update-user", ProfileController::class, "updateUser");
+
+// Account get method
+$router->get('/account', AccountController::class, 'index');
 
 $router->dispatch();

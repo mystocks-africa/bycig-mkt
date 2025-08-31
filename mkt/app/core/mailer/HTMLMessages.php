@@ -1,8 +1,9 @@
 <?php
+namespace App\Core\Mailers;
 
 class HTMLMessages 
 {
-    public static function getForgottenPassword($code) {
+    public static function getForgottenPassword(string $code): string {
         // Determine protocol
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https://" : "http://";
         $host = $_SERVER['HTTP_HOST'];

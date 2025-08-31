@@ -9,10 +9,8 @@ class ProposalEntity
     public string $stock_name;
     public string $subject_line;
     public string $thesis;
-    public string $bid_price;
-    public string $target_price;
+    public string $shares;
     public string $proposal_file;
-    public readonly string $status;
 
     public function __construct(
         string $post_author,
@@ -20,8 +18,7 @@ class ProposalEntity
         string $stock_name,
         string $subject_line,
         string $thesis,
-        string $bid_price,
-        string $target_price,
+        string $shares,
         string $proposal_file,
     ) {
         $this->post_author = $post_author;
@@ -29,9 +26,7 @@ class ProposalEntity
         $this->stock_name = $stock_name;
         $this->subject_line = $subject_line;
         $this->thesis = $thesis;
-        $this->bid_price = $bid_price;
-        $this->target_price = $target_price;
+        $this->shares = $shares;
         $this->proposal_file = $proposal_file;
-        $this->status = "pending";
     }
 }

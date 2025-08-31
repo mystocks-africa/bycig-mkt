@@ -3,7 +3,13 @@ namespace App\Core;
 
 class Cookie 
 {
-    public static function assignSessionCookie($session_id) 
+    public static function getSessionCookie(): string
+    {   
+        $sessionIdCookie = $_COOKIE["session_id"] ?? "";
+        return $sessionIdCookie;
+    }
+    
+    public static function assignSessionCookie(string $session_id): void 
     {
         setcookie('session_id', $session_id, [
             'expires' => time() + (10 * 365 * 24 * 60 * 60), // 10 years
@@ -12,7 +18,7 @@ class Cookie
         ]);
     }
 
-    public static function clearSessionCookie() 
+    public static function clearSessionCookie(): void 
     {
         setcookie('session_id', '', [
             'expires' => 0,

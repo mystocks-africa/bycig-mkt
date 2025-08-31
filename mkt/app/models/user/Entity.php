@@ -8,7 +8,7 @@ class UserEntity
     public string $pwd;
     public ?string $clusterLeader; // nullable
     public string $fullName;
-    public int $balance;
+    public float $balance;
     public readonly string $role;
 
     public function __construct(
@@ -16,7 +16,7 @@ class UserEntity
         string $pwd, 
         ?string $clusterLeader, 
         string $fullName,
-        int $balance = 500 // it is 500 dollars by default
+        float $balance = 500.00 // it is 500 dollars by default
     )
     {
         $this->email = $email;

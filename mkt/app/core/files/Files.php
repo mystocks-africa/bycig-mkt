@@ -6,7 +6,7 @@ use Exception;
 
 class Files 
 {
-    public static function uploadFile($file) 
+    public static function uploadFile(array $file): string|false 
     {
         $uploadDir = __DIR__ . "/../../../public/uploads/";
         if (!is_dir($uploadDir)) {
@@ -19,9 +19,9 @@ class Files
         return move_uploaded_file($file["tmp_name"], $fullPath) ? $filename : false;
     }
 
-    public static function deleteFile($fileName)
+    public static function deleteFile(string $fileName): void
     {
-        $fullPath = __DIR__ . "/../../public/uploads/" . $fileName;
+        $fullPath = __DIR__ . "/../../../public/uploads/" . $fileName;
         if (file_exists($fullPath)) {
             if (!unlink($fullPath)) {
                 echo "Could not delete $fullPath";
@@ -29,5 +29,16 @@ class Files
         } else {
             throw new Exception("File path is invalid");
         }
+    }
+
+    public static function getFile(string $fileName): string
+    {
+        $fullPath = __DIR__ . "/../../../public/uploads/" . $fileName;
+
+        if (!file_exists($fullPath)) {
+            throw new Exception("File not found: " . $fileName);
+        }
+
+        return $fullPath; // returns the full system path
     }
 }

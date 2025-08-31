@@ -9,7 +9,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 
 class Mailer
 {
-    public static function send($email, $message) 
+    public static function send($email, $message): void 
     {
         global $env;
 

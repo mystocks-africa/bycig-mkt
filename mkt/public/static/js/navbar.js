@@ -35,6 +35,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     if (isAuthenticated) {
         navItems.push(
             { text: 'User Profile', href: '/profile' },
+            { text: 'Create a proposal', href: '/proposals/submit' },
             { text: 'Sign out', href: '/auth/signout', isButton: true }
         )
     } else {

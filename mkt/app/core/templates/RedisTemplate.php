@@ -6,16 +6,24 @@ include_once __DIR__ . "/../../../utils/env.php";
 
 use Predis\Client;
 
-class RedisTemplate {
-    protected static function getRedis() {
+class RedisTemplate 
+{
+
+    private Client $redis;
+
+    public function __construct()
+    {
         global $env;
 
-        $redis = new Client([
+        $this->redis = new Client([
                     'scheme' => $env["REDIS_SCHEME"] ?? 'tcp',
                     'host'   => $env["REDIS_HOST"] ?? 'redis', 
                     'port'   => $env["REDIS_PORT"] ?? 6379,
                 ]);
+    }
 
-        return $redis;
+    public function getRedis(): Client
+    {
+        return $this->redis;
     }
 }
