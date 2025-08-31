@@ -85,7 +85,7 @@
                         <h3 class="truncate"><?= $stockName ?></h3>
                         <p><strong>Stock Ticker:</strong> <?= $stockTicker ?></p>
                         <p><strong>Investor:</strong> <?= $investor ?></p>
-                        <p><strong>Fulfilled:</strong> <?= $fulfilled ? ' yes' : ' no' ?></p>
+                        <p><strong><?= $fulfilled ? "You own this" : "You do not own this" ?></strong></p>
                         <p><strong>Shares:</strong> <?= $shares ?></p>
                         <? if ($fulfilled): ?>
                                 <form class="sell-btn-wrapper" action="/holdings/sell" method="POST">
