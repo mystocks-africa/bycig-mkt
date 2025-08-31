@@ -8,7 +8,7 @@ include_once __DIR__ . "/../../core/stocks/Stocks.php";
 
 include_once __DIR__ . "/../../services/proposal/Service.php";
 
-use App\Core\Controller;
+use App\Core\Controller\Controller;
 use App\Core\Auth\Session;
 use App\Core\Auth\AuthGuard;
 use App\Core\Stocks;

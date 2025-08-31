@@ -1,5 +1,5 @@
 <?php
-namespace App\Core;
+namespace App\Core\Controller;
 
 include_once __DIR__ . "/../auth/Session.php";
 
