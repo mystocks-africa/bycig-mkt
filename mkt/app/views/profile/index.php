@@ -64,7 +64,7 @@
             </p>
 
             <a class="btn" onclick="location.href='/account?email=<?= $user['email'] ?>'">
-                Your account page (share with others!)
+                Share your page with others 
             </a>
             <br><br>
 
@@ -94,16 +94,16 @@
                                 <form class="sell-btn-wrapper" action="/holdings/sell" method="POST">
                                     <input name="email" value="<?= $investor ?>" style="display:none;">
                                     <input name="id" value="<?= $id ?>" style="display:none;">
-                                    <form class="sell-btn-wrapper" action="/holdings/buy" method="POST">
-                                    <button class="sell-btn" type="submit">Sell</button>
-                                </form>
+                                    <form action="/holdings/buy" method="POST">
+                                        <button class="sell-btn" type="submit">Sell</button>
+                                    </form>
                             <? else: ?>
                                 <form class="sell-btn-wrapper" action="/holdings/buy" method="POST">
                                     <input name="email" value="<?= $investor ?>" style="display:none;">
                                     <input name="id" value="<?= $id ?>" style="display:none;">
-                                    <form class="sell-btn-wrapper" action="/holdings/buy" method="POST">
-                                    <button class="sell-btn" type="submit">Buy</button>
-                                </form>
+                                    <form action="/holdings/buy" method="POST">
+                                        <button class="sell-btn" type="submit">Buy</button>
+                                    </form>
                             <? endif; ?>
                         </form>
                     </div>
