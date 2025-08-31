@@ -24,6 +24,7 @@
     $currentClusterLeader = $user['cluster_leader'] ?? '';
     $balance = $user['balance'] ?? '';
     $role = $user['role'] ?? '';
+    $pwd = $user['pwd'] ?? '';
     ?>
     <div id="user-info">
         <form class="update-user-form">
@@ -39,11 +40,11 @@
             <input type="text" id="full-name" name="full_name"
                 placeholder="Enter your full name"
                 value="<?= $fullName ?>" data-original="<?= $fullName ?>" required>
-
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email"
-                placeholder="Enter your email"
-                value="<?= $email ?>" data-original="<?= $email ?>" required>
+            
+            <label for="pwd">Password:</label>
+            <input type="password" id="pwd" name="pwd"
+                placeholder="Enter your new password"
+                value="<?= $pwd ?>" data-original="<?= $pwd ?>" required>
 
             <?php if (isset($clusterLeaders)): ?>
                 <label for="cluster-leader">Cluster Leader:</label>
@@ -59,11 +60,7 @@
                 </select>
             <?php endif; ?>
 
-            <p class="small-gray-link">
-                If you want to update your password, <a href="/auth/forgot-pwd">click here</a>.
-            </p>
-
-            <a class="btn" onclick="location.href='/account?email=<?= $user['email'] ?>'">
+            <a class="button" onclick="location.href='/account?email=<?= $user['email'] ?>'">
                 Share your page with others 
             </a>
             <br><br>

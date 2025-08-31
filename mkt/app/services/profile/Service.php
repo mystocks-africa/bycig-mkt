@@ -82,16 +82,15 @@ class ProfileService
     }
 
     public function updateAffectedUserFields(
-        ?string $email,
-        string $sessionEmail,
+        string $email,
         ?string $fullName,
         ?string $clusterLeader,
-        Session $session
+        ?string $pwd
     ): void {
         $data = [
             "full_name"      => $fullName,
-            "email"          => $email,
-            "cluster_leader" => $clusterLeader
+            "cluster_leader" => $clusterLeader,
+            "pwd"            => password_hash($pwd, PASSWORD_DEFAULT)
         ];
 
         $fields = [];
@@ -104,14 +103,11 @@ class ProfileService
             $params[$field] = $value;
         }
 
-        if (array_key_exists("email", $params)) {
-            $session->updateSessionEmail($params['email']);
-        }
 
         if (empty($fields)) {
             throw new Exception("Nothing to update");
         }
 
-        $this->userRepository->update($sessionEmail, $fields, $params);
+        $this->userRepository->update($email, $fields, $params);
     }
 }

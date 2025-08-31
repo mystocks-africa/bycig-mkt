@@ -50,11 +50,4 @@ class Session
         $sessionIdCookie = Cookie::getSessionCookie();
         $this->redis->getRedis()->del($sessionIdCookie);
     }
-
-    public function updateSessionEmail($newEmail): void
-    {
-        $sessionId = Cookie::getSessionCookie();
-        $role = $this->getSession()['role'];
-        $this->redis->getRedis()->set($sessionId, "$newEmail, $role", 'KEEPTTL');
-    }
 }
