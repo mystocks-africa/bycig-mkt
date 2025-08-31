@@ -47,8 +47,7 @@ class AdminService
                     $proposalWithUser['email'],
                     $proposalWithUser['stock_ticker'],
                     $proposalWithUser['stock_name'],
-                    $proposalWithUser['bid_price'],
-                    $proposalWithUser['shares']
+                    $proposalWithUser['shares'],
                 );
 
                 $this->holdingRepository->save($holdingEntity);

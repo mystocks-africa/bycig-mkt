@@ -34,10 +34,6 @@
         <textarea id="thesis" name="thesis" maxlength="1000" required></textarea>
         <br><br>
 
-        <label for="bid_price">Bid Price (where you want us to buy at):</label><br>
-        <input type="number" id="bid_price" name="bid_price" step="0.01" min="0" required>
-        <br><br>
-
         <label for="number">Amount of shares to be bought:</label><br>
         <input type="number" id="shares" name="shares" required>
         <br><br>

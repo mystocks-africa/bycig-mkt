@@ -36,13 +36,12 @@ class ProposalService
         string $stockName,
         string $subjectLine,
         string $thesis,
-        float $bidPrice,
         int $shares,
         array $proposalFile
     ): void {
         $this->fileName = Files::uploadFile($proposalFile);
 
-        if (!$stockTicker || !$stockName || !$subjectLine || !$thesis || !$bidPrice || !$shares || !$this->fileName) {
+        if (!$stockTicker || !$stockName || !$subjectLine || !$thesis || !$shares || !$this->fileName) {
             throw new Exception("Error in form input");
         }
 
@@ -58,7 +57,6 @@ class ProposalService
             $stockName, 
             $subjectLine, 
             $thesis, 
-            $bidPrice, 
             $shares, 
             $this->fileName
         );

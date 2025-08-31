@@ -48,7 +48,6 @@ class ProposalController
             $stockName = filter_input(INPUT_POST, 'stock_name', FILTER_SANITIZE_SPECIAL_CHARS);
             $subjectLine = filter_input(INPUT_POST, 'subject_line', FILTER_SANITIZE_SPECIAL_CHARS);
             $thesis = filter_input(INPUT_POST, 'thesis', FILTER_SANITIZE_SPECIAL_CHARS);
-            $bidPrice = filter_input(INPUT_POST, 'bid_price', FILTER_VALIDATE_FLOAT);
             $shares = filter_input(INPUT_POST, "shares", FILTER_VALIDATE_INT);
             $proposalFile = $_FILES["proposal_file"] ?? null;
             $this->proposalService->createProposal(
@@ -57,7 +56,6 @@ class ProposalController
                 $stockName,
                 $subjectLine,
                 $thesis,
-                $bidPrice,
                 $shares,
                 $proposalFile
             );            
