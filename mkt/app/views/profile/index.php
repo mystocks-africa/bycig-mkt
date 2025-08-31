@@ -26,12 +26,6 @@
     $role = $user['role'] ?? '';
     ?>
     <div id="user-info">
-
-        <div>
-            <h2>Share your account</h2>
-            <!-- Add qr code img here from php backend -->
-        </div>
-        
         <form class="update-user-form">
             <?php if ($role === "cluster_leader"): ?>
                 <label>Cluster leaders do not have balances.</label>
@@ -68,6 +62,11 @@
             <p class="small-gray-link">
                 If you want to update your password, <a href="/auth/forgot-pwd">click here</a>.
             </p>
+
+            <a class="small-gray-link" href="/account?email=<?= $user["email"] ?>">
+                Your account page (share with others!)
+            </a>
+            <br><br>
 
             <button type="submit">Update Profile</button>
         </form>
