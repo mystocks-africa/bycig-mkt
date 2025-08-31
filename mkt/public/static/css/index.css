@@ -432,7 +432,6 @@ button:disabled {
   color: var(--text-muted);
   font-size: 0.875rem;
   font-weight: 500;
-  margin-bottom: 0.5rem;
 }
 
 .big-bold-black-text {
@@ -454,7 +453,6 @@ button:disabled {
 }
 
 .account-user-info {
-  flex: 0 0 350px;
   background-color: var(--card-bg);
   padding: 2.5rem;
   height: fit-content;
@@ -468,7 +466,6 @@ button:disabled {
 }
 
 .account-user-info .small-gray-text {
-  margin-bottom: 2.5rem;
   font-size: 1rem;
 }
 
@@ -477,6 +474,7 @@ button:disabled {
   background-color: var(--card-bg);
   padding: 2.5rem;
   display: flex;
+  gap: 30px;
   align-items: center;
   justify-content: center;
   color: var(--text-muted);

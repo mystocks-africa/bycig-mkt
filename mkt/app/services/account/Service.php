@@ -29,12 +29,11 @@ class AccountService
         if (!$email) {
             throw new Exception("Email is not given");
         }
-        
-        $holdings = $this->holdingRepository->findByEmail($email);
         $user = $this->userRepository->findByEmail($email);
+        $holdings = $this->holdingRepository->findByEmail($email);
         return [
-            'holdings' => $holdings,
-            'user' => $user
+            'user' => $user,
+            'holdings' => $holdings
         ];
     }
 }

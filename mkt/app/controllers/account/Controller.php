@@ -24,10 +24,7 @@ class AccountController
         try {
             $email = filter_input(INPUT_GET, "email", FILTER_SANITIZE_SPECIAL_CHARS);
             $userInfo = $this->accountService->getUserInfo($email);
-            Controller::render('account/index', [
-                "holdings" => $userInfo["holdings"],
-                "user" => $userInfo["user"]
-            ]);
+            Controller::render('account/index', $userInfo);
         } catch (Exception $error) {
             Controller::redirectToResult($error->getMessage(), "error");
         }
