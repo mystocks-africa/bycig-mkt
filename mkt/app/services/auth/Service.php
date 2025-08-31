@@ -11,8 +11,8 @@ include_once __DIR__ . "/../../core/mailer/VerificationCode.php";
 include_once __DIR__ . "/../../models/user/Repository.php";
 include_once __DIR__ . "/../../models/user/Entity.php";
 
-use App\Core\Session;
-use App\Core\Cookie;
+use App\Core\Auth\Session;
+use App\Core\Auth\Cookie;
 use App\Core\Mailers\VerificationCode;
 use App\Core\Mailers\HTMLMessages;
 use App\Core\Mailers\Mailer;
