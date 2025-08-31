@@ -9,7 +9,6 @@ class ProposalEntity
     public string $stock_name;
     public string $subject_line;
     public string $thesis;
-    public string $bid_price;
     public string $shares;
     public string $proposal_file;
 
@@ -19,7 +18,6 @@ class ProposalEntity
         string $stock_name,
         string $subject_line,
         string $thesis,
-        string $bid_price,
         string $shares,
         string $proposal_file,
     ) {
@@ -28,7 +26,6 @@ class ProposalEntity
         $this->stock_name = $stock_name;
         $this->subject_line = $subject_line;
         $this->thesis = $thesis;
-        $this->bid_price = $bid_price;
         $this->shares = $shares;
         $this->proposal_file = $proposal_file;
     }

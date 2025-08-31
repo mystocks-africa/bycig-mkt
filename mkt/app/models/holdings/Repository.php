@@ -12,8 +12,8 @@ class HoldingRepository
 
     private string $insertHoldingQuery = "
         INSERT INTO holdings 
-        (investor, stock_ticker, stock_name, bid_price, shares) 
-        VALUES (?, ?, ?, ?, ?);
+        (investor, stock_ticker, stock_name, shares) 
+        VALUES (?, ?, ?, ?);
     ";
     
     private string $findAllHoldingsQuery = "
@@ -49,7 +49,6 @@ class HoldingRepository
             stock_ticker,
             stock_name,
             investor,
-            bid_price,
             fulfilled,
             shares
         FROM holdings
@@ -80,7 +79,6 @@ class HoldingRepository
             $holding->investor,
             $holding->stock_ticker,
             $holding->stock_name,
-            $holding->bid_price,
             $holding->shares
         ]);
         $this->pdo->commit();

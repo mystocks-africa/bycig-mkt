@@ -11,7 +11,7 @@ class ProposalRepository
     private PDO $pdo;
 
     private string $getProposalByIdQuery = "
-        SELECT stock_ticker, stock_name, subject_line, thesis, bid_price, shares, proposal_file, full_name, users.email
+        SELECT stock_ticker, stock_name, subject_line, thesis, shares, proposal_file, full_name, users.email
         FROM proposals 
         INNER JOIN users 
             ON proposals.post_author = users.email
@@ -21,8 +21,8 @@ class ProposalRepository
     private string $insertProposalQuery = "
         INSERT INTO proposals (
         post_author, stock_ticker, stock_name,
-        subject_line, thesis, bid_price, shares, proposal_file
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+        subject_line, thesis, shares, proposal_file
+        ) VALUES (?, ?, ?, ?, ?, ?, ?);
     ";
 
     private string $findProposalByClusterLeaderQuery = "
@@ -33,7 +33,6 @@ class ProposalRepository
             proposals.stock_name, 
             proposals.subject_line, 
             proposals.thesis, 
-            proposals.bid_price, 
             proposals.shares, 
             proposals.proposal_file, 
             authors.cluster_leader
@@ -64,7 +63,6 @@ class ProposalRepository
             $proposal->stock_name,
             $proposal->subject_line,
             $proposal->thesis,
-            $proposal->bid_price,
             $proposal->shares,
             $proposal->proposal_file,
         ]);
