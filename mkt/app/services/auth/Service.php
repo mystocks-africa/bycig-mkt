@@ -13,9 +13,9 @@ include_once __DIR__ . "/../../models/user/Entity.php";
 
 use App\Core\Session;
 use App\Core\Cookie;
-use App\Core\VerificationCode;
+use App\Core\Mailers\VerificationCode;
 use App\Core\Mailers\HTMLMessages;
-use App\Core\Mailer;
+use App\Core\Mailers\Mailer;
 
 use App\DbTemplate;
 use App\Models\Entity\UserEntity;
