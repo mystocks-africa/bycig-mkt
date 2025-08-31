@@ -1,6 +1,6 @@
 <?php
-
 namespace App;
+
 include_once __DIR__ . "/../../controllers/not-found/Controller.php";
 
 use App\Controllers\NotFoundController;
