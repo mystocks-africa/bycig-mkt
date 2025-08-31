@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Message - MKT</title>
+    <link rel="stylesheet" href="/static/css/index.css">
 </head>
 <body>
         <div class="redirect-body">
