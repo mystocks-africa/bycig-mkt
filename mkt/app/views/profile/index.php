@@ -63,8 +63,10 @@
                 If you want to update your password, <a href="/auth/forgot-pwd">click here</a>.
             </p>
 
-            <a class="small-gray-link" href="/account?email=<?= $user["email"] ?>">
-                Your account page (share with others!)
+            <a href="/account?email=<?= $user["email"] ?>">
+                <button>
+                    Your account page (share with others!)
+                </button>
             </a>
             <br><br>
 
