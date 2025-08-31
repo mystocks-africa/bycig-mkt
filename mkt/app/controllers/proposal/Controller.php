@@ -39,7 +39,7 @@ class ProposalController
         ]);
     }
 
-    public function submitPost(): void 
+    public function processSubmit(): void 
     {
         $this->authGuard->redirectIfNotAuth();
 
