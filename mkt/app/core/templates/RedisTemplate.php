@@ -8,18 +8,14 @@ use Predis\Client;
 
 class RedisTemplate 
 {
-
+    private $env;
     private Client $redis;
 
     public function __construct()
     {
         global $env;
-
-        $this->redis = new Client([
-                    'scheme' => $env["REDIS_SCHEME"] ?? 'tcp',
-                    'host'   => $env["REDIS_HOST"] ?? 'redis', 
-                    'port'   => $env["REDIS_PORT"] ?? 6379,
-                ]);
+        $this->env = $env;
+        $this->redis = new Client($this->env["REDIS_URL"] ?? "redis://127.0.0.1:6379");
     }
 
     public function getRedis(): Client
