@@ -23,5 +23,5 @@ func main() {
 	fmt.Println("Thank you!")
 
 	// Temporary debugging
-	fmt.Println(email, role)
+	fmt.Println(email, "and", role)
 }
