@@ -1,12 +1,6 @@
 <?php
 namespace App\Controllers;
 
-include_once __DIR__ . "/../../core/controller/Controller.php";
-include_once __DIR__ . "/../../core/auth/Guard.php";
-include_once __DIR__ . "/../../core/auth/Session.php";
-
-include_once __DIR__ . "/../../services/profile/Service.php";
-
 use App\Core\Controller\Controller;
 use App\Core\Auth\Session;
 use App\Core\Auth\AuthGuard;

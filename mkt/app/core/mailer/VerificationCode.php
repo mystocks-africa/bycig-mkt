@@ -1,8 +1,6 @@
 <?php
 namespace App\Core\Mailers;
 
-include_once __DIR__ . "/../templates/RedisTemplate.php";
-
 use App\Core\Templates\RedisTemplate;
 
 class VerificationCode 

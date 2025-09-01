@@ -1,17 +1,11 @@
 <?php
 namespace App\Services;
 
-include_once __DIR__ . "/../../core/templates/DbTemplate.php";
-
-include_once __DIR__ . "/../../models/proposals/Repository.php";
-include_once __DIR__ . "/../../models/holdings/Repository.php";
-include_once __DIR__ . "/../../models/holdings/Entity.php";
-
 use App\Core\Templates\DbTemplate;
 
-use App\Models\Repository\HoldingRepository;
-use App\Models\Entity\HoldingEntity;
-use App\Models\Repository\ProposalRepository;
+use App\Models\Proposals\Repository as ProposalRepository;
+use App\Models\Holdings\Repository as HoldingRepository;
+use App\Models\Holdings\Entity as HoldingEntity;
 use Exception;
 
 class AdminService

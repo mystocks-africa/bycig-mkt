@@ -1,12 +1,10 @@
 <?php
-
-namespace App\Models\Repository;
-include_once __DIR__ . "/Entity.php";
+namespace App\Models\Holdings;
 
 use PDO;
-use App\Models\Entity\HoldingEntity;
+use App\Models\Holdings\Entity as HoldingEntity;
 
-class HoldingRepository
+class Repository
 {
     private PDO $pdo;
 

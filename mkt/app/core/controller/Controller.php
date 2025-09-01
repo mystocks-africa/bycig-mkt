@@ -1,8 +1,6 @@
 <?php
 namespace App\Core\Controller;
 
-include_once __DIR__ . "/../auth/Session.php";
-
 use App\Core\Auth\Session;
 
 use Exception;

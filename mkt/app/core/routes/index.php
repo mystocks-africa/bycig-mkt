@@ -1,13 +1,4 @@
 <?php
-include_once __DIR__ . "/../../controllers/home/Controller.php";
-include_once __DIR__ . "/../../controllers/auth/Controller.php";
-include_once __DIR__ . "/../../controllers/proposal/Controller.php";
-include_once __DIR__ . "/../../controllers/admin/Controller.php";
-include_once __DIR__ . "/../../controllers/holdings/Controller.php";
-include_once __DIR__ . "/../../controllers/profile/Controller.php";
-include_once __DIR__ . "/../../controllers/account/Controller.php";
-include_once __DIR__ . "/Router.php";
-
 use App\Controllers\AccountController;
 use App\Controllers\AdminController;
 use App\Controllers\AuthController;

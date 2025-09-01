@@ -1,19 +1,12 @@
 <?php
 namespace App\Services;
 
-include_once __DIR__ . "/../../core/templates/DbTemplate.php";
-include_once __DIR__ . "/../../core/files/Files.php";
-
-include_once __DIR__ . "/../../models/proposals/Repository.php";
-include_once __DIR__ . "/../../models/proposals/Entity.php";
-include_once __DIR__ . "/../../models/user/Repository.php";
-
 use App\Core\Templates\DbTemplate;
 use App\Core\Files\Files;
 
-use App\Models\Repository\ProposalRepository;
-use App\Models\Repository\UserRepository;
-use App\Models\Entity\ProposalEntity;
+use App\Models\Proposals\Repository as ProposalRepository;
+use App\Models\User\Repository as UserRepository;
+use App\Models\Proposals\Entity as ProposalEntity;
 use Exception;
 
 class ProposalService

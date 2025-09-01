@@ -1,8 +1,7 @@
 <?php
+namespace App\Models\User;
 
-namespace App\Models\Entity;
-
-class UserEntity
+class Entity
 {
     public readonly string $email;
     public string $pwd;

@@ -1,12 +1,10 @@
 <?php
-
-namespace App\Models\Repository;
-include_once __DIR__ . "/Entity.php";
+namespace App\Models\Proposals;
 
 use PDO;
-use App\Models\Entity\ProposalEntity;
+use App\Models\Proposals\Entity as ProposalEntity;
 
-class ProposalRepository 
+class Repository 
 {
     private PDO $pdo;
 

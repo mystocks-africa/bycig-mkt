@@ -1,13 +1,9 @@
 <?php
 namespace App\Services;
 
-include_once __DIR__ . "/../../models/holdings/Repository.php";
-
-include_once __DIR__ . "/../../core/templates/DbTemplate.php";
-
 use App\Core\Templates\DbTemplate;
 
-use App\Models\Repository\HoldingRepository;
+use App\Models\Holdings\Repository as HoldingRepository;
 
 class HomeService 
 {

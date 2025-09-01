@@ -1,8 +1,7 @@
 <?php
+namespace App\Models\Proposals;
 
-namespace App\Models\Entity;
-
-class ProposalEntity
+class Entity
 {
     public string $post_author;
     public string $stock_ticker;

@@ -1,8 +1,7 @@
 <?php
+namespace App\Models\Holdings;
 
-namespace App\Models\Entity;
-
-class HoldingEntity 
+class Entity 
 {
     public string $investor;
     public string $stock_ticker;

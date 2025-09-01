@@ -1,8 +1,6 @@
 <?php
 namespace App\Core\Templates;
 
-include_once __DIR__ . "/../../../utils/env.php";
-
 use PDO;
 use PDOException;
 

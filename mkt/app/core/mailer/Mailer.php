@@ -1,8 +1,6 @@
 <?php
 namespace App\Core\Mailers;
 
-include_once __DIR__ . "/../../../utils/env.php";
-
 use PHPMailer\PHPMailer\PHPMailer;
 
 class Mailer

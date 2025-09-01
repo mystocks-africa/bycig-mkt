@@ -1,7 +1,6 @@
 <?php 
 namespace App\Core\Auth;
 
-include_once __DIR__ . "/Session.php";
 
 use App\Core\Auth\Session;
 

@@ -1,14 +1,10 @@
 <?php
+namespace App\Models\User;
 
-namespace App\Models\Repository;
-include_once __DIR__ . "/../../core/templates/DbTemplate.php";
-include_once __DIR__ . "/Entity.php";
-
-use Exception;
 use PDO;
-use App\Models\Entity\UserEntity;
+use App\Models\User\Entity as UserEntity;
 
-class UserRepository 
+class Repository 
 {
     private PDO $pdo;
 

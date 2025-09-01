@@ -1,9 +1,6 @@
 <?php
 namespace App\Core\Auth;
 
-include_once __DIR__ . "/Cookie.php";
-include_once __DIR__ . "/../templates/RedisTemplate.php";
-
 use App\Core\Templates\RedisTemplate;
 use App\Core\Auth\Cookie;
 

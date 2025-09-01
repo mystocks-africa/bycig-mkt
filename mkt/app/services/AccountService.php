@@ -1,15 +1,10 @@
 <?php
 namespace App\Services;
 
-include_once __DIR__ . "/../../core/templates/DbTemplate.php";
-
-include_once __DIR__ . "/../../models/holdings/Repository.php";
-include_once __DIR__ . "/../../models/user/Repository.php";
-
 use App\Core\Templates\DbTemplate;
 
-use App\Models\Repository\HoldingRepository;
-use App\Models\Repository\UserRepository;
+use App\Models\Holdings\Repository as HoldingRepository;
+use App\Models\User\Repository as UserRepository;
 use Exception;
 
 class AccountService 
