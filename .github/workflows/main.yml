@@ -17,15 +17,15 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: '1.21'   # adjust as needed
+          go-version: '1.21'  
 
       - name: Build Go executable
         run: |
           mkdir -p execs
-          go build -o execs/ ./cli/main.go 
+          go build -o execs/myapp ./cli/main.go  # adjust ./cli/main.go to your Go entry file
 
       - name: Upload Go executable to GitHub (artifact)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4  
         with:
           name: go-executable
           path: execs/myapp
