@@ -35,5 +35,5 @@ jobs:
           protocol: ftp
           port: 21
           local-dir: ./mkt   # upload this folder
-          server-dir: /platform   # remote path
+          server-dir: /public_html/platform   # remote path
           dangerous-clean-slate: false
