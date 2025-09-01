@@ -34,6 +34,6 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftp
           port: 21
-          local-dir: ./mkt   # upload this folder
-          server-dir: /public_html/platform   # remote path
+          local-dir: ./mkt/   # upload this folder
+          server-dir: /public_html/platform/  # remote path
           dangerous-clean-slate: false
