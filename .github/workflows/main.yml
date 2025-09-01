@@ -1,29 +1,33 @@
-name: 🚀 Deploy platform 
+name: 🚀 Deploy platform via FTP 
 
 on:
   push:
     branches:
-      - main   # change if you use another branch (e.g., master)
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
+      # 1️⃣ Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # 2️⃣ Set up PHP
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2'  
+          php-version: '8.2'
           tools: composer
 
+      # 3️⃣ Install dependencies
       - name: Install dependencies with Composer
         run: |
           cd mkt
           composer install --no-dev --optimize-autoloader
 
+      # 4️⃣ Create .env file
       - name: Create .env file
         run: |
           echo "APP_ENV=production" > mkt/.env
@@ -37,7 +41,14 @@ jobs:
           echo "SMTP_PORT=${{ secrets.SMTP_PORT }}" >> mkt/.env
           echo "FINNHUB_API_KEY=${{ secrets.FINNHUB_API_KEY }}" >> mkt/.env
 
-      - name: Upload files via FTP
+      # 5️⃣ Zip the folder for faster upload
+      - name: Zip project folder
+        run: |
+          cd mkt
+          zip -r ../mkt.zip ./*
+
+      # 6️⃣ Upload ZIP via FTP
+      - name: Upload ZIP via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
@@ -45,6 +56,6 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftp
           port: 21
-          local-dir: ./mkt/   # upload this folder
-          server-dir: /public_html/platform/  # remote path
+          local-dir: ./mkt.zip
+          server-dir: /public_html/platform/
           dangerous-clean-slate: false
