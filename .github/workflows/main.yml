@@ -19,9 +19,7 @@ jobs:
           echo "SQL_DSN=${{ secrets.SQL_DSN }}" >> mkt/.env
           echo "SQL_USER=${{ secrets.SQL_USER }}" >> mkt/.env
           echo "SQL_PASSWORD=${{ secrets.SQL_PASSWORD }}" >> mkt/.env
-          echo "REDIS_SCHEME=${{ secrets.REDIS_SCHEME }}" >> mkt/.env
-          echo "REDIS_HOST=${{ secrets.REDIS_HOST }}" >> mkt/.env
-          echo "REDIS_PORT=${{ secrets.REDIS_PORT }}" >> mkt/.env
+          echo "REDIS_URL=${{ secrets.REDIS_URL }}" >> mkt/.env
           echo "SMTP_HOST=${{ secrets.SMTP_HOST }}" >> mkt/.env
           echo "SMTP_USERNAME=${{ secrets.SMTP_USERNAME }}" >> mkt/.env
           echo "SMTP_PASSWORD=${{ secrets.SMTP_PASSWORD }}" >> mkt/.env
