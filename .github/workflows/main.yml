@@ -56,6 +56,6 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftp
           port: 21
-          local-dir: ./mkt.zip
+          local-dir: ./mkt.zip/
           server-dir: /public_html/platform/
           dangerous-clean-slate: false
