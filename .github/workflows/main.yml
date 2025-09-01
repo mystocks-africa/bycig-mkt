@@ -52,13 +52,6 @@ jobs:
           cd mkt
           composer install --no-dev --optimize-autoloader
 
-      # ⬇️ NEW: pull the Go binary into the folder you deploy
-      - name: Download Go executable artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: go-executable
-          path: mkt/bin
-
       - name: Make binary executable & verify
         run: |
           chmod +x mkt/bin/myapp
