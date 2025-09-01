@@ -10,11 +10,21 @@ RUN apt-get update && apt-get install -y \
         libpng-dev \
         libxml2-dev \
         unzip \
+        git \
+        curl \
     && docker-php-ext-install mysqli pdo pdo_mysql \
     && rm -rf /var/lib/apt/lists/*
 
+# Install Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
 WORKDIR /app
+
+# Copy project files
 COPY ./mkt /app/
+
+# Install PHP dependencies
+RUN composer install --no-dev --optimize-autoloader
 
 EXPOSE 9999
 
