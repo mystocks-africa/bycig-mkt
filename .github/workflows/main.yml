@@ -11,6 +11,7 @@ jobs:
     env:
       GOOS: linux
       GOARCH: amd64
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -22,14 +23,14 @@ jobs:
 
       - name: Build Go executable
         run: |
-          mkdir -p execs
-          go build -o execs/myapp ./cli/main.go
+          mkdir -p mkt/bin
+          go build -o mkt/bin/myapp ./cli/main.go
 
       - name: Upload Go executable to GitHub (artifact)
         uses: actions/upload-artifact@v4
         with:
           name: go-executable
-          path: execs/myapp
+          path: mkt/bin/myapp
           if-no-files-found: error
 
   deploy:
@@ -40,6 +41,12 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Download Go executable artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: go-executable
+          path: mkt/bin
 
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
@@ -55,4 +62,4 @@ jobs:
       - name: Make binary executable & verify
         run: |
           chmod +x mkt/bin/myapp
-          ls -lah mkt/bi
+          ls -lah mkt/bin
