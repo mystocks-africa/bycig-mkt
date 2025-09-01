@@ -24,7 +24,7 @@ jobs:
           echo "SMTP_USERNAME=${{ secrets.SMTP_USERNAME }}" >> mkt/.env
           echo "SMTP_PASSWORD=${{ secrets.SMTP_PASSWORD }}" >> mkt/.env
           echo "SMTP_PORT=${{ secrets.SMTP_PORT }}" >> mkt/.env
-          echo "FINNHUB_API_KEY=${{ secrets.FINNHUB_API_KEY }}" >> mkt/.env
+          echo "FINNHUB_API_K EY=${{ secrets.FINNHUB_API_KEY }}" >> mkt/.env
 
       - name: Upload files via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
