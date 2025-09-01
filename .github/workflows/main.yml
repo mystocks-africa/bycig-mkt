@@ -2,38 +2,40 @@ name: 🚀 Deploy platform 🚀
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
   build-go:
     name: Build Go Executable
     runs-on: ubuntu-latest
-
+    env:
+      GOOS: linux
+      GOARCH: amd64
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Set up Go
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
-          go-version: '1.21'  
+          go-version: '1.21'
 
       - name: Build Go executable
         run: |
           mkdir -p execs
-          go build -o execs/myapp ./cli/main.go  # adjust ./cli/main.go to your Go entry file
+          go build -o execs/myapp ./cli/main.go
 
       - name: Upload Go executable to GitHub (artifact)
-        uses: actions/upload-artifact@v4  
+        uses: actions/upload-artifact@v4
         with:
           name: go-executable
           path: execs/myapp
+          if-no-files-found: error
 
   deploy:
     name: Deploy PHP Platform
     runs-on: ubuntu-latest
-    needs: build-go   # ensures Go build runs first
+    needs: build-go
 
     steps:
       - name: Checkout repository
@@ -42,7 +44,7 @@ jobs:
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2'  
+          php-version: '8.2'
           tools: composer
 
       - name: Install dependencies with Composer
@@ -50,27 +52,14 @@ jobs:
           cd mkt
           composer install --no-dev --optimize-autoloader
 
-      - name: Create .env file
-        run: |
-          echo "APP_ENV=production" > mkt/.env
-          echo "SQL_DSN=${{ secrets.SQL_DSN }}" >> mkt/.env
-          echo "SQL_USER=${{ secrets.SQL_USER }}" >> mkt/.env
-          echo "SQL_PASSWORD=${{ secrets.SQL_PASSWORD }}" >> mkt/.env
-          echo "REDIS_URL=${{ secrets.REDIS_URL }}" >> mkt/.env
-          echo "SMTP_HOST=${{ secrets.SMTP_HOST }}" >> mkt/.env
-          echo "SMTP_USERNAME=${{ secrets.SMTP_USERNAME }}" >> mkt/.env
-          echo "SMTP_PASSWORD=${{ secrets.SMTP_PASSWORD }}" >> mkt/.env
-          echo "SMTP_PORT=${{ secrets.SMTP_PORT }}" >> mkt/.env
-          echo "FINNHUB_API_KEY=${{ secrets.FINNHUB_API_KEY }}" >> mkt/.env
-
-      - name: Upload files via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      # ⬇️ NEW: pull the Go binary into the folder you deploy
+      - name: Download Go executable artifact
+        uses: actions/download-artifact@v4
         with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ftp
-          port: 21
-          local-dir: ./mkt/
-          server-dir: /domains/bycig.org/public_html/platform/
-          dangerous-clean-slate: false
+          name: go-executable
+          path: mkt/bin
+
+      - name: Make binary executable & verify
+        run: |
+          chmod +x mkt/bin/myapp
+          ls -lah mkt/bi
