@@ -3,11 +3,11 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-require __DIR__ . '/vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 
 $requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 if ($requestUri !== '/redirect') {
-    include __DIR__ . '/app/views/navbar.php';
+    include __DIR__ . '/../app/views/navbar.php';
 }
 
-require __DIR__ . "/app/routes/index.php";
+require __DIR__ . "/../app/routes/index.php";
