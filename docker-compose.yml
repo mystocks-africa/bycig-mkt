@@ -11,7 +11,7 @@ services:
       MYSQL_USER: app_user
       MYSQL_PASSWORD: app_pass
     volumes:
-      - ./__docker__/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
       - mysql-data:/var/lib/mysql
     ports:
       - "3306:3306"
@@ -41,7 +41,7 @@ services:
   php:
     build:
       context: .
-      dockerfile: __docker__/php/Dockerfile
+      dockerfile: docker/php/Dockerfile
     container_name: php
     restart: unless-stopped
     ports:
