@@ -15,11 +15,11 @@
         <label for="stock_ticker">Your Stock:</label>
         <select name="stock_ticker" id="custom_stock" required>
             <option value="" disabled selected>Select a stock</option>
-            <? foreach($supportedStocks as $ticker => $name): ?>
+            <?php foreach($supportedStocks as $ticker => $name): ?>
                 <option value="<?= $ticker ?>" data-stock-name="<?= $name ?>">
                     <?= $name ?>
                 </option>
-            <? endforeach; ?>
+            <?php endforeach; ?>
         </select>
         <br><br>
 
