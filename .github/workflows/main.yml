@@ -45,6 +45,6 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftp
           port: 21
-          local-dir: ./mkt/   # upload this folder
+          local-dir: ./platform/   # upload this folder
           server-dir: /domains/bycig.org/public_html/platform/  # remote path
           dangerous-clean-slate: false
