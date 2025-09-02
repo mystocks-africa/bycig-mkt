@@ -6,4 +6,4 @@ if ($requestUri !== '/redirect') {
     include __DIR__ . '/app/views/navbar.php';
 }
 
-$router = require __DIR__ . "/../app/routes/index.php";
+require __DIR__ . "/../app/routes/index.php";
