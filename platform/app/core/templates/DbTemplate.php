@@ -15,10 +15,10 @@ class DbTemplate {
         $dotenv->load();
 
         $host = $_ENV["SQL_HOST"] ?? "mysql";
-        $port = (int)($_ENV["SQL_PORT"] ?? 3306);
+        $port = 3306;
         $database = $_ENV["SQL_DATABASE"] ?? "app_db";
         $user = $_ENV["SQL_USER"] ?? "app_user";
-        $pass = $_ENV["SQL_PASS"] ?? "app_pass";
+        $pass = $_ENV["SQL_PASSWORD"] ?? "app_pass";
         
         try {
             // Enable exception mode for MySQLi
