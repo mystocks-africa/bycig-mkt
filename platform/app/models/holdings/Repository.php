@@ -3,7 +3,6 @@ namespace App\Models\Holdings;
 
 use mysqli;
 use App\Models\Holdings\Entity as HoldingEntity;
-use App\Core\Templates\DbTemplate;
 
 class Repository
 {
@@ -68,9 +67,9 @@ class Repository
         WHERE id = ?;
     ";
 
-    public function __construct() 
+    public function __construct(mysqli $mysqli) 
     {
-        $this->mysqli = new DbTemplate()->getMysqli();
+        $this->mysqli = $mysqli;
     }
 
     public function save(HoldingEntity $holding): void

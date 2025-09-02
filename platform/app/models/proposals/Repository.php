@@ -1,7 +1,6 @@
 <?php
 namespace App\Models\Proposals;
 
-use App\Core\Templates\DbTemplate;
 use mysqli;
 use App\Models\Proposals\Entity as ProposalEntity;
 
@@ -49,8 +48,8 @@ class Repository
         AND users.cluster_leader = ?;
     ";
 
-    public function __construct() {
-        $this->mysqli = new DbTemplate()->getMysqli();
+    public function __construct(mysqli $mysqli) {
+        $this->mysqli = $mysqli;
     }
 
     public function save(ProposalEntity $proposal): void

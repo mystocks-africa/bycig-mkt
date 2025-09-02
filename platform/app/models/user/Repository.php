@@ -66,9 +66,9 @@ class Repository
         WHERE email = ?;
     ";
 
-    public function __construct()
+    public function __construct(mysqli $mysqli)
     {
-        $this->mysqli = new DbTemplate()->getMysqli();
+        $this->mysqli = $mysqli;
     }
 
     public function save(UserEntity $user): void
