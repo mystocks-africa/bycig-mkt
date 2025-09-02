@@ -3,7 +3,7 @@ namespace App\Models\User;
 
 class Entity
 {
-    public readonly string $email;
+    public string $email;
     public string $pwd;
     public ?string $clusterLeader; // nullable
     public string $fullName;
