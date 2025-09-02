@@ -1,12 +1,13 @@
 <?php
 namespace App\Models\Proposals;
 
-use PDO;
+use App\Core\Templates\DbTemplate;
+use mysqli;
 use App\Models\Proposals\Entity as ProposalEntity;
 
 class Repository 
 {
-    private PDO $pdo;
+    private mysqli $mysqli;
 
     private string $getProposalByIdQuery = "
         SELECT stock_ticker, stock_name, subject_line, thesis, shares, proposal_file, full_name, users.email
@@ -48,43 +49,63 @@ class Repository
         AND users.cluster_leader = ?;
     ";
 
-    public function __construct(PDO $pdo) {
-        $this->pdo = $pdo;
+    public function __construct() {
+        $this->mysqli = new DbTemplate()->getMysqli();
     }
 
     public function save(ProposalEntity $proposal): void
     {
-        $stmt = $this->pdo->prepare($this->insertProposalQuery);
-        $stmt->execute([
+        $stmt = $this->mysqli->prepare($this->insertProposalQuery);
+        $stmt->bind_param("sssssis",
             $proposal->post_author,
             $proposal->stock_ticker,
             $proposal->stock_name,
             $proposal->subject_line,
             $proposal->thesis,
             $proposal->shares,
-            $proposal->proposal_file,
-        ]);
-        $this->pdo->commit();
+            $proposal->proposal_file
+        );
+        $stmt->execute();
+        $stmt->close();
+        $this->mysqli->commit();
     }
 
     public function findById(int $id): mixed
     {
-        $stmt = $this->pdo->prepare($this->getProposalByIdQuery);
-        $stmt->execute([$id]);
-        return $stmt->fetch();
+        $stmt = $this->mysqli->prepare($this->getProposalByIdQuery);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        
+        $result = $stmt->get_result();
+        $data = $result->fetch_assoc();
+        
+        $result->free();
+        $stmt->close();
+        
+        return $data ?: false;
     }
 
     public function findByClusterLeader(string $clusterLeaderEmail): array
     {
-        $stmt = $this->pdo->prepare($this->findProposalByClusterLeaderQuery);
-        $stmt->execute([$clusterLeaderEmail]);
-        return $stmt->fetchAll();
+        $stmt = $this->mysqli->prepare($this->findProposalByClusterLeaderQuery);
+        $stmt->bind_param("s", $clusterLeaderEmail);
+        $stmt->execute();
+        
+        $result = $stmt->get_result();
+        $data = $result->fetch_all(MYSQLI_ASSOC);
+        
+        $result->free();
+        $stmt->close();
+        
+        return $data;
     }
 
     public function delete(int $postId, string $clusterLeaderEmail): void
     {
-        $stmt = $this->pdo->prepare($this->deleteProposalQuery);
-        $stmt->execute([$postId, $clusterLeaderEmail]);
-        $this->pdo->commit();
+        $stmt = $this->mysqli->prepare($this->deleteProposalQuery);
+        $stmt->bind_param("is", $postId, $clusterLeaderEmail);
+        $stmt->execute();
+        $stmt->close();
+        $this->mysqli->commit();
     }
 }

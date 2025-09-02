@@ -1,7 +1,6 @@
 <?php
 namespace App\Services;
 
-use App\Core\Templates\DbTemplate;
 use App\Core\Auth\Session;
 use App\Core\Auth\Cookie;
 use App\Core\Mailers\VerificationCode;
@@ -14,13 +13,11 @@ use Exception;
 
 class AuthService 
 {
-    private DbTemplate $db;
     private UserRepository $userRepository;
 
     public function __construct()
     {
-        $this->db = new DbTemplate();
-        $this->userRepository = new UserRepository($this->db->getPdo());
+        $this->userRepository = new UserRepository();
     }
 
     public function getClusterLeaderEmails(): array
