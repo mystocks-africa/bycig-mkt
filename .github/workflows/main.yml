@@ -19,19 +19,25 @@ jobs:
           php-version: '8.2'  
           tools: composer
 
-      - name: Create .env file
+      - name: Create .env file through CAT
         run: |
-          echo "APP_ENV=production" > platform/.env
-          echo "SQL_HOST=${{ secrets.SQL_HOST }}" >> platform/.env
-          echo "SQL_DATABASE=${{ secrets.SQL_DATABASE }}" >> platform/.env
-          echo "SQL_USER=${{ secrets.SQL_USER }}" >> platform/.env
-          echo "SQL_PASSWORD=${{ secrets.SQL_PASSWORD }}" >> platform/.env
-          echo "REDIS_URL=${{ secrets.REDIS_URL }}" >> platform/.env
-          echo "SMTP_HOST=${{ secrets.SMTP_HOST }}" >> platform/.env
-          echo "SMTP_USERNAME=${{ secrets.SMTP_USERNAME }}" >> platform/.env
-          echo "SMTP_PASSWORD=${{ secrets.SMTP_PASSWORD }}" >> platform/.env
-          echo "SMTP_PORT=${{ secrets.SMTP_PORT }}" >> platform/.env
-          echo "FINNHUB_API_KEY=${{ secrets.FINNHUB_API_KEY }}" >> platform/.env
+          cat > platform/.env <<EOF
+          APP_ENV=production
+          SQL_HOST=${{ secrets.SQL_HOST }}
+          SQL_DATABASE=${{ secrets.SQL_DATABASE }}
+          SQL_USER=${{ secrets.SQL_USER }}
+          SQL_PASSWORD=${{ secrets.SQL_PASSWORD }}
+
+          REDIS_URL=${{ secrets.REDIS_URL }}
+
+          SMTP_HOST=${{ secrets.SMTP_HOST }}
+          SMTP_USERNAME=${{ secrets.SMTP_USERNAME }}
+          SMTP_PASSWORD=${{ secrets.SMTP_PASSWORD }}
+          SMTP_PORT=${{ secrets.SMTP_PORT }}
+
+          FINNHUB_API_KEY=${{ secrets.FINNHUB_API_KEY }}
+          EOF
+
 
       - name: Upload files via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
