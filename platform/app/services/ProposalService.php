@@ -19,8 +19,8 @@ class ProposalService
     public function __construct()
     {
         $this->db = new DbTemplate();
-        $this->proposalRepository = new ProposalRepository($this->db->getPdo());
-        $this->userRepository = new UserRepository($this->db->getPdo());
+        $this->proposalRepository = new ProposalRepository($this->db->getMysqli());
+        $this->userRepository = new UserRepository($this->db->getMysqli());
     }
 
     public function createProposal(

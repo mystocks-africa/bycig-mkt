@@ -18,8 +18,8 @@ class ProfileService
     public function __construct()
     {
         $this->db = new DbTemplate();
-        $this->userRepository = new UserRepository($this->db->getPdo());
-        $this->holdingRepository = new HoldingRepository($this->db->getPdo());
+        $this->userRepository = new UserRepository($this->db->getMysqli());
+        $this->holdingRepository = new HoldingRepository($this->db->getMysqli());
     }
 
     public function getProfileData(string $email, ?string $activeTab = null): array
@@ -58,18 +58,21 @@ class ProfileService
     public function deleteProfile(string $email, Session $session): void
     {
         try {
-            $this->db->getPdo()->beginTransaction();
+            // Start transaction using MySQLi
+            $this->db->getMysqli()->begin_transaction();
+            
             $this->userRepository->delete($email);
             $this->holdingRepository->deleteAllHoldings($email);
             $session->deleteSession();
             Cookie::clearSessionCookie();
-            if ($this->db->getPdo()->inTransaction()) {
-                $this->db->getPdo()->commit();
+            
+            // Commit transaction using MySQLi
+            if ($this->db->getMysqli()->connect_errno === 0) {
+                $this->db->getMysqli()->commit();
             }
         } catch (Exception $error) {
-            if ($this->db->getPdo()->inTransaction()) {
-                $this->db->getPdo()->rollBack();
-            }
+            // Rollback transaction using MySQLi
+            $this->db->getMysqli()->rollback();
             throw $error;
         }
     }
@@ -91,11 +94,10 @@ class ProfileService
 
         foreach ($data as $field => $value) {
             if ($value === null) continue;
-            // Building SQL-code
-            $fields[] = "$field = :$field";
+            // Building field names for MySQLi (no longer need :field syntax)
+            $fields[] = $field;
             $params[$field] = $value;
         }
-
 
         if (empty($fields)) {
             throw new Exception("Nothing to update");

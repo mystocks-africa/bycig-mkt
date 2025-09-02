@@ -1,35 +1,51 @@
 <?php
 namespace App\Core\Templates;
 
-use PDO;
-use PDOException;
+use mysqli;
+use mysqli_sql_exception;
 use Dotenv\Dotenv;
 
 class DbTemplate {
 
-    private PDO $pdo;
+    private mysqli $mysqli;
 
     public function __construct()
     {
         $dotenv = Dotenv::createImmutable(__DIR__ . "/../../../");
         $dotenv->load();
 
-        $dsn = $_ENV["SQL_DSN"] ?? 'mysql:host=mysql;port=3306;dbname=app_db';
+        $host = $_ENV["SQL_HOST"] ?? "mysql";
+        $port = 3306;
+        $database = $_ENV["SQL_DATABASE"] ?? "app_db";
         $user = $_ENV["SQL_USER"] ?? "app_user";
-        $pass = $_ENV["SQL_PASS"] ?? "app_pass";
+        $pass = $_ENV["SQL_PASSWORD"] ?? "app_pass";
         
         try {
-            $this->pdo = new PDO($dsn, $user, $pass, [
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                PDO::ATTR_AUTOCOMMIT => false
-            ]);
-        } catch (PDOException $error) {
+            // Enable exception mode for MySQLi
+            mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+            
+            $this->mysqli = new mysqli($host, $user, $pass, $database, $port);
+            
+            // Set charset to utf8mb4
+            $this->mysqli->set_charset("utf8mb4");
+            
+            // Disable autocommit (equivalent to PDO::ATTR_AUTOCOMMIT => false)
+            $this->mysqli->autocommit(false);
+            
+        } catch (mysqli_sql_exception $error) {
             exit("Database connection failed: " . $error->getMessage());
         }
     }
     
-    public function getPdo(): PDO 
+    public function getMysqli(): mysqli 
     {
-        return $this->pdo;
+        return $this->mysqli;
+    }
+
+    public function __destruct()
+    {
+        if (isset($this->mysqli)) {
+            $this->mysqli->close();
+        }
     }
 }

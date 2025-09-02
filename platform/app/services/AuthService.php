@@ -1,13 +1,13 @@
 <?php
 namespace App\Services;
 
-use App\Core\Templates\DbTemplate;
 use App\Core\Auth\Session;
 use App\Core\Auth\Cookie;
 use App\Core\Mailers\VerificationCode;
 use App\Core\Mailers\HTMLMessages;
 use App\Core\Mailers\Mailer;
 
+use App\Core\Templates\DbTemplate;
 use App\Models\User\Repository as UserRepository;
 use App\Models\User\Entity as UserEntity;
 use Exception;
@@ -20,7 +20,7 @@ class AuthService
     public function __construct()
     {
         $this->db = new DbTemplate();
-        $this->userRepository = new UserRepository($this->db->getPdo());
+        $this->userRepository = new UserRepository($this->db->getMysqli());
     }
 
     public function getClusterLeaderEmails(): array

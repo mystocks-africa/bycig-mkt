@@ -1,12 +1,12 @@
 <?php
 namespace App\Models\Holdings;
 
-use PDO;
+use mysqli;
 use App\Models\Holdings\Entity as HoldingEntity;
 
 class Repository
 {
-    private PDO $pdo;
+    private mysqli $mysqli;
 
     private string $insertHoldingQuery = "
         INSERT INTO holdings 
@@ -67,74 +67,89 @@ class Repository
         WHERE id = ?;
     ";
 
-    public function __construct(PDO $pdo) 
+    public function __construct(mysqli $mysqli) 
     {
-        $this->pdo = $pdo;
+        $this->mysqli = $mysqli;
     }
 
     public function save(HoldingEntity $holding): void
     {
-        $stmt = $this->pdo->prepare($this->insertHoldingQuery);
-        $stmt->execute([
+        $stmt = $this->mysqli->prepare($this->insertHoldingQuery);
+        $stmt->bind_param("sssi", 
             $holding->investor,
             $holding->stock_ticker,
             $holding->stock_name,
             $holding->shares
-        ]);
-        $this->pdo->commit();
+        );
+        $stmt->execute();
+        $stmt->close();
+        $this->mysqli->commit();
     }
 
     public function findAll(): array
     {
-        $stmt = $this->pdo->prepare($this->findAllHoldingsQuery);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $result = $this->mysqli->query($this->findAllHoldingsQuery);
+        $data = $result->fetch_all(MYSQLI_ASSOC);
+        $result->free();
+        return $data;
     }
 
     public function findByEmail(string $email): array 
     {
-        $stmt = $this->pdo->prepare($this->findByEmailQuery);
-        $stmt->execute([
-            $email
-        ]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt = $this->mysqli->prepare($this->findByEmailQuery);
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        
+        $result = $stmt->get_result();
+        $data = $result->fetch_all(MYSQLI_ASSOC);
+        
+        $result->free();
+        $stmt->close();
+        
+        return $data;
     }
 
     public function findById(int $id): mixed 
     {
-        $stmt = $this->pdo->prepare($this->findByIdQuery);
-        $stmt->execute([
-            $id
-        ]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        $stmt = $this->mysqli->prepare($this->findByIdQuery);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        
+        $result = $stmt->get_result();
+        $data = $result->fetch_assoc();
+        
+        $result->free();
+        $stmt->close();
+        
+        return $data ?: false;
     }
 
     public function delete(int $id): void
     {
-        $stmt = $this->pdo->prepare($this->deleteHoldingQuery);
-        $stmt->execute([
-            $id,
-        ]);
-        $this->pdo->commit();
+        $stmt = $this->mysqli->prepare($this->deleteHoldingQuery);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $stmt->close();
+        $this->mysqli->commit();
     }
 
     public function deleteAllHoldings(string $email): void
     {        
-        $stmt = $this->pdo->prepare($this->deleteAllHoldingsQuery);
-
-        // The investor field is a foriegn key to user's email (primary key of user)
-        $stmt->execute([
-            $email
-        ]);
-        $this->pdo->commit();
+        $stmt = $this->mysqli->prepare($this->deleteAllHoldingsQuery);
+        
+        // The investor field is a foreign key to user's email (primary key of user)
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $stmt->close();
+        $this->mysqli->commit();
     }
 
     public function fulfillOrder(int $id): void
     {
-        $stmt = $this->pdo->prepare($this->updateFulfillOrder);
-        $stmt->execute([
-            $id
-        ]);
-        $this->pdo->commit();
+        $stmt = $this->mysqli->prepare($this->updateFulfillOrder);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $stmt->close();
+        $this->mysqli->commit();
     }
 }

@@ -23,8 +23,8 @@ class HoldingService
         $dotenv->load();
 
         $this->db = new DbTemplate();
-        $this->holdingRepository = new HoldingRepository($this->db->getPdo());
-        $this->userRepository = new UserRepository($this->db->getPdo());
+        $this->holdingRepository = new HoldingRepository($this->db->getMysqli());
+        $this->userRepository = new UserRepository($this->db->getMysqli());
     }
 
     private function getStockPrice(string $stockSymbol): float 
@@ -47,7 +47,8 @@ class HoldingService
     public function processBuyOrder(int $id, string $email): void
     {         
         try {        
-            $this->db->getPdo()->beginTransaction();
+            // Start transaction using MySQLi
+            $this->db->getMysqli()->begin_transaction();
 
             $holding = $this->holdingRepository->findById($id);
 
@@ -71,13 +72,13 @@ class HoldingService
             $this->userRepository->updateBalance($newBalance, $email);
             $this->holdingRepository->fulfillOrder($id);
 
-            if ($this->db->getPdo()->inTransaction()) {
-                $this->db->getPdo()->commit();
+            // Commit transaction using MySQLi
+            if ($this->db->getMysqli()->connect_errno === 0) {
+                $this->db->getMysqli()->commit();
             }        
         } catch(Exception $error) {
-            if ($this->db->getPdo()->inTransaction()) {
-                $this->db->getPdo()->rollBack();
-            }            
+            // Rollback transaction using MySQLi
+            $this->db->getMysqli()->rollback();            
             throw $error;
         }
     }
@@ -85,7 +86,8 @@ class HoldingService
     public function processSellOrder(int $id, string $email): void
     {         
         try {
-            $this->db->getPdo()->beginTransaction();
+            // Start transaction using MySQLi
+            $this->db->getMysqli()->begin_transaction();
 
             $holding = $this->holdingRepository->findById($id);
 
@@ -105,13 +107,13 @@ class HoldingService
             $this->userRepository->updateBalance($newBalance, $email);
             $this->holdingRepository->delete($id); 
 
-            if ($this->db->getPdo()->inTransaction()) {
-                $this->db->getPdo()->commit();
+            // Commit transaction using MySQLi
+            if ($this->db->getMysqli()->connect_errno === 0) {
+                $this->db->getMysqli()->commit();
             }
         } catch(Exception $error) {
-            if ($this->db->getPdo()->inTransaction()) {
-                $this->db->getPdo()->rollBack();
-            }            
+            // Rollback transaction using MySQLi
+            $this->db->getMysqli()->rollback();            
             throw $error;
         }
     }

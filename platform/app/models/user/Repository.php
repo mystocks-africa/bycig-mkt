@@ -1,12 +1,13 @@
 <?php
 namespace App\Models\User;
 
-use PDO;
+use App\Core\Templates\DbTemplate;
+use mysqli;
 use App\Models\User\Entity as UserEntity;
 
 class Repository 
 {
-    private PDO $pdo;
+    private mysqli $mysqli;
 
     private string $userInsertQuery = "
         INSERT INTO users (
@@ -65,83 +66,115 @@ class Repository
         WHERE email = ?;
     ";
 
-    public function __construct(PDO $pdo)
+    public function __construct(mysqli $mysqli)
     {
-        $this->pdo = $pdo;
+        $this->mysqli = $mysqli;
     }
 
     public function save(UserEntity $user): void
     {
         if ($user->clusterLeader) {
-            $stmt = $this->pdo->prepare($this->userInsertQuery);
-            $stmt->execute([
+            $stmt = $this->mysqli->prepare($this->userInsertQuery);
+            $stmt->bind_param("ssss",
                 $user->email,
                 $user->pwd,
                 $user->clusterLeader,
                 $user->fullName
-            ]);
+            );
         } else {
-            $stmt = $this->pdo->prepare($this->userInsertNoLeaderQuery);
-            $stmt->execute([
+            $stmt = $this->mysqli->prepare($this->userInsertNoLeaderQuery);
+            $stmt->bind_param("sss",
                 $user->email,
                 $user->pwd,
                 $user->fullName
-            ]);
+            );
         }
 
-        $this->pdo->commit();
+        $stmt->execute();
+        $stmt->close();
+        $this->mysqli->commit();
     }
 
     public function findByEmail(string $email): array|false
     {        
-        $stmt = $this->pdo->prepare($this->findUserQuery);
-        $stmt->execute([$email]);
-        return $stmt->fetch();
+        $stmt = $this->mysqli->prepare($this->findUserQuery);
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        
+        $result = $stmt->get_result();
+        $data = $result->fetch_assoc();
+        
+        $result->free();
+        $stmt->close();
+        
+        return $data ?: false;
     }
 
     public function findAllClusterLeaders(): array
     {        
-        $stmt = $this->pdo->prepare($this->findClusterLeaderQuery);
-        $stmt->execute();
-        return $stmt->fetchAll();
+        $result = $this->mysqli->query($this->findClusterLeaderQuery);
+        $data = $result->fetch_all(MYSQLI_ASSOC);
+        $result->free();
+        
+        return $data;
     }
 
     public function updatePwd(string $newPwd, string $email): void
     {        
-        $stmt = $this->pdo->prepare($this->updatePwdQuery);
-        $stmt->execute([
-            $newPwd, 
-            $email
-        ]);
-        $this->pdo->commit();
+        $stmt = $this->mysqli->prepare($this->updatePwdQuery);
+        $stmt->bind_param("ss", $newPwd, $email);
+        $stmt->execute();
+        $stmt->close();
+        $this->mysqli->commit();
     }
 
     public function updateBalance(float $newBalance, string $email): void 
     {        
-        $stmt = $this->pdo->prepare($this->updateBalanceQuery);
-        $stmt->execute([
-            $newBalance, 
-            $email
-        ]);
-        $this->pdo->commit();
+        $stmt = $this->mysqli->prepare($this->updateBalanceQuery);
+        $stmt->bind_param("ds", $newBalance, $email);
+        $stmt->execute();
+        $stmt->close();
+        $this->mysqli->commit();
     }
 
     public function delete(string $email): void
     {        
-        $stmt = $this->pdo->prepare($this->deleteUser);
-        $stmt->execute([
-            $email
-        ]);
-        $this->pdo->commit();
+        $stmt = $this->mysqli->prepare($this->deleteUser);
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $stmt->close();
+        $this->mysqli->commit();
     }
 
     public function update(string $email, array $fields, array $params): void
     {
-        $sql = "UPDATE users SET " . implode(", ", $fields) . " WHERE email = :email";
-        $params['email'] = $email;
+        // Build the SQL dynamically
+        $sql = "UPDATE users SET " . implode(" = ?, ", $fields) . " = ? WHERE email = ?";
         
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute($params);
-        $this->pdo->commit();
+        // Prepare parameter values and types
+        $values = [];
+        $types = "";
+        
+        foreach ($fields as $field) {
+            $values[] = $params[$field];
+            // Determine type based on value
+            if (is_int($params[$field])) {
+                $types .= "i";
+            } elseif (is_float($params[$field])) {
+                $types .= "d";
+            } else {
+                $types .= "s";
+            }
+        }
+        
+        // Add email parameter
+        $values[] = $email;
+        $types .= "s";
+        
+        $stmt = $this->mysqli->prepare($sql);
+        $stmt->bind_param($types, ...$values);
+        $stmt->execute();
+        $stmt->close();
+        $this->mysqli->commit();
     }
 }

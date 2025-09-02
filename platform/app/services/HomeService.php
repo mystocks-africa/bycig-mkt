@@ -13,7 +13,7 @@ class HomeService
     public function __construct()
     {
         $this->db = new DbTemplate();
-        $this->holdingRepository = new HoldingRepository($this->db->getPdo());
+        $this->holdingRepository = new HoldingRepository($this->db->getMysqli());
     }
 
     public function getAllHoldings(): array

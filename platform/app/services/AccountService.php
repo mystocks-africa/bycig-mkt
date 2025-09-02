@@ -16,8 +16,8 @@ class AccountService
     public function __construct()
     {
         $this->db = new DbTemplate();
-        $this->holdingRepository = new HoldingRepository($this->db->getPdo());
-        $this->userRepository = new UserRepository($this->db->getPdo());
+        $this->holdingRepository = new HoldingRepository($this->db->getMysqli());
+        $this->userRepository = new UserRepository($this->db->getMysqli());
     }
 
     public function getUserInfo(?string $email): array
