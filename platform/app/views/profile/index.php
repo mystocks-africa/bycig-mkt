@@ -87,21 +87,21 @@
                         <p><strong>Investor:</strong> <?= $investor ?></p>
                         <p><strong><?= $fulfilled ? "You own this" : "You do not own this" ?></strong></p>
                         <p><strong>Shares:</strong> <?= $shares ?></p>
-                        <? if ($fulfilled): ?>
+                        <?php if ($fulfilled): ?>
                                 <form class="sell-btn-wrapper" action="/holdings/sell" method="POST">
                                     <input name="email" value="<?= $investor ?>" style="display:none;">
                                     <input name="id" value="<?= $id ?>" style="display:none;">
                                     <form action="/holdings/buy" method="POST">
                                         <button class="sell-btn" type="submit">Sell</button>
                                     </form>
-                            <? else: ?>
+                            <?php else: ?>
                                 <form class="sell-btn-wrapper" action="/holdings/buy" method="POST">
                                     <input name="email" value="<?= $investor ?>" style="display:none;">
                                     <input name="id" value="<?= $id ?>" style="display:none;">
                                     <form action="/holdings/buy" method="POST">
                                         <button class="sell-btn" type="submit">Buy</button>
                                     </form>
-                            <? endif; ?>
+                            <?php endif; ?>
                         </form>
                     </div>
                 <?php endforeach; ?>
