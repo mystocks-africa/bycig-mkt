@@ -2,17 +2,18 @@
 namespace App\Core\Templates;
 
 use Predis\Client;
+use Dotenv\Dotenv;
 
 class RedisTemplate 
 {
-    private $env;
     private Client $redis;
 
     public function __construct()
     {
-        global $env;
-        $this->env = $env;
-        $this->redis = new Client($this->env["REDIS_URL"] ?? "redis://redis:6379");
+        $dotenv = Dotenv::createImmutable(__DIR__ . "/../../../");
+        $dotenv->load();
+
+        $this->redis = new Client($_ENV["REDIS_URL"] ?? "redis://redis:6379");
     }
 
     public function getRedis(): Client

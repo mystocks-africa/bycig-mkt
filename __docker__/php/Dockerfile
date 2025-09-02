@@ -21,11 +21,11 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 WORKDIR /app
 
 # Copy project files
-COPY ./mkt /app/
+COPY ./platform /app/
 
 # Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader
 
 EXPOSE 9999
 
-CMD ["php", "-S", "0.0.0.0:9999", "-t", "mkt/public"]
+CMD ["php", "-S", "0.0.0.0:9999", "-t", "platform/public"]

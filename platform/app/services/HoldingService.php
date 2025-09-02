@@ -9,19 +9,19 @@ use Finnhub\Api\DefaultApi;
 use Finnhub\Configuration;
 use GuzzleHttp\Client as GuzzleClient;
 use Exception;
+use Dotenv\Dotenv;
 
 class HoldingService 
 {
     private DbTemplate $db;
     private HoldingRepository $holdingRepository;
     private UserRepository $userRepository;
-    private $env;
 
     public function __construct()
     {
-        global $env; // get the env from env.php helper file thru global
+        $dotenv = Dotenv::createImmutable(__DIR__ . "/../../");
+        $dotenv->load();
 
-        $this->env = $env;
         $this->db = new DbTemplate();
         $this->holdingRepository = new HoldingRepository($this->db->getPdo());
         $this->userRepository = new UserRepository($this->db->getPdo());
@@ -30,7 +30,7 @@ class HoldingService
     private function getStockPrice(string $stockSymbol): float 
     {
         try {
-            $config = Configuration::getDefaultConfiguration()->setApiKey('token', $this->env['FINNHUB_API_KEY']);
+            $config = Configuration::getDefaultConfiguration()->setApiKey('token', $_ENV["FINNHUB_API_KEY"]);
             $client = new DefaultApi(
                 new GuzzleClient(),
                 $config
