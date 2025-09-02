@@ -5,5 +5,5 @@ RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
 
-# Otherwise, redirect all to index.php
+# Otherwise redirect all to index.php
 RewriteRule ^ index.php [QSA,L]
