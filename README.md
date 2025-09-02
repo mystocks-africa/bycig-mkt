@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="mkt/public/assets/favicon.ico" width="20%" alt="BYCIG MKT" />
+  <img src="platform/public/assets/favicon.ico" width="20%" alt="BYCIG MKT" />
 </div>
 <hr>
 <div align="center" style="line-height: 1;">
