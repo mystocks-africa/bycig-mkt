@@ -21,7 +21,7 @@ jobs:
 
       - name: Install dependencies with Composer
         run: |
-          cd mkt
+          cd platform
           composer install --no-dev --optimize-autoloader
 
       - name: Create .env file
