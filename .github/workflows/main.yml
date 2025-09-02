@@ -23,6 +23,7 @@ jobs:
         run: |
           cd platform
           composer install --no-dev --optimize-autoloader
+          composer dump-autoload -o 
 
       - name: Create .env file
         run: |
