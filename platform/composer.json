@@ -1,0 +1,23 @@
+{
+    "name": "hemit99123/bycig-mkt",
+    "type": "n",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Hemit Patel",
+            "email": "hemitvpatel@gmail.com"
+        }
+    ],
+    "require": {
+        "firebase/php-jwt": "^6.11",
+        "phpmailer/phpmailer": "^6.10",
+        "predis/predis": "^3.2",
+        "finnhub/client": "^2.0",
+        "vlucas/phpdotenv": "^5.6"
+    }
+}
