@@ -3,7 +3,7 @@ name: 🚀 Deploy platform 🚀
 on:
   push:
     branches:
-      - main   # change if you use another branch (e.g., master)
+      - main
 
 jobs:
   deploy:
@@ -23,7 +23,6 @@ jobs:
         run: |
           cd platform
           composer install --no-dev --optimize-autoloader
-          composer dump-autoload -o 
 
       - name: Create .env file
         run: |
@@ -46,6 +45,6 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftp
           port: 21
-          local-dir: ./platform/   # upload this folder
-          server-dir: /domains/bycig.org/public_html/platform/  # remote path
-          dangerous-clean-slate: false
+          local-dir: ./platform/
+          server-dir: /domains/bycig.org/public_html/platform/
+          dangerous-clean-slate: true  # This cleans the remote first

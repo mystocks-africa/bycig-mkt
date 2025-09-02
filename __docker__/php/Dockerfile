@@ -28,4 +28,4 @@ RUN composer install --no-dev --optimize-autoloader
 
 EXPOSE 9999
 
-CMD ["php", "-S", "0.0.0.0:9999", "-t", "platform/public"]
+CMD ["php", "-S", "0.0.0.0:9999", "-t", "platform/"]
