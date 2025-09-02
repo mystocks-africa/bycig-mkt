@@ -1,5 +1,5 @@
 <?php
-namespace App\Core;
+namespace App\Core\Stocks;
 
 class Stocks {
     public static function getSupportedStocks(): array

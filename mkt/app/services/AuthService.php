@@ -1,5 +1,5 @@
 <?php
-namespace App\Services\Auth;
+namespace App\Services;
 
 use App\Core\Templates\DbTemplate;
 use App\Core\Auth\Session;

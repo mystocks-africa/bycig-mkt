@@ -1,12 +1,14 @@
 <?php
 namespace App\Core\Templates;
 
+include_once __DIR__ . "/../../../utils/env.php";
+
 use PDO;
 use PDOException;
 
 class DbTemplate {
 
-    private array $env;
+    private ?array $env;
     private PDO $pdo;
 
     public function __construct()

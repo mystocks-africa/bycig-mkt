@@ -1,5 +1,5 @@
 <?php
-require $_SERVER['DOCUMENT_ROOT'] . '/../vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 
 $requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 

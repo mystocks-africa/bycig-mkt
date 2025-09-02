@@ -5,7 +5,7 @@ use App\Core\Controller\Controller;
 use App\Core\Auth\Session;
 use App\Core\Auth\AuthGuard;
 
-use App\Services\Auth\AuthService;
+use App\Services\AuthService;
 use Exception;
 
 class AuthController

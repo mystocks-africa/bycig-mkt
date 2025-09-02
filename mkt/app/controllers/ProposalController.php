@@ -4,7 +4,7 @@ namespace App\Controllers;
 use App\Core\Controller\Controller;
 use App\Core\Auth\Session;
 use App\Core\Auth\AuthGuard;
-use App\Core\Stocks;
+use App\Core\Stocks\Stocks;
 
 use App\Services\ProposalService;
 use Exception;

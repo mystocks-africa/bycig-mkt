@@ -12,7 +12,7 @@ class RedisTemplate
     {
         global $env;
         $this->env = $env;
-        $this->redis = new Client($this->env["REDIS_URL"] ?? "redis://127.0.0.1:6379");
+        $this->redis = new Client($this->env["REDIS_URL"] ?? "redis://redis:6379");
     }
 
     public function getRedis(): Client
