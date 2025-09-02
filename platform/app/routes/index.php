@@ -1,4 +1,5 @@
 <?php
+use App\Routes\Router;
 
 use App\Controllers\AccountController;
 use App\Controllers\AdminController;
@@ -7,7 +8,6 @@ use App\Controllers\HomeController;
 use App\Controllers\ProposalController;
 use App\Controllers\HoldingsController;
 use App\Controllers\ProfileController;
-use App\Core\Routes\Router;
 
 $router = new Router();
 

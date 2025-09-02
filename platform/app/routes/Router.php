@@ -1,5 +1,5 @@
 <?php
-namespace App\Core\Routes;
+namespace App\Routes;
 
 use App\Controllers\NotFoundController;
 
