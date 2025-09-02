@@ -49,4 +49,4 @@ jobs:
           port: 21
           local-dir: ./platform/
           server-dir: /domains/bycig.org/public_html/platform/
-          dangerous-clean-slate: true  # This cleans the remote first
+          dry-run: false
