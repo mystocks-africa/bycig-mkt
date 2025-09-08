@@ -15,6 +15,9 @@ func main() {
 	fmt.Println("Enter your role:")
 	fmt.Scan(&role)
 
+	fmt.Println("=== LOADING ===")
+	// DO YOUR LOGIC HERE
+
 	if (role != "cluster_leader" && role != "user") {
 		fmt.Println("Invalid role. It is either 'cluster_leader' or 'user'")
 		os.Exit(0)
