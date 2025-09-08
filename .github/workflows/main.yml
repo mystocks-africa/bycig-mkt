@@ -16,7 +16,7 @@ jobs:
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2'  
+          php-version: '8.2'
           tools: composer
 
       - name: Create .env file through CAT
@@ -38,6 +38,10 @@ jobs:
           FINNHUB_API_KEY="${{ secrets.FINNHUB_API_KEY }}"
           EOF
 
+      - name: Install PHP dependencies with Composer
+        run: |
+          cd platform
+          composer install --no-dev --optimize-autoloader --prefer-dist
 
       - name: Upload files via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
